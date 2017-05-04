@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "normal": {
+      "model": "wearables:wearable_colouriser"
+    }
+  }
+}
