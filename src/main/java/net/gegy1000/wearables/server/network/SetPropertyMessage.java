@@ -63,7 +63,7 @@ public class SetPropertyMessage implements IMessage {
                                 Container container = player.openContainer;
                                 if (container instanceof WearableAssemblerContainer) {
                                     Slot slot = container.getSlot(message.slot);
-                                    if (slot != null && slot.getStack().getItem() instanceof WearableComponentItem) {
+                                    if (slot != null && slot.getStack() != null && slot.getStack().getItem() instanceof WearableComponentItem) {
                                         WearableComponent component = WearableComponentItem.getComponent(slot.getStack());
                                         WearableComponentType type = component.getType();
                                         if ((type.getSupportedProperties() & message.property) != 0) {

@@ -210,4 +210,12 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
         }
         this.armour.setStackInSlot(0, wearable.getAppliedArmour());
     }
+
+    @Override
+    public void putStackInSlot(int slotID, ItemStack stack) {
+        Slot slot = this.getSlot(slotID);
+        if (!(slot instanceof AssemblerOutputSlot) || !this.entity.getWorld().isRemote) {
+            slot.putStack(stack);
+        }
+    }
 }

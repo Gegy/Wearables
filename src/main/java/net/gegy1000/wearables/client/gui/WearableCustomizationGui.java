@@ -267,4 +267,9 @@ public class WearableCustomizationGui extends GuiScreen {
             }
         }
     }
+
+    @Override
+    public boolean doesGuiPauseGame() {
+        return false;
+    }
 }
