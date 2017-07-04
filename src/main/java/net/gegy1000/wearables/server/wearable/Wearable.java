@@ -1,5 +1,6 @@
 package net.gegy1000.wearables.server.wearable;
 
+import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class Wearable implements INBTSerializable<NBTTagCompound> {
     private List<WearableComponent> components = new ArrayList<>();
-    private ItemStack appliedArmour = ItemStack.EMPTY;
+    private ItemStack appliedArmour = WearableUtils.emptyStack();
 
     public void addComponent(WearableComponent component) {
         this.components.add(component);
@@ -38,7 +39,7 @@ public class Wearable implements INBTSerializable<NBTTagCompound> {
             componentList.appendTag(component.serializeNBT());
         }
         compound.setTag("components", componentList);
-        if (!this.appliedArmour.isEmpty()) {
+        if (!WearableUtils.isStackEmpty(this.appliedArmour)) {
             compound.setTag("applied_armour", this.appliedArmour.serializeNBT());
         }
         return compound;

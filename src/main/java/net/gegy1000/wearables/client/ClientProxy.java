@@ -5,7 +5,6 @@ import net.gegy1000.wearables.client.gui.WearableAssemblerGui;
 import net.gegy1000.wearables.client.gui.WearableColouriserGui;
 import net.gegy1000.wearables.client.gui.WearableFabricatorGui;
 import net.gegy1000.wearables.client.model.BlankModel;
-import net.gegy1000.wearables.client.render.RenderRegistry;
 import net.gegy1000.wearables.client.render.layer.WearableRenderLayer;
 import net.gegy1000.wearables.server.ServerProxy;
 import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
@@ -14,7 +13,6 @@ import net.gegy1000.wearables.server.block.entity.machine.WearableColouriserEnti
 import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEntity;
 import net.gegy1000.wearables.server.container.WearableAssemblerContainer;
 import net.gegy1000.wearables.server.container.WearableColouriserContainer;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
@@ -36,7 +34,6 @@ public class ClientProxy extends ServerProxy {
     @Override
     public void onPreInit() {
         super.onPreInit();
-        RenderRegistry.onPreInit();
     }
 
     @Override
@@ -64,7 +61,6 @@ public class ClientProxy extends ServerProxy {
     @Override
     public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         BlockPos pos = new BlockPos(x, y, z);
-        IBlockState state = world.getBlockState(pos);
         TileEntity entity = world.getTileEntity(pos);
         InventoryPlayer playerInventory = player.inventory;
         if (id == DISPLAY_MANNEQUIN_GUI && entity instanceof DisplayMannequinEntity) {

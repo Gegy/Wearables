@@ -5,7 +5,7 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.gegy1000.wearables.Wearables;
 import net.minecraft.item.ItemStack;
@@ -14,7 +14,7 @@ import net.minecraft.util.text.translation.I18n;
 
 import java.util.List;
 
-public class FabricatorRecipeCategory extends BlankRecipeCategory<IRecipeWrapper> {
+public class FabricatorRecipeCategory implements IRecipeCategory<IRecipeWrapper> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(Wearables.MODID, "textures/gui/wearable_fabricator.png");
 
     private final IDrawable background;
@@ -23,6 +23,11 @@ public class FabricatorRecipeCategory extends BlankRecipeCategory<IRecipeWrapper
     public FabricatorRecipeCategory(IGuiHelper guiHelper) {
         this.background = guiHelper.createDrawable(TEXTURE, 61, 7, 105, 72);
         this.title = I18n.translateToLocal("tile.wearable_fabricator.name");
+    }
+
+    @Override
+    public String getModName() {
+        return "Wearables";
     }
 
     @Override

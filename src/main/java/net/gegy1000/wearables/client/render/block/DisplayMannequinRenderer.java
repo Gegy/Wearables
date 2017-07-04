@@ -2,13 +2,13 @@ package net.gegy1000.wearables.client.render.block;
 
 import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.client.model.block.DisplayMannequinModel;
+import net.gegy1000.wearables.client.model.component.ComponentModelRegistry;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
-import net.gegy1000.wearables.client.render.RenderRegistry;
-import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.block.DisplayMannequinBlock;
 import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
 import net.gegy1000.wearables.server.item.WearableItem;
 import net.gegy1000.wearables.server.util.WearableColourUtils;
+import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.Wearable;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
@@ -60,7 +60,7 @@ public class DisplayMannequinRenderer extends TileEntitySpecialRenderer<DisplayM
     }
 
     @Override
-    public void renderTileEntityAt(DisplayMannequinEntity entity, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(DisplayMannequinEntity entity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         if (entity != null) {
             BlockPos pos = entity.getPos();
             IBlockState state = entity.getWorld().getBlockState(pos);
@@ -100,30 +100,33 @@ public class DisplayMannequinRenderer extends TileEntitySpecialRenderer<DisplayM
 
     private void renderPiece(EntityEquipmentSlot slot, DisplayMannequinEntity entity, float partialTicks, float scale) {
         ItemStack stack = entity.getStack(slot);
-        if (!stack.isEmpty() && stack.getItem() instanceof WearableItem) {
+        if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableItem) {
             WearableItem item = (WearableItem) stack.getItem();
-            if (item.getEquipmentSlot() == slot) {
+            if (item.armorType == slot) {
                 Wearable wearable = WearableItem.getWearable(stack);
                 for (WearableComponent component : wearable.getComponents()) {
                     WearableComponentType componentType = component.getType();
-                    ComponentRenderer renderer = RenderRegistry.getRenderer(componentType.getIdentifier());
-                    WearableComponentModel model = renderer.getModel(false);
-                    model.setLivingAnimations(null, 0.0F, 0.0F, partialTicks);
-                    model.setModelAttributes(MODEL);
-                    model.setOffsets(component.getOffsetY(), component.getOffsetZ());
-                    for (int layer = 0; layer < componentType.getLayerCount(); layer++) {
-                        ResourceLocation texture = renderer.getTexture(false, layer);
-                        if (texture == null) {
-                            GlStateManager.disableTexture2D();
-                        } else {
-                            GlStateManager.enableTexture2D();
-                            MC.getTextureManager().bindTexture(texture);
+                    WearableComponentType.Layer[] layers = componentType.getLayers(false);
+                    for (int layerIndex = 0; layerIndex < layers.length; layerIndex++) {
+                        WearableComponentType.Layer layer = layers[layerIndex];
+                        WearableComponentModel model = ComponentModelRegistry.getRegistry().getValue(layer.getModel());
+                        if (model != null) {
+                            model.setLivingAnimations(null, 0.0F, 0.0F, partialTicks);
+                            model.setModelAttributes(MODEL);
+                            model.setOffsets(component.getOffsetY(), component.getOffsetZ());
+                            ResourceLocation texture = layer.getTexture();
+                            if (texture == null) {
+                                GlStateManager.disableTexture2D();
+                            } else {
+                                GlStateManager.enableTexture2D();
+                                MC.getTextureManager().bindTexture(texture);
+                            }
+                            float[] colour = WearableColourUtils.toRGBFloatArray(component.getColour(layerIndex));
+                            GlStateManager.pushMatrix();
+                            GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
+                            model.renderMannequin(scale);
+                            GlStateManager.popMatrix();
                         }
-                        float[] colour = renderer.adjustColour(WearableColourUtils.toRGBFloatArray(component.getColour(layer)), layer);
-                        GlStateManager.pushMatrix();
-                        GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
-                        model.renderMannequin(scale);
-                        GlStateManager.popMatrix();
                     }
                 }
                 GlStateManager.enableTexture2D();

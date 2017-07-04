@@ -1,0 +1,39 @@
+{
+  "identifier": "wearables:jetpack",
+  "category": "chest_back",
+  "ingredients": [
+    {"item": "minecraft:iron_ingot", "count": 60},
+    {"item": "minecraft:blaze_powder", "count": 20},
+    {"item": "minecraft:leather", "count": 10},
+    {"item": "minecraft:string", "count": 5}
+  ],
+  "layers": [
+    {
+      "model": "wearables:jetpack",
+      "texture": "wearables:textures/component/jetpack_1.png"
+    },
+    {
+      "model": "wearables:jetpack",
+      "texture": "wearables:textures/component/jetpack_2.png"
+    },
+    {
+      "model": "wearables:jetpack",
+      "texture": "wearables:textures/component/jetpack_3.png",
+      "can_colour": false
+    }
+  ],
+  "properties": [
+    {
+      "identifier": "wearables:offset_y",
+      "minimum": -0.4,
+      "maximum": 0.1
+    }
+  ],
+  "bounds": [
+    -0.4, 0.8, -0.5,
+    0.4, -0.1, 0.1
+  ],
+  "tooltip": true,
+  "movement_handler": "wearables:jetpack_movement",
+  "event_handler": "wearables:jetpack_events"
+}

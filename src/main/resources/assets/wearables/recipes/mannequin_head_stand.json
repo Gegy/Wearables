@@ -1,0 +1,12 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " q ",
+    "wqw"
+  ],
+  "key": {
+    "q": {"item": "minecraft:quartz_block", "data": 32767},
+    "w": {"item": "minecraft:wooden_slab", "data": 32767}
+  },
+  "result": {"item": "wearables:mannequin_head_stand"}
+}

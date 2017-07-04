@@ -1,0 +1,26 @@
+{
+  "identifier": "wearables:modoff_cape",
+  "category": "chest_back",
+  "ingredients": [
+    {"item": "minecraft:wool", "count": 6, "data": 0},
+    {"item": "minecraft:string", "count": 2}
+  ],
+  "layers": [
+    {
+      "model": "wearables:modoff_cape",
+      "texture": "wearables:textures/component/modoff_cape_background.png"
+    },
+    {
+      "model": "wearables:modoff_cape",
+      "texture": "wearables:textures/component/modoff_cape_text.png",
+      "can_colour": false
+    }
+  ],
+  "bounds": [
+    -0.35, 1.1, -0.2,
+    0.35, 0.05, -0.1
+  ],
+  "inventory": {
+    "rotation": [0.0, 180.0, 0.0]
+  }
+}

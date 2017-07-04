@@ -1,0 +1,23 @@
+{
+  "identifier": "wearables:shirt_generic_1",
+  "category": "chest_generic",
+  "ingredients": [
+    {"item": "minecraft:wool", "data": 0},
+    {"item": "minecraft:leather", "count": 6},
+    {"item": "minecraft:string", "count": 2}
+  ],
+  "layers": [
+    {
+      "model": "wearables:shirt_1",
+      "texture": "wearables:textures/component/shirt.png",
+      "thin": {
+        "model": "wearables:shirt_1_thin",
+        "texture": "wearables:textures/component/shirt.png"
+      }
+    }
+  ],
+  "bounds": [
+    -0.6, 0.8, 0.4,
+    0.6, -0.2, -0.4
+  ]
+}

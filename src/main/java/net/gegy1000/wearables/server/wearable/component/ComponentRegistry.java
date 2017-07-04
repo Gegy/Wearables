@@ -1,99 +1,85 @@
 package net.gegy1000.wearables.server.wearable.component;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.server.wearable.WearableCategory;
-import net.gegy1000.wearables.server.wearable.component.chest.BowTieComponent;
-import net.gegy1000.wearables.server.wearable.component.chest.JetpackComponent;
-import net.gegy1000.wearables.server.wearable.component.chest.ModOffCapeComponent;
-import net.gegy1000.wearables.server.wearable.component.chest.Shirt1Component;
-import net.gegy1000.wearables.server.wearable.component.chest.Shirt2Component;
-import net.gegy1000.wearables.server.wearable.component.chest.TShirt1Component;
-import net.gegy1000.wearables.server.wearable.component.chest.TShirt2Component;
-import net.gegy1000.wearables.server.wearable.component.chest.TieComponent;
-import net.gegy1000.wearables.server.wearable.component.chest.WingsComponent;
-import net.gegy1000.wearables.server.wearable.component.feet.FlippersComponent;
-import net.gegy1000.wearables.server.wearable.component.feet.Shoes1Component;
-import net.gegy1000.wearables.server.wearable.component.head.DragonHornsComponent;
-import net.gegy1000.wearables.server.wearable.component.head.Glasses1Component;
-import net.gegy1000.wearables.server.wearable.component.head.Helmet1Component;
-import net.gegy1000.wearables.server.wearable.component.head.Helmet2Component;
-import net.gegy1000.wearables.server.wearable.component.head.NightVisionGogglesComponent;
-import net.gegy1000.wearables.server.wearable.component.head.Retro3DGlassesComponent;
-import net.gegy1000.wearables.server.wearable.component.head.RoundGlassesComponent;
-import net.gegy1000.wearables.server.wearable.component.head.TopHatComponent;
-import net.gegy1000.wearables.server.wearable.component.legs.Pants1Component;
+import net.minecraft.util.JsonUtils;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryBuilder;
+import org.apache.commons.io.FilenameUtils;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@Mod.EventBusSubscriber(modid = Wearables.MODID)
 public class ComponentRegistry {
-    public static final List<WearableComponentType> COMPONENTS = new ArrayList<>();
-    public static final Map<WearableCategory, Set<WearableComponentType>> CATEGORIES = new HashMap<>();
-    public static final Map<String, WearableComponentType> IDENTIFIERS = new HashMap<>();
+    public static final ResourceLocation REGISTRY_NAME = new ResourceLocation(Wearables.MODID, "components");
 
-    public static final Glasses1Component GLASSES_1 = new Glasses1Component();
-    public static final TopHatComponent TOP_HAT = new TopHatComponent();
-    public static final Retro3DGlassesComponent RETRO_3D_GLASSES = new Retro3DGlassesComponent();
-    public static final RoundGlassesComponent HARRY_POTTER_GLASSES = new RoundGlassesComponent();
-    public static final ModOffCapeComponent MODOFF_CAPE = new ModOffCapeComponent();
-    public static final BowTieComponent BOW_TIE = new BowTieComponent();
-    public static final TieComponent TIE = new TieComponent();
-    public static final FlippersComponent FLIPPERS = new FlippersComponent();
-    public static final JetpackComponent JETPACK = new JetpackComponent();
-    public static final Shoes1Component SHOES_1 = new Shoes1Component();
-    public static final Pants1Component PANTS_1 = new Pants1Component();
-    public static final Helmet1Component HELMET_1 = new Helmet1Component();
-    public static final Helmet2Component HELMET_2 = new Helmet2Component();
-    public static final Shirt1Component SHIRT_1 = new Shirt1Component();
-    public static final Shirt2Component SHIRT_2 = new Shirt2Component();
-    public static final DragonHornsComponent DRAGON_HORNS = new DragonHornsComponent();
-    public static final TShirt1Component T_SHIRT_1 = new TShirt1Component();
-    public static final TShirt2Component T_SHIRT_2 = new TShirt2Component();
-    public static final WingsComponent WINGS = new WingsComponent();
-    public static final NightVisionGogglesComponent NIGHT_VISION_GOGGLES = new NightVisionGogglesComponent();
+    private static final Map<WearableCategory, Set<WearableComponentType>> CATEGORIES = new HashMap<>();
 
-    public static void register() {
-        try {
-            for (Field field : ComponentRegistry.class.getDeclaredFields()) {
-                Object value = field.get(null);
-                if (value instanceof WearableComponentType) {
-                    ComponentRegistry.register((WearableComponentType) value);
-                } else if (value instanceof WearableComponentType[]) {
-                    for (WearableComponentType component : (WearableComponentType[]) value) {
-                        ComponentRegistry.register(component);
-                    }
-                }
-            }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        COMPONENTS.sort(Comparator.comparing(WearableComponentType::getIdentifier));
+    public static final WearableComponentType BLANK = new BlankComponent();
+
+    private static IForgeRegistry<WearableComponentType> registry;
+
+    @SubscribeEvent
+    public static void onNewRegistry(RegistryEvent.NewRegistry event) {
+        registry = new RegistryBuilder<WearableComponentType>()
+                .setType(WearableComponentType.class)
+                .setName(REGISTRY_NAME)
+                .setDefaultKey(BLANK.getRegistryName())
+                .add((owner, stage, id, obj, oldObj) -> CATEGORIES.computeIfAbsent(obj.getCategory(), c -> new HashSet<>()).add(obj))
+                .disableSaving()
+                .create();
     }
 
-    public static void register(WearableComponentType component) {
-        COMPONENTS.add(component);
-        IDENTIFIERS.put(component.getIdentifier(), component);
-        Set<WearableComponentType> category = CATEGORIES.computeIfAbsent(component.getCategory(), c -> new HashSet<>());
-        category.add(component);
+    @SubscribeEvent
+    public static void onRegister(RegistryEvent.Register<WearableComponentType> event) {
+        Gson gson = new Gson();
+
+        for (ModContainer mod : Loader.instance().getActiveModList()) {
+            CraftingHelper.findFiles(mod, "assets/" + mod.getModId() + "/wearable_components", root -> true, (root, file) -> {
+                String relative = root.relativize(file).toString();
+                if (!"json".equals(FilenameUtils.getExtension(file.toString()))) {
+                    return true;
+                }
+
+                String name = FilenameUtils.removeExtension(relative).replaceAll("\\\\", "/");
+                ResourceLocation key = new ResourceLocation(mod.getModId(), name);
+
+                try (BufferedReader reader = Files.newBufferedReader(file)) {
+                    JsonObject json = JsonUtils.fromJson(gson, reader, JsonObject.class);
+                    event.getRegistry().register(WearableComponentType.deserialize(json));
+                    return true;
+                } catch (JsonParseException e) {
+                    Wearables.LOGGER.error("Parsing error loading wearable component {}", key, e);
+                } catch (IOException e) {
+                    Wearables.LOGGER.error("Couldn't read wearable component {} from {}", key, file, e);
+                }
+
+                return false;
+            });
+        }
     }
 
     public static Set<WearableComponentType> get(WearableCategory category) {
         return CATEGORIES.get(category);
     }
 
-    public static WearableComponentType get(String identifier) {
-        return IDENTIFIERS.get(identifier);
-    }
-
-    public static WearableComponentType getDefault() {
-        if (!COMPONENTS.isEmpty()) {
-            return COMPONENTS.get(0);
-        }
-        return null;
+    public static IForgeRegistry<WearableComponentType> getRegistry() {
+        return registry;
     }
 }

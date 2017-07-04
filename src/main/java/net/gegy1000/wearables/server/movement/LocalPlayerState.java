@@ -3,6 +3,7 @@ package net.gegy1000.wearables.server.movement;
 import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
+import net.gegy1000.wearables.server.wearable.event.ComponentEventHandler;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.HashMap;
@@ -35,8 +36,11 @@ public class LocalPlayerState {
     public void updateEquipment(List<WearableComponentType> equipment) {
         if (this.lastEquipment != null) {
             for (WearableComponentType component : this.lastEquipment) {
-                if (!equipment.contains(component)) {
-                    component.onRemoved(this.player);
+                ComponentEventHandler eventHandler = component.getEventHandler();
+                if (eventHandler != null) {
+                    if (!equipment.contains(component)) {
+                        eventHandler.onRemoved(this.player);
+                    }
                 }
             }
         }

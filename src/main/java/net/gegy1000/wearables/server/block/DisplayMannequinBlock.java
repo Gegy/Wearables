@@ -42,7 +42,6 @@ public class DisplayMannequinBlock extends Block implements RegisterItemModel, R
     public DisplayMannequinBlock() {
         super(Material.ROCK);
         this.setHardness(0.5F);
-        this.setUnlocalizedName("display_mannequin");
         this.setDefaultState(this.blockState.getBaseState().withProperty(HALF, Half.LOWER).withProperty(FACING, EnumFacing.NORTH));
         this.setLightLevel(0.3F);
     }

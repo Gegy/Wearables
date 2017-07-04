@@ -1,0 +1,22 @@
+{
+  "identifier": "wearables:pants_generic_1",
+  "category": "legs_generic",
+  "ingredients": [
+    {"item": "minecraft:leather", "count": 6},
+    {"item": "minecraft:string", "count": 2}
+  ],
+  "layers": [
+    {
+      "model": "wearables:pants_1",
+      "texture": "wearables:textures/component/pants_1.png"
+    },
+    {
+      "model": "wearables:pants_1",
+      "texture": "wearables:textures/component/pants_2.png"
+    }
+  ],
+  "bounds": [
+    -0.3, 1.5, -0.2,
+    0.3, 0.6, 0.2
+  ]
+}

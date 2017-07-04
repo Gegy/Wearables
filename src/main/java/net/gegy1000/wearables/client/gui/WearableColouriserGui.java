@@ -2,7 +2,6 @@ package net.gegy1000.wearables.client.gui;
 
 import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.client.render.ComponentRenderHandler;
-import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.container.WearableColouriserContainer;
 import net.gegy1000.wearables.server.container.slot.ColouredComponentSlot;
 import net.gegy1000.wearables.server.item.WearableComponentItem;
@@ -10,13 +9,14 @@ import net.gegy1000.wearables.server.network.SetColourMessage;
 import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
+import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.ilexiconn.llibrary.client.util.ClientUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -62,6 +62,8 @@ public class WearableColouriserGui extends GuiContainer {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.drawDefaultBackground();
+
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         GlStateManager.translate(0.0F, 0.0F, 300.0F);
@@ -71,8 +73,6 @@ public class WearableColouriserGui extends GuiContainer {
         this.mc.getTextureManager().bindTexture(TEXTURE);
         WearableComponent component = this.getComponent();
         if (component != null) {
-            ComponentRenderer renderer = WearableUtils.getRenderer(component);
-
             GlStateManager.enableRescaleNormal();
             RenderHelper.enableGUIStandardItemLighting();
 
@@ -84,7 +84,7 @@ public class WearableColouriserGui extends GuiContainer {
             GlStateManager.rotate(-30.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            ComponentRenderHandler.fitSlot(renderer.getBounds(), 1.25);
+            ComponentRenderHandler.fitSlot(component.getType().getBounds(), 1.25);
             ComponentRenderHandler.renderComponentLayerHighlighted(component, this.selectedLayer, ClientUtils.interpolate(this.prevSwitchBloom, this.switchBloom, partialTicks) / 10.0F);
             GlStateManager.popMatrix();
 
@@ -103,6 +103,8 @@ public class WearableColouriserGui extends GuiContainer {
                 GlStateManager.enableDepth();
             }
         }
+
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
 
     @Override
@@ -113,17 +115,19 @@ public class WearableColouriserGui extends GuiContainer {
         int y = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
 
-        int layerCount = 0;
+        WearableComponentType.Layer[] layers = new WearableComponentType.Layer[0];
+
         WearableComponent component = this.getComponent();
         if (component != null) {
-            layerCount = component.getType().getLayerCount();
+            layers = component.getType().getLayers(false);
         }
+
         for (int i = 0; i < 6; i++) {
-            if (i >= layerCount) {
+            if (i >= layers.length) {
                 this.drawTexturedModalRect(x + 7, y + 7 + i * 12, 176, 0, 36, 12);
             } else if (i == this.selectedLayer) {
                 this.drawTexturedModalRect(x + 7, y + 7 + i * 12, 176, 12, 36, 12);
-            } else if (component != null && !component.getType().canColour(i)) {
+            } else if (component != null && !layers[i].canColour()) {
                 this.drawTexturedModalRect(x + 7, y + 7 + i * 12, 176, 0, 36, 12);
             }
         }
@@ -140,8 +144,8 @@ public class WearableColouriserGui extends GuiContainer {
         this.fontRenderer.drawString(I18n.translateToLocal("label.wearable_hsv.name"), x + 62, y + 72, 0);
 
         if (component != null) {
-            for (int i = 0; i < layerCount; i++) {
-                if (component.getType().canColour(i)) {
+            for (int i = 0; i < layers.length; i++) {
+                if (layers[i].canColour()) {
                     this.fontRenderer.drawString("#" + (i + 1), x + 9, y + 10 + i * 12, 0);
                 }
             }
@@ -218,8 +222,9 @@ public class WearableColouriserGui extends GuiContainer {
         }
         WearableComponent component = this.getComponent();
         if (component != null) {
-            for (int i = 0; i < component.getType().getLayerCount(); i++) {
-                if (component.getType().canColour(i)) {
+            WearableComponentType.Layer[] layers = component.getType().getLayers(false);
+            for (int i = 0; i <  layers.length; i++) {
+                if (layers[i].canColour()) {
                     if (mouseX >= x + 7 && mouseY >= y + 7 + i * 12 && mouseX <= x + 43 && mouseY <= y + 19 + i * 12) {
                         this.selectedLayer = i;
                         this.switchBloom = 10;
@@ -272,15 +277,16 @@ public class WearableColouriserGui extends GuiContainer {
                 int sliderX = x + 111;
                 WearableComponent component = null;
                 ItemStack stack = this.getComponentStack();
-                if (!stack.isEmpty() && stack.getItem() instanceof WearableComponentItem) {
+                if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
                     component = WearableComponentItem.getComponent(stack);
                 }
                 if (component != null) {
                     int value = MathHelper.clamp((int) ((mouseX - (sliderX + this.sliderOffsetX)) / (float) (52 - 9) * 255), 0, 255);
                     int colour = this.updateColour(i, component.getColour(this.selectedLayer), value);
                     if (this.bind) {
-                        for (int layer = 0; layer < component.getType().getLayerCount(); layer++) {
-                            if (component.getType().canColour(layer)) {
+                        WearableComponentType.Layer[] layers = component.getType().getLayers(false);
+                        for (int layer = 0; layer < layers.length; layer++) {
+                            if (layers[layer].canColour()) {
                                 component.setColour(layer, colour);
                             }
                         }
@@ -332,7 +338,7 @@ public class WearableColouriserGui extends GuiContainer {
 
     private WearableComponent getComponent() {
         ItemStack stack = this.getComponentStack();
-        if (!stack.isEmpty() && stack.getItem() instanceof WearableComponentItem) {
+        if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
             return WearableComponentItem.getComponent(stack);
         }
         return null;
@@ -346,7 +352,7 @@ public class WearableColouriserGui extends GuiContainer {
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuffer();
         buffer.begin(GL11.GL_QUAD_STRIP, DefaultVertexFormats.POSITION_COLOR);
         int width = right - left;
         for (int i = 0; i <= 255; i++) {
@@ -383,7 +389,7 @@ public class WearableColouriserGui extends GuiContainer {
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuffer();
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
         buffer.pos(right, top, this.zLevel).color(endRed, endGreen, endBlue, endAlpha).endVertex();
         buffer.pos(left, top, this.zLevel).color(startRed, startGreen, startBlue, startAlpha).endVertex();

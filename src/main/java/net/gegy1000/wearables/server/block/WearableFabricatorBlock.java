@@ -20,7 +20,6 @@ import net.minecraftforge.items.IItemHandler;
 public class WearableFabricatorBlock extends MachineBlock implements RegisterItemModel {
     public WearableFabricatorBlock() {
         super(Material.ROCK);
-        this.setUnlocalizedName("wearable_fabricator");
         this.setHardness(0.5F);
     }
 

@@ -9,48 +9,62 @@ import net.gegy1000.wearables.server.block.entity.wearable.WearableLegsItemEntit
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+@Mod.EventBusSubscriber(modid = Wearables.MODID)
+@GameRegistry.ObjectHolder(Wearables.MODID)
 public class ItemRegistry {
-    public static final List<Item> ITEMS = new ArrayList<>();
+    private static final Set<Item> ITEMS = new LinkedHashSet<>();
+    private static final Set<Item> IMMUTABLE_ITEMS = Collections.unmodifiableSet(ITEMS);
 
-    public static final DisplayMannequinItem DISPLAY_MANNEQUIN = new DisplayMannequinItem();
-    public static final JetpackFuelItem JETPACK_FUEL = new JetpackFuelItem();
+    private static final Item EMPTY = new Item();
 
-    public static final WearableItem WEARABLE_HEAD = new WearableItem(WearableHeadItemEntity.class, EntityEquipmentSlot.HEAD);
-    public static final WearableItem WEARABLE_CHEST = new WearableItem(WearableChestItemEntity.class, EntityEquipmentSlot.CHEST);
-    public static final WearableItem WEARABLE_LEGS = new WearableItem(WearableLegsItemEntity.class, EntityEquipmentSlot.LEGS);
-    public static final WearableItem WEARABLE_FEET = new WearableItem(WearableFeetItemEntity.class, EntityEquipmentSlot.FEET);
-    public static final WearableComponentItem WEARABLE_COMPONENT = new WearableComponentItem();
+    public static final Item DISPLAY_MANNEQUIN = EMPTY;
+    public static final Item JETPACK_FUEL = EMPTY;
 
-    public static void register() {
-        try {
-            for (Field field : ItemRegistry.class.getDeclaredFields()) {
-                Object value = field.get(null);
-                if (value instanceof Item) {
-                    ItemRegistry.register((Item) value);
-                } else if (value instanceof Item[]) {
-                    for (Item item : (Item[]) value) {
-                        ItemRegistry.register(item);
-                    }
-                }
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+    public static final Item WEARABLE_HEAD = EMPTY;
+    public static final Item WEARABLE_CHEST = EMPTY;
+    public static final Item WEARABLE_LEGS = EMPTY;
+    public static final Item WEARABLE_FEET = EMPTY;
+    public static final Item WEARABLE_COMPONENT = EMPTY;
+
+    @SubscribeEvent
+    public static void registerItems(RegistryEvent.Register<Item> event) {
+        IForgeRegistry<Item> registry = event.getRegistry();
+
+        ItemRegistry.register(registry, new DisplayMannequinItem(), new ResourceLocation(Wearables.MODID, "display_mannequin_item"));
+        ItemRegistry.register(registry, new JetpackFuelItem(), new ResourceLocation(Wearables.MODID, "jetpack_fuel"));
+
+        ItemRegistry.register(registry, new WearableItem(WearableHeadItemEntity.class, EntityEquipmentSlot.HEAD), new ResourceLocation(Wearables.MODID, "wearable_head"));
+        ItemRegistry.register(registry, new WearableItem(WearableChestItemEntity.class, EntityEquipmentSlot.CHEST), new ResourceLocation(Wearables.MODID, "wearable_chest"));
+        ItemRegistry.register(registry, new WearableItem(WearableLegsItemEntity.class, EntityEquipmentSlot.LEGS), new ResourceLocation(Wearables.MODID, "wearable_legs"));
+        ItemRegistry.register(registry, new WearableItem(WearableFeetItemEntity.class, EntityEquipmentSlot.FEET), new ResourceLocation(Wearables.MODID, "wearable_feet"));
+
+        ItemRegistry.register(registry, new WearableComponentItem(), new ResourceLocation(Wearables.MODID, "wearable_component"));
+    }
+
+    private static void register(IForgeRegistry<Item> registry, Item item, ResourceLocation identifier) {
+        ITEMS.add(item);
+
+        item.setRegistryName(identifier);
+        item.setUnlocalizedName(identifier.getResourcePath());
+
+        registry.register(item);
+
+        if (item instanceof RegisterBlockEntity) {
+            GameRegistry.registerTileEntity(((RegisterBlockEntity) item).getEntity(), Wearables.MODID + ":" + identifier.getResourcePath());
         }
     }
 
-    public static Item register(Item item) {
-        ITEMS.add(item);
-        String name = item.getUnlocalizedName().substring("item.".length());
-        GameRegistry.register(item, new ResourceLocation(Wearables.MODID, name));
-        if (item instanceof RegisterBlockEntity) {
-            GameRegistry.registerTileEntity(((RegisterBlockEntity) item).getEntity(), Wearables.MODID + ":" + name);
-        }
-        return item;
+    public static Set<? extends Item> getItems() {
+        return IMMUTABLE_ITEMS;
     }
 }

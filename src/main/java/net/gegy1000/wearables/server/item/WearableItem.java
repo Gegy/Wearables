@@ -8,11 +8,13 @@ import net.gegy1000.wearables.server.api.item.RegisterItemModel;
 import net.gegy1000.wearables.server.block.DisplayMannequinBlock;
 import net.gegy1000.wearables.server.tab.TabRegistry;
 import net.gegy1000.wearables.server.util.WearableColourUtils;
+import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.Wearable;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -31,6 +33,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -44,14 +47,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 
 public class WearableItem extends ItemArmor implements RegisterItemModel, RegisterBlockEntity, ISpecialArmor {
-    public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("wearable", "leather", -1, new int[4], 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F);
+    private static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("wearable", "leather", -1, new int[4], 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F);
 
     private Class<? extends TileEntity> entity;
 
     public WearableItem(Class<? extends TileEntity> entity, EntityEquipmentSlot slot) {
         super(MATERIAL, 0, slot);
         this.entity = entity;
-        this.setUnlocalizedName("wearable_" + slot.getName());
         this.setCreativeTab(TabRegistry.TEMPLATES);
     }
 
@@ -61,22 +63,25 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> subItems) {
-        for (WearableComponentType componentType : ComponentRegistry.COMPONENTS) {
-            if (componentType.getCategory().getSlot() == this.armorType) {
-                for (int colourIndex = 0; colourIndex < 16; colourIndex++) {
-                    int colour = WearableColourUtils.fromRGBFloatArray(EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colourIndex)));
-                    Wearable wearable = new Wearable();
-                    WearableComponent component = new WearableComponent(componentType);
-                    wearable.addComponent(component);
-                    for (int i = 0; i < componentType.getLayerCount(); i++) {
-                        if (componentType.canColour(i)) {
-                            component.setColour(i, colour);
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (this.isInCreativeTab(tab)) {
+            for (WearableComponentType componentType : ComponentRegistry.getRegistry().getValues()) {
+                if (componentType.getCategory().getSlot() == this.armorType) {
+                    for (int colourIndex = 0; colourIndex < 16; colourIndex++) {
+                        int colour = WearableColourUtils.fromRGBFloatArray(EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colourIndex)));
+                        Wearable wearable = new Wearable();
+                        WearableComponent component = new WearableComponent(componentType);
+                        wearable.addComponent(component);
+                        WearableComponentType.Layer[] layers = componentType.getLayers(false);
+                        for (int i = 0; i < layers.length; i++) {
+                            if (layers[i].canColour()) {
+                                component.setColour(i, colour);
+                            }
                         }
+                        ItemStack stack = new ItemStack(this);
+                        stack.setTagCompound(wearable.serializeNBT());
+                        items.add(stack);
                     }
-                    ItemStack stack = new ItemStack(this);
-                    stack.setTagCompound(wearable.serializeNBT());
-                    subItems.add(stack);
                 }
             }
         }
@@ -89,25 +94,28 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
         Wearable wearable = WearableItem.getWearable(stack);
-        if (!wearable.getAppliedArmour().isEmpty()) {
+        if (!WearableUtils.isStackEmpty(wearable.getAppliedArmour())) {
             tooltip.add(TextFormatting.BLUE + "" + TextFormatting.BOLD + "(" + wearable.getAppliedArmour().getDisplayName() + ")");
         }
         if (!wearable.getComponents().isEmpty()) {
             for (WearableComponent component : wearable.getComponents()) {
                 if (component.getType().hasTooltip()) {
-                    tooltip.add(TextFormatting.BOLD + I18n.translateToLocal("tooltip.wearable." + component.getType().getIdentifier() + ".name"));
+                    ResourceLocation identifier = component.getType().getRegistryName();
+                    tooltip.add(TextFormatting.BOLD + I18n.translateToLocal("tooltip.wearable." + identifier.getResourcePath() + ".name"));
                 }
             }
             tooltip.add(I18n.translateToLocal("label.wearable_components.name"));
             for (WearableComponent component : wearable.getComponents()) {
                 WearableComponentType type = component.getType();
+                ResourceLocation identifier = component.getType().getRegistryName();
                 TextFormatting textColour = WearableColourUtils.getClosest(component.getColour(0));
-                tooltip.add(" - " + textColour + I18n.translateToLocal("component." + type.getIdentifier() + ".name"));
+                tooltip.add(" - " + textColour + I18n.translateToLocal("component." + identifier.getResourcePath() + ".name"));
                 int layer = 1;
-                for (int i = 0; i < component.getType().getLayerCount(); i++) {
-                    if (component.getType().canColour(i)) {
+                WearableComponentType.Layer[] layers = type.getLayers(false);
+                for (int i = 0; i < layers.length; i++) {
+                    if (layers[i].canColour()) {
                         int colour = component.getColour(i);
                         tooltip.add("   - " + layer++ + ": #" + WearableColourUtils.getClosest(colour) + Integer.toHexString(colour));
                     }
@@ -133,7 +141,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
         if (!source.isUnblockable()) {
             ItemStack stack = WearableItem.getAppliedArmour(armor);
-            if (!stack.isEmpty() && stack.getItem() instanceof ItemArmor) {
+            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof ItemArmor) {
                 ItemArmor item = (ItemArmor) stack.getItem();
                 return new ArmorProperties(0, item.damageReduceAmount / 25.0, armor.getMaxDamage() + 1 - armor.getItemDamage());
             }
@@ -153,10 +161,10 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     @Override
     public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
         Wearable wearable = WearableItem.getWearable(stack);
-        if (!wearable.getAppliedArmour().isEmpty()) {
+        if (!WearableUtils.isStackEmpty(wearable.getAppliedArmour())) {
             wearable.getAppliedArmour().damageItem(damage, entity);
             if (wearable.getAppliedArmour().getItemDamage() > wearable.getAppliedArmour().getMaxDamage()) {
-                wearable.setAppliedArmour(ItemStack.EMPTY);
+                wearable.setAppliedArmour(WearableUtils.emptyStack());
             }
             stack.setTagCompound(wearable.serializeNBT());
         }
@@ -165,7 +173,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     @Override
     public int getMaxDamage(ItemStack stack) {
         ItemStack appliedArmour = WearableItem.getAppliedArmour(stack);
-        if (!appliedArmour.isEmpty()) {
+        if (!WearableUtils.isStackEmpty(appliedArmour)) {
             return appliedArmour.getItem().getMaxDamage(appliedArmour);
         }
         return super.getMaxDamage(stack);
@@ -174,7 +182,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     @Override
     public int getDamage(ItemStack stack) {
         ItemStack appliedArmour = WearableItem.getAppliedArmour(stack);
-        if (!appliedArmour.isEmpty()) {
+        if (!WearableUtils.isStackEmpty(appliedArmour)) {
             return appliedArmour.getItem().getDamage(appliedArmour);
         }
         return super.getDamage(stack);
@@ -183,7 +191,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
         ItemStack appliedArmour = WearableItem.getAppliedArmour(stack);
-        if (!appliedArmour.isEmpty()) {
+        if (!WearableUtils.isStackEmpty(appliedArmour)) {
             return appliedArmour.getItem().showDurabilityBar(appliedArmour);
         }
         return super.showDurabilityBar(stack);
@@ -192,7 +200,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
         ItemStack appliedArmour = WearableItem.getAppliedArmour(stack);
-        if (!appliedArmour.isEmpty()) {
+        if (!WearableUtils.isStackEmpty(appliedArmour)) {
             return appliedArmour.getItem().getAttributeModifiers(slot, appliedArmour);
         }
         return HashMultimap.create();
@@ -211,10 +219,10 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
         if (wearable != null) {
             return wearable.getAppliedArmour();
         }
-        return ItemStack.EMPTY;
+        return WearableUtils.emptyStack();
     }
 
-    public static WearableItem getItem(EntityEquipmentSlot slot) {
+    public static Item getItem(EntityEquipmentSlot slot) {
         switch (slot) {
             case HEAD:
                 return ItemRegistry.WEARABLE_HEAD;
@@ -225,10 +233,11 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
             case FEET:
                 return ItemRegistry.WEARABLE_FEET;
         }
+
         return ItemRegistry.WEARABLE_CHEST;
     }
 
-    public static WearableItem getItem(Wearable wearable) {
+    public static Item getItem(Wearable wearable) {
         if (wearable.getComponents().size() > 0) {
             return WearableItem.getItem(wearable.getComponents().get(0).getType().getCategory().getSlot());
         }

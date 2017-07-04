@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": ["wearables:mannequin_head_stand"]
+  },
+  "criteria": {
+    "has_armor_stand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {"item": "minecraft:armor_stand"}
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "wearables:mannequin_head_stand"
+      }
+    }
+  },
+  "requirements": [
+    ["has_armor_stand", "has_the_recipe"]
+  ]
+}

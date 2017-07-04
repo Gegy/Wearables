@@ -1,0 +1,26 @@
+{
+  "identifier": "wearables:flippers",
+  "category": "feet_generic",
+  "ingredients": [
+    {"item": "minecraft:leather", "count": 8},
+    {"item": "minecraft:iron_ingot", "count": 2},
+    {"item": "minecraft:string", "count": 2}
+  ],
+  "layers": [
+    {
+      "model": "wearables:flippers",
+      "texture": "wearables:textures/component/flippers_1.png"
+    },
+    {
+      "model": "wearables:flippers",
+      "texture": "wearables:textures/component/flippers_2.png"
+    }
+  ],
+  "bounds": [
+    -0.6, 1.6, -0.1,
+    0.6, 1.2, 0.8
+  ],
+  "tooltip": true,
+  "movement_handler": "wearables:swim_movement",
+  "event_handler": "wearables:flipper_events"
+}

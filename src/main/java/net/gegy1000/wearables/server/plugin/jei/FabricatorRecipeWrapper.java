@@ -4,8 +4,6 @@ import com.google.common.collect.Lists;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.gegy1000.wearables.client.render.ComponentRenderHandler;
-import net.gegy1000.wearables.client.render.RenderRegistry;
-import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.item.ItemRegistry;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
@@ -37,7 +35,6 @@ public class FabricatorRecipeWrapper implements IRecipeWrapper {
     @Override
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         GlStateManager.pushMatrix();
-        ComponentRenderer renderer = RenderRegistry.getRenderer(this.componentType.getIdentifier());
 
         float ticks = minecraft.player.ticksExisted + LLibrary.PROXY.getPartialTicks();
         GlStateManager.enableRescaleNormal();
@@ -51,7 +48,7 @@ public class FabricatorRecipeWrapper implements IRecipeWrapper {
         GlStateManager.rotate(-20.0F, 1.0F, 0.0F, 0.0F);
         GlStateManager.rotate(ticks % 360, 0.0F, 1.0F, 0.0F);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        ComponentRenderHandler.fitSlot(renderer.getBounds(), 1.0);
+        ComponentRenderHandler.fitSlot(this.componentType.getBounds(), 1.0);
         ComponentRenderHandler.renderSingleComponent(new WearableComponent(this.componentType));
         GlStateManager.popMatrix();
 

@@ -1,0 +1,14 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " # ",
+    "|#|",
+    "___"
+  ],
+  "key": {
+    "_": {"item": "minecraft:stone_slab", "data": 32767},
+    "|": {"item": "minecraft:stick"},
+    "#": {"item": "minecraft:planks", "data": 32767}
+  },
+  "result": {"item": "wearables:wearable_assembler"}
+}

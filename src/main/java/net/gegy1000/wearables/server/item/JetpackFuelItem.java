@@ -9,7 +9,6 @@ public class JetpackFuelItem extends Item implements RegisterItemModel {
     public JetpackFuelItem() {
         super();
         this.setCreativeTab(TabRegistry.GENERAL);
-        this.setUnlocalizedName("jetpack_fuel");
         this.setMaxStackSize(1);
         this.setMaxDamage(200);
     }

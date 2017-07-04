@@ -1,0 +1,15 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " q ",
+    "sqs",
+    "wgw"
+  ],
+  "key": {
+    "q": {"item": "minecraft:quartz_block", "data": 32767},
+    "s": {"item": "minecraft:stone_slab", "data": 7},
+    "g": {"item": "minecraft:glowstone"},
+    "w": {"item": "minecraft:wooden_slab", "data": 32767}
+  },
+  "result": {"item": "wearables:display_mannequin"}
+}

@@ -1,0 +1,22 @@
+{
+  "identifier": "wearables:round_glasses",
+  "category": "head_face",
+  "ingredients": [
+    {"item": "minecraft:iron_ingot", "count": 4},
+    {"item": "minecraft:glass_pane", "count": 2}
+  ],
+  "layers": [
+    {"model": "wearables:round_glasses"}
+  ],
+  "properties": [
+    {
+      "identifier": "wearables:offset_y",
+      "minimum": -0.2,
+      "maximum": 0.3
+    }
+  ],
+  "bounds": [
+    -0.25, -0.15, -0.05,
+    0.25, -0.325, 0.3
+  ]
+}

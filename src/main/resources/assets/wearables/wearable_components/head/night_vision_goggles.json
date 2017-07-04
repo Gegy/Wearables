@@ -1,0 +1,31 @@
+{
+  "identifier": "wearables:night_vision_goggles",
+  "category": "head_face",
+  "ingredients": [
+    {"item": "minecraft:iron_ingot", "count": 8},
+    {"item": "minecraft:glowstone_dust", "count": 6},
+    {"item": "minecraft:prismarine_crystals", "count": 2}
+  ],
+  "layers": [
+    {
+      "model": "wearables:night_vision_goggles",
+      "texture": "wearables:textures/component/night_vision.png"
+    },
+    {
+      "model": "wearables:night_vision_goggles",
+      "texture": "wearables:textures/component/night_vision_static.png",
+      "can_colour": false
+    }
+  ],
+  "properties": [
+    {
+      "identifier": "wearables:offset_y",
+      "minimum": -0.2,
+      "maximum": 0.3
+    }
+  ],
+  "bounds": [
+    -0.4, -0.1, -0.4,
+    0.4, -0.5, 0.4
+  ]
+}

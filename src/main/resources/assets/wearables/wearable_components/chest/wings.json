@@ -1,0 +1,34 @@
+{
+  "identifier": "wearables:wings",
+  "category": "chest_back",
+  "ingredients": [
+    {"item": "minecraft:dragon_egg"},
+    {"item": "minecraft:iron_ingot", "count": 30},
+    {"item": "minecraft:feather", "count": 50},
+    {"item": "minecraft:bone", "count": 10}
+  ],
+  "layers": [
+    {
+      "model": "wearables:wings",
+      "texture": "wearables:textures/component/wings.png"
+    },
+    {
+      "model": "wearables:wings",
+      "texture": "wearables:textures/component/wings_overlay.png"
+    }
+  ],
+  "properties": [
+    {
+      "identifier": "wearables:offset_y",
+      "minimum": -0.4,
+      "maximum": 0.1
+    }
+  ],
+  "bounds": [
+    -1.8, 1.0, -1.6,
+    1.8, -0.6, -0.1
+  ],
+  "tooltip": true,
+  "movement_handler": "wearables:wing_movement",
+  "event_handler": "wearables:wing_events"
+}

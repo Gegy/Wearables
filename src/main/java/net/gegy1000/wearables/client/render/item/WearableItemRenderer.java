@@ -13,7 +13,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 
 public class WearableItemRenderer extends TileEntitySpecialRenderer<WearableItemEntity> {
     @Override
-    public void renderTileEntityAt(WearableItemEntity entity, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(WearableItemEntity entity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GlStateManager.pushMatrix();
         Wearable wearable = WearableItem.getWearable(WearablesClientHooks.getRenderedStack());
         GlStateManager.scale(-1.0, -1.0, 1.0);

@@ -33,7 +33,6 @@ public class MannequinHeadStandBlock extends BlockContainer implements RegisterI
     public MannequinHeadStandBlock() {
         super(Material.ROCK);
         this.setHardness(0.5F);
-        this.setUnlocalizedName("mannequin_head_stand");
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
         this.setCreativeTab(TabRegistry.GENERAL);
     }
@@ -52,7 +51,7 @@ public class MannequinHeadStandBlock extends BlockContainer implements RegisterI
                 ItemStack heldItem = player.getHeldItem(hand);
                 if (player.inventory.getFirstEmptyStack() >= 0) {
                     if (!(heldItem.getItem() instanceof WearableItem) || ((WearableItem) heldItem.getItem()).armorType != EntityEquipmentSlot.HEAD) {
-                        heldItem = ItemStack.EMPTY;
+                        heldItem = WearableUtils.emptyStack();
                     }
                     ItemStack result = entity.swapItem(heldItem);
                     heldItem.shrink(1);

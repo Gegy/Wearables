@@ -1,0 +1,31 @@
+{
+  "identifier": "wearables:retro_3d_glasses",
+  "category": "head_face",
+  "ingredients": [
+    {"item": "minecraft:iron_ingot", "count": 4},
+    {"item": "minecraft:stained_glass_pane", "data": 3},
+    {"item": "minecraft:stained_glass_pane", "data": 14}
+  ],
+  "layers": [
+    {
+      "model": "wearables:retro_3d_glasses",
+      "texture": "wearables:textures/component/retro_3d_glasses.png"
+    },
+    {
+      "model": "wearables:retro_3d_glasses",
+      "texture": "wearables:textures/component/retro_3d_glasses_colour.png",
+      "can_colour": false
+    }
+  ],
+  "properties": [
+    {
+      "identifier": "wearables:offset_y",
+      "minimum": -0.2,
+      "maximum": 0.3
+    }
+  ],
+  "bounds": [
+    -0.25, -0.15, -0.05,
+    0.25, -0.325, 0.3
+  ]
+}

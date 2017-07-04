@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": ["wearables:wearable_colouriser"]
+  },
+  "criteria": {
+    "has_workbench": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {"item": "minecraft:crafting_table"}
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "wearables:wearable_colouriser"
+      }
+    }
+  },
+  "requirements": [
+    ["has_workbench", "has_the_recipe"]
+  ]
+}

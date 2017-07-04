@@ -1,0 +1,34 @@
+{
+  "identifier": "wearables:bow_tie",
+  "category": "chest_neck",
+  "ingredients": [
+    {"item": "minecraft:leather", "count": 2},
+    {"item": "minecraft:string", "count": 2}
+  ],
+  "layers": [
+    {
+      "model": "wearables:bow_tie",
+      "texture": "wearables:textures/component/bowtie_1.png"
+    },
+    {
+      "model": "wearables:bow_tie",
+      "texture": "wearables:textures/component/bowtie_2.png"
+    }
+  ],
+  "properties": [
+    {
+      "identifier": "wearables:offset_y",
+      "minimum": -0.3,
+      "maximum": 0.1
+    },
+    {
+      "identifier": "wearables:offset_z",
+      "minimum": -0.1,
+      "maximum": 0.1
+    }
+  ],
+  "bounds": [
+    -0.2, 0.15, 0.2,
+    0.2, -0.2, 0.1
+  ]
+}

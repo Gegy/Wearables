@@ -4,6 +4,7 @@ import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.client.model.block.FabricatorModel;
 import net.gegy1000.wearables.server.block.WearableFabricatorBlock;
 import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEntity;
+import net.gegy1000.wearables.server.util.WearableUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -26,7 +27,7 @@ public class WearableFabricatorRenderer extends TileEntitySpecialRenderer<Wearab
     private static final ResourceLocation TEXTURE = new ResourceLocation(Wearables.MODID, "textures/blocks/wearable_fabricator.png");
 
     @Override
-    public void renderTileEntityAt(WearableFabricatorEntity entity, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(WearableFabricatorEntity entity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         EnumFacing facing = EnumFacing.SOUTH;
 
         if (entity != null) {
@@ -55,7 +56,7 @@ public class WearableFabricatorRenderer extends TileEntitySpecialRenderer<Wearab
             MC.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             for (int i = 0; i < 4; i++) {
                 ItemStack stack = inventory.getStackInSlot(i);
-                if (!stack.isEmpty()) {
+                if (!WearableUtils.isStackEmpty(stack)) {
                     GlStateManager.pushMatrix();
                     GlStateManager.translate(0.0F, i % 2 * -1.2F, 0.0F);
                     GlStateManager.translate(i / 2 * 1.0F, 0.0F, 0.0F);

@@ -1,0 +1,11 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {"item": "minecraft:gunpowder"},
+    {"item": "minecraft:blaze_powder"},
+    {"item": "minecraft:gunpowder"},
+    {"item": "minecraft:blaze_powder"},
+    {"item": "minecraft:glass_bottle"}
+  ],
+  "result": {"item": "wearables:jetpack_fuel"}
+}

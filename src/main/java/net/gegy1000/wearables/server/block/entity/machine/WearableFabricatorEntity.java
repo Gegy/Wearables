@@ -1,12 +1,14 @@
 package net.gegy1000.wearables.server.block.entity.machine;
 
 import net.gegy1000.wearables.server.item.ItemRegistry;
+import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 
@@ -31,7 +33,7 @@ public class WearableFabricatorEntity extends InventoryBlockEntity implements IT
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         compound = super.writeToNBT(compound);
         if (this.selectedComponent != null) {
-            compound.setString("selected_component", this.selectedComponent.getIdentifier());
+            compound.setString("selected_component", this.selectedComponent.getRegistryName().toString());
         }
         return compound;
     }
@@ -40,7 +42,7 @@ public class WearableFabricatorEntity extends InventoryBlockEntity implements IT
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         if (compound.hasKey("selected_component")) {
-            this.selectedComponent = ComponentRegistry.get(compound.getString("selected_component"));
+            this.selectedComponent = ComponentRegistry.getRegistry().getValue(new ResourceLocation(compound.getString("selected_component")));
         } else {
             this.selectedComponent = null;
         }
@@ -61,7 +63,7 @@ public class WearableFabricatorEntity extends InventoryBlockEntity implements IT
             stack.setTagCompound(new WearableComponent(this.selectedComponent).serializeNBT());
             this.inventory.setStackInSlot(4, stack);
         } else {
-            this.inventory.setStackInSlot(4, ItemStack.EMPTY);
+            this.inventory.setStackInSlot(4, WearableUtils.emptyStack());
         }
     }
 
@@ -71,10 +73,10 @@ public class WearableFabricatorEntity extends InventoryBlockEntity implements IT
             Collections.addAll(required, this.selectedComponent.getIngredients());
             for (int i = 0; i < 4; i++) {
                 ItemStack inventoryStack = this.inventory.getStackInSlot(i);
-                if (!inventoryStack.isEmpty()) {
-                    for (ItemStack stack : this.selectedComponent.getIngredients()) {
-                        if (stack.getItem() == inventoryStack.getItem() && stack.getItemDamage() == inventoryStack.getItemDamage() && inventoryStack.getCount() >= stack.getCount()) {
-                            required.remove(stack);
+                if (!WearableUtils.isStackEmpty(inventoryStack)) {
+                    for (ItemStack ingredient : this.selectedComponent.getIngredients()) {
+                        if (ingredient.isItemEqual(inventoryStack) && inventoryStack.getCount() >= ingredient.getCount()) {
+                            required.remove(ingredient);
                             break;
                         }
                     }
@@ -91,10 +93,10 @@ public class WearableFabricatorEntity extends InventoryBlockEntity implements IT
         if (this.selectedComponent != null) {
             for (int i = 0; i < 4; i++) {
                 ItemStack inventoryStack = this.inventory.getStackInSlot(i);
-                if (!inventoryStack.isEmpty()) {
-                    for (ItemStack stack : this.selectedComponent.getIngredients()) {
-                        if (stack.getItem() == inventoryStack.getItem() && stack.getItemDamage() == inventoryStack.getItemDamage() && inventoryStack.getCount() >= stack.getCount()) {
-                            this.inventory.extractItem(i, stack.getCount(), false);
+                if (!WearableUtils.isStackEmpty(inventoryStack)) {
+                    for (ItemStack ingredient : this.selectedComponent.getIngredients()) {
+                        if (ingredient.isItemEqual(inventoryStack) && inventoryStack.getCount() >= ingredient.getCount()) {
+                            this.inventory.extractItem(i, ingredient.getCount(), false);
                             break;
                         }
                     }

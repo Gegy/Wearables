@@ -15,6 +15,7 @@ public class TabRegistry {
             return new ItemStack(BlockRegistry.WEARABLE_FABRICATOR);
         }
     };
+
     public static final CreativeTabs TEMPLATES = new CreativeTabs(Wearables.MODID + ".templates") {
         private NonNullList<ItemStack> subtypes;
 
@@ -27,10 +28,10 @@ public class TabRegistry {
         public ItemStack getIconItemStack() {
             if (this.subtypes == null) {
                 this.subtypes = NonNullList.create();
-                ItemRegistry.WEARABLE_HEAD.getSubItems(ItemRegistry.WEARABLE_HEAD, this, this.subtypes);
-                ItemRegistry.WEARABLE_CHEST.getSubItems(ItemRegistry.WEARABLE_CHEST, this, this.subtypes);
-                ItemRegistry.WEARABLE_LEGS.getSubItems(ItemRegistry.WEARABLE_LEGS, this, this.subtypes);
-                ItemRegistry.WEARABLE_FEET.getSubItems(ItemRegistry.WEARABLE_FEET, this, this.subtypes);
+                ItemRegistry.WEARABLE_HEAD.getSubItems(this, this.subtypes);
+                ItemRegistry.WEARABLE_CHEST.getSubItems(this, this.subtypes);
+                ItemRegistry.WEARABLE_LEGS.getSubItems(this, this.subtypes);
+                ItemRegistry.WEARABLE_FEET.getSubItems(this, this.subtypes);
             }
             return this.subtypes.get((ClientEventHandler.ticks / 20) % this.subtypes.size());
         }

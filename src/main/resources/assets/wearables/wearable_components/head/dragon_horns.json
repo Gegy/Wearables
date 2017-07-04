@@ -1,0 +1,15 @@
+{
+  "identifier": "wearables:dragon_horns",
+  "category": "head_horns",
+  "ingredients": [
+    {"item": "minecraft:iron_ingot", "count": 2},
+    {"item": "minecraft:bone", "count": 10}
+  ],
+  "layers": [
+    {"model": "wearables:dragon_horns"}
+  ],
+  "bounds": [
+    -0.4, -0.4, -0.3,
+    0.4, -1.0, 0.3
+  ]
+}

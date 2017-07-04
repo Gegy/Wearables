@@ -20,7 +20,6 @@ import net.minecraft.world.World;
 public class DisplayMannequinItem extends Item implements RegisterItemModel {
     public DisplayMannequinItem() {
         super();
-        this.setUnlocalizedName("display_mannequin_item");
         this.setCreativeTab(TabRegistry.GENERAL);
     }
 

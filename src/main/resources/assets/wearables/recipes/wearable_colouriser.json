@@ -1,0 +1,17 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "rgb",
+    "|u|",
+    "|-|"
+  ],
+  "key": {
+    "r": {"item": "minecraft:dye", "data": 1},
+    "g": {"item": "minecraft:dye", "data": 2},
+    "b": {"item": "minecraft:dye", "data": 4},
+    "|": {"item": "minecraft:quartz_block", "data": -1},
+    "u": {"item": "minecraft:glass_bottle"},
+    "-": {"item": "minecraft:iron_ingot"}
+  },
+  "result": {"item": "wearables:wearable_colouriser"}
+}

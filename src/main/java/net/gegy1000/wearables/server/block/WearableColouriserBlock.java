@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 public class WearableColouriserBlock extends MachineBlock implements RegisterItemModel {
     public WearableColouriserBlock() {
         super(Material.ROCK);
-        this.setUnlocalizedName("wearable_colouriser");
         this.setHardness(0.5F);
     }
 

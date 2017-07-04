@@ -36,6 +36,13 @@ public class WearableAssemblerGui extends GuiContainer {
     }
 
     @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
+    }
+
+    @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(TEXTURE);
@@ -55,7 +62,7 @@ public class WearableAssemblerGui extends GuiContainer {
 
         Slot slot = this.container.getSlot(7);
         ItemStack stack = slot.getStack();
-        if (!stack.isEmpty() && stack.getItem() instanceof WearableItem) {
+        if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableItem) {
             Wearable wearable = WearableItem.getWearable(stack);
 
             float ticks = this.mc.player.ticksExisted + LLibrary.PROXY.getPartialTicks();

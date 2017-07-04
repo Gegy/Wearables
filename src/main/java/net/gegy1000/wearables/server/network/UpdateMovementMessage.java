@@ -49,7 +49,7 @@ public class UpdateMovementMessage implements IMessage {
             EntityPlayer player = Wearables.PROXY.getPlayer(ctx);
             Wearables.PROXY.schedule(() -> {
                 if (ctx.side.isServer()) {
-                    MovementState state = MovementHandler.MOVEMENT_STATES.computeIfAbsent(player.getUniqueID(), uuid -> new MovementState(player));
+                    MovementState state = MovementHandler.getState(player);
                     state.setFlags(message.flags);
                     LocalPlayerState localState = LocalPlayerState.getState(player);
                     state.apply(localState);
@@ -57,7 +57,7 @@ public class UpdateMovementMessage implements IMessage {
                     Entity senderEntity = player.world.getEntityByID(message.playerId);
                     if (senderEntity instanceof EntityPlayer) {
                         EntityPlayer sender = (EntityPlayer) senderEntity;
-                        MovementState state = MovementHandler.MOVEMENT_STATES.computeIfAbsent(sender.getUniqueID(), uuid -> new MovementState(player));
+                        MovementState state = MovementHandler.getState(player);
                         state.setFlags(message.flags);
                         LocalPlayerState localState = LocalPlayerState.getState(sender);
                         state.apply(localState);

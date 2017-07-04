@@ -8,12 +8,18 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistryEntry;
+
+import javax.annotation.Nullable;
 
 @SideOnly(Side.CLIENT)
-public abstract class WearableComponentModel extends ModelBiped {
+public abstract class WearableComponentModel extends ModelBiped implements IForgeRegistryEntry<WearableComponentModel> {
+    private ResourceLocation registryName;
+
     private float offsetY;
     private float offsetZ;
 
@@ -104,5 +110,22 @@ public abstract class WearableComponentModel extends ModelBiped {
 
     protected float calculateChainOffset(double rootOffset, ModelRenderer... boxes) {
         return (float) ((rootOffset * Math.PI) / (2 * boxes.length));
+    }
+
+    @Override
+    public WearableComponentModel setRegistryName(ResourceLocation name) {
+        this.registryName = name;
+        return this;
+    }
+
+    @Nullable
+    @Override
+    public ResourceLocation getRegistryName() {
+        return this.registryName;
+    }
+
+    @Override
+    public Class<WearableComponentModel> getRegistryType() {
+        return WearableComponentModel.class;
     }
 }

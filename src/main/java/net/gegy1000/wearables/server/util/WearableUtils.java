@@ -1,8 +1,6 @@
 package net.gegy1000.wearables.server.util;
 
 import net.gegy1000.wearables.Wearables;
-import net.gegy1000.wearables.client.render.RenderRegistry;
-import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.item.WearableItem;
 import net.gegy1000.wearables.server.movement.MovementHandler;
 import net.gegy1000.wearables.server.wearable.Wearable;
@@ -47,7 +45,7 @@ public class WearableUtils {
         Random random = world.rand;
         for (int i = 0; i < slotCount; i++) {
             ItemStack stack = inventory.getStackInSlot(i);
-            if (!stack.isEmpty()) {
+            if (!WearableUtils.isStackEmpty(stack)) {
                 float offsetX = random.nextFloat() * 0.8F + 0.1F;
                 float offsetY = random.nextFloat() * 0.8F + 0.1F;
                 float offsetZ = random.nextFloat() * 0.8F + 0.1F;
@@ -63,11 +61,11 @@ public class WearableUtils {
     public static AxisAlignedBB calculateUnion(Wearable wearable) {
         AxisAlignedBB union = null;
         for (WearableComponent component : wearable.getComponents()) {
-            ComponentRenderer renderer = WearableUtils.getRenderer(component);
+            AxisAlignedBB bounds = component.getType().getBounds();
             if (union == null) {
-                union = renderer.getBounds();
+                union = bounds;
             } else {
-                union = union.union(renderer.getBounds());
+                union = union.union(bounds);
             }
         }
         if (union == null) {
@@ -76,15 +74,11 @@ public class WearableUtils {
         return union;
     }
 
-    public static ComponentRenderer getRenderer(WearableComponent component) {
-        return RenderRegistry.getRenderer(component.getType().getIdentifier());
-    }
-
     public static List<WearableComponentType> getActiveComponents(EntityPlayer player) {
         List<WearableComponentType> componentTypes = new ArrayList<>();
         for (EntityEquipmentSlot slot : ARMOUR_SLOTS) {
             ItemStack stack = player.getItemStackFromSlot(slot);
-            if (!stack.isEmpty() && stack.getItem() instanceof WearableItem) {
+            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableItem) {
                 Wearable wearable = WearableItem.getWearable(stack);
                 componentTypes.addAll(wearable.getComponents().stream().map(WearableComponent::getType).collect(Collectors.toList()));
             }
@@ -107,7 +101,7 @@ public class WearableUtils {
     public static boolean hasComponent(EntityPlayer player, WearableComponentType type) {
         for (EntityEquipmentSlot slot : ARMOUR_SLOTS) {
             ItemStack stack = player.getItemStackFromSlot(slot);
-            if (!stack.isEmpty() && stack.getItem() instanceof WearableItem) {
+            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableItem) {
                 Wearable wearable = WearableItem.getWearable(stack);
                 for (WearableComponent component : wearable.getComponents()) {
                     if (component.getType().equals(type)) {
@@ -152,7 +146,7 @@ public class WearableUtils {
         if (!Wearables.PROXY.isClientPlayer(entity)) {
             double moveY = -0.2;
             double actualMoveY = moveY;
-            List collidingEntities = entity.world.getCollisionBoxes(entity, entity.getEntityBoundingBox().addCoord(0, moveY, 0));
+            List collidingEntities = entity.world.getCollisionBoxes(entity, entity.getEntityBoundingBox().offset(0, moveY, 0));
             for (Object collidingEntity : collidingEntities) {
                 moveY = ((AxisAlignedBB) collidingEntity).calculateYOffset(entity.getEntityBoundingBox(), moveY);
             }
@@ -182,5 +176,13 @@ public class WearableUtils {
             }
         }
         return timer;
+    }
+
+    public static boolean isStackEmpty(ItemStack stack) {
+        return stack.isEmpty();
+    }
+
+    public static ItemStack emptyStack() {
+        return ItemStack.EMPTY;
     }
 }

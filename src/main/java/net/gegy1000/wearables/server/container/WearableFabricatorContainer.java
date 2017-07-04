@@ -3,12 +3,15 @@ package net.gegy1000.wearables.server.container;
 import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEntity;
 import net.gegy1000.wearables.server.container.slot.FabricatorOutputSlot;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
+import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
+
+import java.util.List;
 
 public class WearableFabricatorContainer extends SyncedContainer {
     private final WearableFabricatorEntity entity;
@@ -44,10 +47,11 @@ public class WearableFabricatorContainer extends SyncedContainer {
     @Override
     public void setField(int id, int value) {
         if (id == 0) {
-            if (value < 0 || value >= ComponentRegistry.COMPONENTS.size()) {
+            List<WearableComponentType> components = ComponentRegistry.getRegistry().getValues();
+            if (value < 0 || value >= components.size()) {
                 this.entity.setSelectedComponent(null);
             } else {
-                this.entity.setSelectedComponent(ComponentRegistry.COMPONENTS.get(value));
+                this.entity.setSelectedComponent(components.get(value));
             }
         }
     }
@@ -55,7 +59,8 @@ public class WearableFabricatorContainer extends SyncedContainer {
     @Override
     public int getField(int id) {
         if (id == 0) {
-            return ComponentRegistry.COMPONENTS.indexOf(this.entity.getSelectedComponent());
+            List<WearableComponentType> components = ComponentRegistry.getRegistry().getValues();
+            return components.indexOf(this.entity.getSelectedComponent());
         }
         return 0;
     }

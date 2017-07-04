@@ -16,7 +16,7 @@ public abstract class SyncedContainer extends AutoTransferContainer {
             for (int i = 0; i < this.fields.length; i++) {
                 int value = this.getField(i);
                 if (value != this.fields[i]) {
-                    listener.sendProgressBarUpdate(this, i, value);
+                    listener.sendWindowProperty(this, i, value);
                     this.fields[i] = value;
                 }
             }

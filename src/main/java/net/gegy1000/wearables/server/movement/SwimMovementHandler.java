@@ -32,7 +32,7 @@ public class SwimMovementHandler extends MovementHandler {
     }
 
     @Override
-    public void applyRotations(EntityPlayer player, float yaw, float bodyYaw, float partialTicks) {
+    public void applyRotations(EntityPlayer player, float partialTicks) {
         float animationTimer = LocalPlayerState.getState(player).getRenderSwimTimer(partialTicks);
         float roll = ClientUtils.interpolateRotation(player.prevRenderYawOffset - player.prevRotationYaw, player.renderYawOffset - player.rotationYaw, partialTicks);
         GlStateManager.rotate(ClientUtils.interpolateRotation(0.0F, roll, animationTimer), 0.0F, 0.0F, 1.0F);

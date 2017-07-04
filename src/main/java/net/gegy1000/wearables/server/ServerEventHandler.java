@@ -4,10 +4,10 @@ import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.server.movement.EntityRemovedListener;
 import net.gegy1000.wearables.server.movement.LocalPlayerState;
 import net.gegy1000.wearables.server.movement.MovementHandler;
-import net.gegy1000.wearables.server.movement.MovementState;
 import net.gegy1000.wearables.server.network.SyncConfigMessage;
 import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
+import net.gegy1000.wearables.server.wearable.event.ComponentEventHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.List;
 
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid = Wearables.MODID)
 public class ServerEventHandler {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -33,24 +33,33 @@ public class ServerEventHandler {
             EntityPlayer player = event.player;
             List<WearableComponentType> components = WearableUtils.getActiveComponents(player);
             for (WearableComponentType component : components) {
-                component.tick(player);
+                ComponentEventHandler eventHandler = component.getEventHandler();
+                if (eventHandler != null) {
+                    eventHandler.tick(player);
+                }
                 MovementHandler movementHandler = component.getMovementHandler();
                 if (movementHandler != null && movementHandler.isEnabled(player)) {
-                    MovementState movementState = MovementHandler.MOVEMENT_STATES.computeIfAbsent(player.getUniqueID(), uuid -> new MovementState(player));
-                    movementHandler.updateMovement(player, movementState);
+                    movementHandler.updateMovement(player, MovementHandler.getState(player));
                 }
             }
             boolean hasSpeedModifier = false;
+
             float speedModifier = 1.0F;
             for (WearableComponentType component : components) {
-                if (component.getSpeedModifier(player) >= 0.0F) {
-                    speedModifier *= component.getSpeedModifier(player);
-                    hasSpeedModifier = true;
+                ComponentEventHandler eventHandler = component.getEventHandler();
+                if (eventHandler != null) {
+                    float modifier = eventHandler.getSpeedModifier(player);
+                    if (modifier >= 0.0F) {
+                        speedModifier *= modifier;
+                        hasSpeedModifier = true;
+                    }
                 }
             }
+
             if (hasSpeedModifier) {
                 player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(speedModifier * 0.1);
             }
+
             LocalPlayerState state = LocalPlayerState.getState(player);
             state.update();
             state.updateEquipment(components);
@@ -64,8 +73,11 @@ public class ServerEventHandler {
             EntityPlayer player = (EntityPlayer) entity;
             List<WearableComponentType> components = WearableUtils.getActiveComponents(player);
             for (WearableComponentType component : components) {
-                if (component.onJump(player)) {
-                    event.setCanceled(true);
+                ComponentEventHandler eventHandler = component.getEventHandler();
+                if (eventHandler != null) {
+                    if (eventHandler.onJump(player)) {
+                        event.setCanceled(true);
+                    }
                 }
             }
         }
@@ -78,7 +90,10 @@ public class ServerEventHandler {
             EntityPlayer player = (EntityPlayer) entity;
             List<WearableComponentType> components = WearableUtils.getActiveComponents(player);
             for (WearableComponentType component : components) {
-                component.onFall(player, event);
+                ComponentEventHandler eventHandler = component.getEventHandler();
+                if (eventHandler != null) {
+                    eventHandler.onFall(player, event);
+                }
             }
         }
     }

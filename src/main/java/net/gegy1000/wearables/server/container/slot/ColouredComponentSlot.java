@@ -18,7 +18,7 @@ public class ColouredComponentSlot extends SlotItemHandler {
     }
 
     @Override
-    public boolean canBeHovered() {
+    public boolean isEnabled() {
         return this.enabled || !this.getHasStack();
     }
 

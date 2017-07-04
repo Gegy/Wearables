@@ -6,7 +6,7 @@ import net.gegy1000.wearables.server.movement.MovementHandler;
 import net.gegy1000.wearables.server.movement.MovementState;
 import net.gegy1000.wearables.server.network.UpdateMovementMessage;
 import net.gegy1000.wearables.server.util.WearableUtils;
-import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
+import net.gegy1000.wearables.server.wearable.component.ComponentTypes;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.ilexiconn.llibrary.client.event.PlayerModelEvent;
 import net.minecraft.client.Minecraft;
@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -24,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(value = Side.CLIENT, modid = Wearables.MODID)
 public class ClientEventHandler {
     private static final Minecraft MC = Minecraft.getMinecraft();
 
@@ -38,8 +39,7 @@ public class ClientEventHandler {
         EntityPlayer player = MC.player;
         if (player != null) {
             if (movementState == null || movementState.getPlayer() != player) {
-                movementState = new MovementState(player);
-                MovementHandler.MOVEMENT_STATES.put(player.getUniqueID(), movementState);
+                movementState = MovementHandler.createState(player);
             }
             movementState.unmarkDirty();
             if (WearableUtils.getMovementHandlers(MC.player).isEmpty()) {
@@ -63,7 +63,7 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public static void setFogDensity(EntityViewRenderEvent.FogDensity event) {
-        if (WearableUtils.hasComponent(MC.player, ComponentRegistry.NIGHT_VISION_GOGGLES)) {
+        if (WearableUtils.hasComponent(MC.player, ComponentTypes.NIGHT_VISION_GOGGLES)) {
             GlStateManager.setFog(GlStateManager.FogMode.EXP);
             event.setDensity(0.04F);
             event.setCanceled(true);
@@ -72,7 +72,7 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public static void setFogColors(EntityViewRenderEvent.FogColors event) {
-        if (WearableUtils.hasComponent(MC.player, ComponentRegistry.NIGHT_VISION_GOGGLES)) {
+        if (WearableUtils.hasComponent(MC.player, ComponentTypes.NIGHT_VISION_GOGGLES)) {
             float brightnessFactor = MC.world.getLightFor(EnumSkyBlock.SKY, MC.player.getPosition()) / 15.0F * MC.world.getSunBrightnessFactor(1.0F);
             float inverseFactor = 1.0F - brightnessFactor;
             event.setRed(0.05F * inverseFactor + event.getRed() * brightnessFactor);
@@ -84,11 +84,12 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void setRotationAngles(PlayerModelEvent.SetRotationAngles event) {
         EntityPlayer player = event.getEntityPlayer();
+
         if (!WearableUtils.onGround(player)) {
             LocalPlayerState state = LocalPlayerState.getState(player);
             ModelPlayer model = event.getModel();
             List<WearableComponentType> components = WearableUtils.getActiveComponents(player);
-            if (components.contains(ComponentRegistry.JETPACK) || components.contains(ComponentRegistry.WINGS)) {
+            if (components.contains(ComponentTypes.JETPACK) || components.contains(ComponentTypes.WINGS)) {
                 if (!player.isInWater() && state.isAirborne()) {
                     model.bipedRightArm.rotateAngleX = 0.0F;
                     model.bipedLeftArm.rotateAngleX = 0.0F;
@@ -98,17 +99,22 @@ public class ClientEventHandler {
                     model.bipedLeftArmwear.rotateAngleX = 0.0F;
                     model.bipedRightLegwear.rotateAngleX = 0.0F;
                     model.bipedLeftLegwear.rotateAngleX = 0.0F;
-                    if (state.isFlyToggle() && components.contains(ComponentRegistry.WINGS)) {
+                    if (state.isFlyToggle() && components.contains(ComponentTypes.WINGS)) {
                         model.bipedHead.rotateAngleX = -1.55F;
                         model.bipedHeadwear.rotateAngleX = -1.55F;
                     }
                 }
-            } else if (components.contains(ComponentRegistry.FLIPPERS)) {
+            } else if (components.contains(ComponentTypes.FLIPPERS)) {
                 if (state.isSwimming()) {
                     model.bipedHead.rotateAngleX = -1.55F;
                     model.bipedHeadwear.rotateAngleX = -1.55F;
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onRenderPlayer(RenderPlayerEvent.Pre event) {
+
     }
 }

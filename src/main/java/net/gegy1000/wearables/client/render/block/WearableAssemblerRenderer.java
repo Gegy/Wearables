@@ -19,7 +19,7 @@ public class WearableAssemblerRenderer extends TileEntitySpecialRenderer<Wearabl
     private static final ResourceLocation TEXTURE = new ResourceLocation(Wearables.MODID, "textures/blocks/wearable_assembler.png");
 
     @Override
-    public void renderTileEntityAt(WearableAssemblerEntity entity, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(WearableAssemblerEntity entity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         EnumFacing facing = EnumFacing.SOUTH;
 
         if (entity != null) {

@@ -1,0 +1,22 @@
+{
+  "identifier": "wearables:shoes_generic_1",
+  "category": "feet_generic",
+  "ingredients": [
+    {"item": "minecraft:leather", "count": 4},
+    {"item": "minecraft:string", "count": 2}
+  ],
+  "layers": [
+    {
+      "model": "wearables:shoes_1",
+      "texture": "wearables:textures/component/shoes_1.png"
+    },
+    {
+      "model": "wearables:shoes_1",
+      "texture": "wearables:textures/component/shoes_2.png"
+    }
+  ],
+  "bounds": [
+    -0.3, 1.5, -0.2,
+    0.3, 1.3, 0.3
+  ]
+}

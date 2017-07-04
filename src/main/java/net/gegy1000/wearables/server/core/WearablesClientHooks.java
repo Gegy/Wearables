@@ -29,10 +29,10 @@ public class WearablesClientHooks {
         return CAMERA_TRANSFORM.get();
     }
 
-    public static void applyRotations(RenderPlayer renderer, AbstractClientPlayer player, float yaw, float bodyYaw, float partialTicks) {
+    public static void applyRotations(RenderPlayer renderer, AbstractClientPlayer player, float partialTicks) {
         List<MovementHandler> movementHandlers = WearableUtils.getMovementHandlers(player);
         for (MovementHandler movementHandler : movementHandlers) {
-            movementHandler.applyRotations(player, yaw, bodyYaw, partialTicks);
+            movementHandler.applyRotations(player, partialTicks);
         }
     }
 }

@@ -1,6 +1,7 @@
 package net.gegy1000.wearables.client.gui;
 
 import net.gegy1000.wearables.Wearables;
+import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.component.ComponentProperty;
 import net.gegy1000.wearables.server.container.WearableAssemblerContainer;
 import net.gegy1000.wearables.server.item.WearableComponentItem;
@@ -70,7 +71,7 @@ public class WearableCustomizationGui extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
         for (int componentIndex = 0; componentIndex < 6; componentIndex++) {
             ItemStack stack = this.container.getSlot(componentIndex).getStack();
-            if (!stack.isEmpty() && stack.getItem() instanceof WearableComponentItem) {
+            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
                 if (this.selectedComponent == componentIndex) {
                     this.drawTexturedModalRect(x + 147, y + 26 + componentIndex * 21, 198, 0, 18, 18);
                 }
@@ -85,7 +86,7 @@ public class WearableCustomizationGui extends GuiScreen {
         }
         for (int componentIndex = 0; componentIndex < 6; componentIndex++) {
             ItemStack stack = this.container.getSlot(componentIndex).getStack();
-            if (!stack.isEmpty() && stack.getItem() instanceof WearableComponentItem) {
+            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
                 if (mouseX >= x + 147 && mouseY >= y + 26 + componentIndex * 21 && mouseX <= x + 165 && mouseY < y + 44 + componentIndex * 21) {
                     if (this.selectedComponent != componentIndex) {
                         GlStateManager.disableLighting();
@@ -128,12 +129,12 @@ public class WearableCustomizationGui extends GuiScreen {
         this.fakePlayer.rotationYawHead = this.fakePlayer.rotationYaw;
         this.fakePlayer.prevRotationYawHead = this.fakePlayer.rotationYaw;
         ItemStack result = this.container.getResult();
-        if (result.isEmpty()) {
+        if (WearableUtils.isStackEmpty(result)) {
             for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
-                this.fakePlayer.setItemStackToSlot(slot, ItemStack.EMPTY);
+                this.fakePlayer.setItemStackToSlot(slot, WearableUtils.emptyStack());
             }
         } else if (result.getItem() instanceof WearableItem) {
-            this.fakePlayer.setItemStackToSlot(((WearableItem) result.getItem()).getEquipmentSlot(), result);
+            this.fakePlayer.setItemStackToSlot(((WearableItem) result.getItem()).armorType, result);
         }
 
         GlStateManager.enableColorMaterial();
@@ -166,7 +167,7 @@ public class WearableCustomizationGui extends GuiScreen {
         int y = (this.height - this.ySize) / 2;
         for (int componentIndex = 0; componentIndex < 6; componentIndex++) {
             ItemStack stack = this.container.getSlot(componentIndex).getStack();
-            if (!stack.isEmpty() && stack.getItem() instanceof WearableComponentItem) {
+            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
                 if (mouseX >= x + 147 && mouseY >= y + 26 + componentIndex * 21 && mouseX <= x + 165 && mouseY < y + 44 + componentIndex * 21) {
                     this.selectedComponent = componentIndex;
                     break;
@@ -200,7 +201,7 @@ public class WearableCustomizationGui extends GuiScreen {
         }
     }
 
-    private void drawPropertyWidgets(int renderX, int renderY, int mouseX, int mouseY, int property) {
+    private void drawPropertyWidgets(int renderX, int renderY, int mouseX, int mouseY, ComponentProperty propertyType) {
         this.mc.getTextureManager().bindTexture(TEXTURE);
 
         boolean canDecrement = false;
@@ -210,13 +211,14 @@ public class WearableCustomizationGui extends GuiScreen {
 
         if (this.selectedComponent != -1) {
             ItemStack stack = this.container.getSlot(this.selectedComponent).getStack();
-            if (!stack.isEmpty() && stack.getItem() instanceof WearableComponentItem) {
+            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
                 WearableComponent component = WearableComponentItem.getComponent(stack);
                 WearableComponentType type = component.getType();
-                if ((type.getSupportedProperties() & property) != 0) {
-                    value = component.getProperty(property);
-                    canDecrement = value - 0.1F >= type.getMinimum(property);
-                    canIncrement = value + 0.1F <= type.getMaximum(property);
+                WearableComponentType.Property property = type.getProperty(propertyType);
+                if (property != null) {
+                    value = component.getProperty(propertyType);
+                    canDecrement = value - 0.1F >= property.getMinimum();
+                    canIncrement = value + 0.1F <= property.getMaximum();
                 }
             }
         }
@@ -243,26 +245,27 @@ public class WearableCustomizationGui extends GuiScreen {
         }
     }
 
-    private void clickPropertyWidget(int renderX, int renderY, int mouseX, int mouseY, int property) {
+    private void clickPropertyWidget(int renderX, int renderY, int mouseX, int mouseY, ComponentProperty propertyType) {
         if (this.selectedComponent != -1) {
             ItemStack stack = this.container.getSlot(this.selectedComponent).getStack();
-            if (!stack.isEmpty() && stack.getItem() instanceof WearableComponentItem) {
+            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
                 WearableComponent component = WearableComponentItem.getComponent(stack);
                 WearableComponentType type = component.getType();
-                if ((type.getSupportedProperties() & property) != 0) {
-                    float value = component.getProperty(property);
-                    boolean canDecrement = value - 0.1F >= type.getMinimum(property);
-                    boolean canIncrement = value + 0.1F <= type.getMaximum(property);
+                WearableComponentType.Property property = type.getProperty(propertyType);
+                if (property != null) {
+                    float value = component.getProperty(propertyType);
+                    boolean canDecrement = value - 0.1F >= property.getMinimum();
+                    boolean canIncrement = value + 0.1F <= property.getMaximum();
                     if (canIncrement) {
                         if (mouseX >= renderX + 6 && mouseY >= renderY - 8 && mouseX <= renderX + 16 && mouseY <= renderY - 3) {
-                            component.setProperty(property, value + 0.1F);
-                            Wearables.NETWORK_WRAPPER.sendToServer(new SetPropertyMessage(this.pos, this.selectedComponent, property, value + 0.1F));
+                            component.setProperty(propertyType, value + 0.1F);
+                            Wearables.NETWORK_WRAPPER.sendToServer(new SetPropertyMessage(this.pos, this.selectedComponent, propertyType, value + 0.1F));
                         }
                     }
                     if (canDecrement) {
                         if (mouseX >= renderX + 6 && mouseY >= renderY + 11 && mouseX <= renderX + 16 && mouseY <= renderY + 18) {
-                            component.setProperty(property, value - 0.1F);
-                            Wearables.NETWORK_WRAPPER.sendToServer(new SetPropertyMessage(this.pos, this.selectedComponent, property, value - 0.1F));
+                            component.setProperty(propertyType, value - 0.1F);
+                            Wearables.NETWORK_WRAPPER.sendToServer(new SetPropertyMessage(this.pos, this.selectedComponent, propertyType, value - 0.1F));
                         }
                     }
                     stack.setTagCompound(component.serializeNBT());
@@ -270,5 +273,10 @@ public class WearableCustomizationGui extends GuiScreen {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean doesGuiPauseGame() {
+        return false;
     }
 }

@@ -1,8 +1,7 @@
 package net.gegy1000.wearables.client.render;
 
+import net.gegy1000.wearables.client.model.component.ComponentModelRegistry;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
-import net.gegy1000.wearables.client.render.component.ComponentRenderer;
-import net.gegy1000.wearables.server.core.WearablesClientHooks;
 import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
@@ -12,7 +11,6 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelBiped.ArmPose;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
@@ -48,7 +46,7 @@ public class ComponentRenderHandler {
         GlStateManager.translate(0.0, 0.45, 0.0);
 
         Vec3d untransformedCenter = bounds.getCenter();
-        Point3f centerPoint = new Point3f((float) untransformedCenter.xCoord, (float) untransformedCenter.yCoord, (float) untransformedCenter.zCoord);
+        Point3f centerPoint = new Point3f((float) untransformedCenter.x, (float) untransformedCenter.y, (float) untransformedCenter.z);
         INVENTORY_TRANSFORM_MATRIX.transform(centerPoint);
 
         Point3f origin = new Point3f(0, 0, 0);
@@ -57,71 +55,77 @@ public class ComponentRenderHandler {
         double max = Math.max(bounds.maxX - bounds.minX, Math.max(bounds.maxY - bounds.minY, bounds.maxZ - bounds.minZ));
         GlStateManager.scale(fitSize / max, fitSize / max, fitSize / max);
 
-        GlStateManager.translate(origin.x - untransformedCenter.xCoord, origin.y - untransformedCenter.yCoord, origin.z - untransformedCenter.zCoord);
+        GlStateManager.translate(origin.x - untransformedCenter.x, origin.y - untransformedCenter.y, origin.z - untransformedCenter.z);
     }
 
     public static void renderComponent(WearableComponent component, boolean smallArms) {
-        ItemCameraTransforms.TransformType cameraTransform = WearablesClientHooks.getCameraTransform();
         WearableComponentType type = component.getType();
-        ComponentRenderer renderer = RenderRegistry.getRenderer(type.getIdentifier());
-        for (int layer = 0; layer < type.getLayerCount(); layer++) {
-            ResourceLocation texture = renderer.getTexture(smallArms, layer);
+        WearableComponentType.Layer[] layers = type.getLayers(smallArms);
+        for (int layerIndex = 0; layerIndex < layers.length; layerIndex++) {
+            WearableComponentType.Layer layer = layers[layerIndex];
+            ResourceLocation texture = layer.getTexture();
             if (texture == null) {
                 GlStateManager.disableTexture2D();
             } else {
                 GlStateManager.enableTexture2D();
                 MC.getTextureManager().bindTexture(texture);
             }
-            WearableComponentModel model = renderer.getModel(smallArms);
-            model.setModelAttributes(STATIC_MODEL);
-            model.setOffsets(0.0F, 0.0F);
-            model.swingProgress = 0.0F;
-            model.leftArmPose = ArmPose.EMPTY;
-            model.rightArmPose = ArmPose.EMPTY;
-            float[] colour = renderer.adjustColour(WearableColourUtils.toRGBFloatArray(component.getColour(layer)), layer);
-            GlStateManager.pushMatrix();
-            GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
-            GlStateManager.rotate(renderer.getItemRotationY() + 180.0F, 0.0F, 1.0F, 0.0F);
-            float scale = renderer.getInventoryScale(cameraTransform);
-            GlStateManager.scale(scale, scale, scale);
-            model.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-            GlStateManager.popMatrix();
+            WearableComponentModel model = ComponentModelRegistry.getRegistry().getValue(layer.getModel());
+            if (model != null) {
+                model.setModelAttributes(STATIC_MODEL);
+                model.setOffsets(0.0F, 0.0F);
+                model.swingProgress = 0.0F;
+                model.leftArmPose = ArmPose.EMPTY;
+                model.rightArmPose = ArmPose.EMPTY;
+                float[] colour = WearableColourUtils.toRGBFloatArray(component.getColour(layerIndex));
+                GlStateManager.pushMatrix();
+                GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
+                GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+                model.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+                GlStateManager.popMatrix();
+            }
         }
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.enableTexture2D();
     }
 
     public static void renderComponentLayerHighlighted(WearableComponent component, int highlightLayer, float highlight) {
-        ItemCameraTransforms.TransformType cameraTransform = WearablesClientHooks.getCameraTransform();
         WearableComponentType type = component.getType();
-        ComponentRenderer renderer = RenderRegistry.getRenderer(type.getIdentifier());
-        for (int layer = 0; layer < type.getLayerCount(); layer++) {
-            ResourceLocation texture = renderer.getTexture(false, layer);
+        WearableComponentType.Layer[] layers = type.getLayers(false);
+        for (int layerIndex = 0; layerIndex < layers.length; layerIndex++) {
+            WearableComponentType.Layer layer = layers[layerIndex];
+            ResourceLocation texture = layer.getTexture();
             if (texture == null) {
                 GlStateManager.disableTexture2D();
             } else {
                 GlStateManager.enableTexture2D();
                 MC.getTextureManager().bindTexture(texture);
             }
-            WearableComponentModel model = renderer.getModel(false);
-            model.setModelAttributes(STATIC_MODEL);
-            model.setOffsets(0.0F, 0.0F);
-            model.swingProgress = 0.0F;
-            model.leftArmPose = ArmPose.EMPTY;
-            model.rightArmPose = ArmPose.EMPTY;
-            float[] colour = renderer.adjustColour(WearableColourUtils.toRGBFloatArray(component.getColour(layer)), layer);
-            GlStateManager.pushMatrix();
-            if (layer == highlightLayer) {
-                float brightness = highlight + 1.0F;
-                GlStateManager.color(brightness * colour[0], brightness * colour[1], brightness * colour[2], 1.0F);
-            } else {
-                GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
+            WearableComponentModel model = ComponentModelRegistry.getRegistry().getValue(layer.getModel());
+            if (model != null) {
+                model.setModelAttributes(STATIC_MODEL);
+                model.setOffsets(0.0F, 0.0F);
+                model.swingProgress = 0.0F;
+                model.leftArmPose = ArmPose.EMPTY;
+                model.rightArmPose = ArmPose.EMPTY;
+                GlStateManager.pushMatrix();
+                float[] colour = WearableColourUtils.toRGBFloatArray(component.getColour(layerIndex));
+                float[] rotation = type.getInventoryRotation();
+                if (layerIndex == highlightLayer) {
+                    float brightness = highlight + 1.0F;
+                    GlStateManager.color(brightness * colour[0], brightness * colour[1], brightness * colour[2], 1.0F);
+                } else {
+                    GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
+                }
+                GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+                if (rotation != null) {
+                    GlStateManager.rotate(rotation[1], 0.0F, 1.0F, 0.0F);
+                    GlStateManager.rotate(rotation[0], 1.0F, 0.0F, 0.0F);
+                    GlStateManager.rotate(rotation[2], 0.0F, 0.0F, 1.0F);
+                }
+                model.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+                GlStateManager.popMatrix();
             }
-            GlStateManager.rotate(renderer.getItemRotationY() + 180.0F, 0.0F, 1.0F, 0.0F);
-            float scale = renderer.getInventoryScale(cameraTransform);
-            GlStateManager.scale(scale, scale, scale);
-            model.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-            GlStateManager.popMatrix();
         }
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.enableTexture2D();
@@ -129,12 +133,13 @@ public class ComponentRenderHandler {
 
     public static void renderSingleComponent(WearableComponent component) {
         WearableComponentType type = component.getType();
-        ComponentRenderer renderer = RenderRegistry.getRenderer(type.getIdentifier());
-        for (int layer = 0; layer < type.getLayerCount(); layer++) {
-            ResourceLocation texture = renderer.getTexture(false, layer);
+        WearableComponentType.Layer[] layers = type.getLayers(false);
+        for (int layerIndex = 0; layerIndex < layers.length; layerIndex++) {
+            WearableComponentType.Layer layer = layers[layerIndex];
+            ResourceLocation texture = layer.getTexture();
             if (MC.getRenderManager().isDebugBoundingBox()) {
                 GlStateManager.disableTexture2D();
-                RenderGlobal.drawSelectionBoundingBox(renderer.getBounds(), 0.0F, 0.0F, 1.0F, 1.0F);
+                RenderGlobal.drawSelectionBoundingBox(type.getBounds(), 0.0F, 0.0F, 1.0F, 1.0F);
             }
             if (texture == null) {
                 GlStateManager.disableTexture2D();
@@ -142,20 +147,26 @@ public class ComponentRenderHandler {
                 GlStateManager.enableTexture2D();
                 MC.getTextureManager().bindTexture(texture);
             }
-            WearableComponentModel model = renderer.getModel(false);
-            model.setModelAttributes(STATIC_MODEL);
-            model.setOffsets(0.0F, 0.0F);
-            model.swingProgress = 0.0F;
-            model.leftArmPose = ArmPose.EMPTY;
-            model.rightArmPose = ArmPose.EMPTY;
-            float[] colour = renderer.adjustColour(WearableColourUtils.toRGBFloatArray(component.getColour(layer)), layer);
-            GlStateManager.pushMatrix();
-            GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
-            float scale = renderer.getInventoryScale(ItemCameraTransforms.TransformType.GROUND);
-            GlStateManager.rotate(renderer.getItemRotationY() + 180.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.scale(scale, scale, scale);
-            model.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-            GlStateManager.popMatrix();
+            WearableComponentModel model = ComponentModelRegistry.getRegistry().getValue(layer.getModel());
+            if (model != null) {
+                model.setModelAttributes(STATIC_MODEL);
+                model.setOffsets(0.0F, 0.0F);
+                model.swingProgress = 0.0F;
+                model.leftArmPose = ArmPose.EMPTY;
+                model.rightArmPose = ArmPose.EMPTY;
+                GlStateManager.pushMatrix();
+                float[] rotation = type.getInventoryRotation();
+                float[] colour = WearableColourUtils.toRGBFloatArray(component.getColour(layerIndex));
+                GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
+                GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+                if (rotation != null) {
+                    GlStateManager.rotate(rotation[1], 0.0F, 1.0F, 0.0F);
+                    GlStateManager.rotate(rotation[0], 1.0F, 0.0F, 0.0F);
+                    GlStateManager.rotate(rotation[2], 0.0F, 0.0F, 1.0F);
+                }
+                model.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+                GlStateManager.popMatrix();
+            }
         }
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.enableTexture2D();

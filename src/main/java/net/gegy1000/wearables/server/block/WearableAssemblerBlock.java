@@ -33,7 +33,6 @@ public class WearableAssemblerBlock extends MachineBlock implements RegisterItem
     public WearableAssemblerBlock() {
         super(Material.WOOD);
         this.setSoundType(SoundType.WOOD);
-        this.setUnlocalizedName("wearable_assembler");
         this.setHardness(0.5F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(HALF, Half.LOWER).withProperty(FACING, EnumFacing.NORTH));
     }

@@ -7,6 +7,7 @@ import net.gegy1000.wearables.server.util.WearableUtils;
 import net.ilexiconn.llibrary.client.util.ClientUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -19,14 +20,18 @@ public class JetpackMovementHandler extends MovementHandler {
         LocalPlayerState state = LocalPlayerState.getState(player);
         ItemStack fuel = this.getFuel(player);
         if (!player.world.isRemote) {
-            movementState.setHasFuel(!fuel.isEmpty() || player.capabilities.isCreativeMode);
+            movementState.setHasFuel(!WearableUtils.isStackEmpty(fuel) || player.capabilities.isCreativeMode);
         }
         if (movementState.shouldMoveUp()) {
             if (movementState.hasFuel()) {
                 if (!player.world.isRemote && !player.capabilities.isCreativeMode && player.ticksExisted % 10 == 0) {
                     fuel.setItemDamage(fuel.getItemDamage() + 1);
                     if (fuel.getItemDamage() >= fuel.getMaxDamage()) {
+                        int slotIndex = player.inventory.getSlotFor(fuel);
                         fuel.shrink(1);
+                        if (fuel.isEmpty()) {
+                            player.inventory.setInventorySlotContents(slotIndex, new ItemStack(Items.GLASS_BOTTLE));
+                        }
                     }
                 }
                 float angle = 0.0F;
@@ -52,8 +57,8 @@ public class JetpackMovementHandler extends MovementHandler {
                         float offsetZ = (random.nextFloat() - 0.5F) * 0.1F;
                         float speedX = (random.nextFloat() - 0.5F) * 0.4F;
                         float speedZ = (random.nextFloat() - 0.5F) * 0.4F;
-                        WearableParticles.JETPACK_FLAME.spawn(player.world, left.xCoord + offsetX, left.yCoord + 0.6, left.zCoord + offsetZ, speedX, -1.0, speedZ);
-                        WearableParticles.JETPACK_FLAME.spawn(player.world, right.xCoord + offsetX, right.yCoord + 0.6, right.zCoord + offsetZ, speedX, -1.0, speedZ);
+                        WearableParticles.JETPACK_FLAME.spawn(player.world, left.x + offsetX, left.y + 0.6, left.z + offsetZ, speedX, -1.0, speedZ);
+                        WearableParticles.JETPACK_FLAME.spawn(player.world, right.x + offsetX, right.y + 0.6, right.z + offsetZ, speedX, -1.0, speedZ);
                     }
                 }
             }
@@ -62,7 +67,7 @@ public class JetpackMovementHandler extends MovementHandler {
     }
 
     @Override
-    public void applyRotations(EntityPlayer player, float yaw, float bodyYaw, float partialTicks) {
+    public void applyRotations(EntityPlayer player, float partialTicks) {
         float animationTimer = LocalPlayerState.getState(player).getRenderFlyTimer(partialTicks);
         float limbSwingAmount = player.prevLimbSwingAmount + (player.limbSwingAmount - player.prevLimbSwingAmount) * partialTicks;
         GlStateManager.rotate(ClientUtils.interpolateRotation(0.0F, -limbSwingAmount * 40.0F, animationTimer), 1.0F, 0.0F, 0.0F);
@@ -75,10 +80,10 @@ public class JetpackMovementHandler extends MovementHandler {
 
     private ItemStack getFuel(EntityPlayer player) {
         for (ItemStack stack : player.inventory.mainInventory) {
-            if (!stack.isEmpty() && stack.getItem() instanceof JetpackFuelItem) {
+            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof JetpackFuelItem) {
                 return stack;
             }
         }
-        return ItemStack.EMPTY;
+        return WearableUtils.emptyStack();
     }
 }

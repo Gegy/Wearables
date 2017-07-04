@@ -1,0 +1,15 @@
+{
+  "identifier": "wearables:helmet_generic_2",
+  "category": "head_top",
+  "ingredients": [
+    {"item": "minecraft:iron_ingot", "count": 6},
+    {"item": "minecraft:leather", "count": 2}
+  ],
+  "layers": [
+    {"model": "wearables:helmet_2"}
+  ],
+  "bounds": [
+    -0.45, -0.2, -0.35,
+    0.45, -0.6, 0.3
+  ]
+}

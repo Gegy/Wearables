@@ -26,6 +26,13 @@ public class DisplayMannequinGui extends GuiContainer {
     }
 
     @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
+    }
+
+    @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(TEXTURE);
@@ -45,7 +52,7 @@ public class DisplayMannequinGui extends GuiContainer {
         RenderHelper.enableStandardItemLighting();
         GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        TileEntitySpecialRenderer renderer = TileEntityRendererDispatcher.instance.getSpecialRenderer(this.entity);
+        TileEntitySpecialRenderer renderer = TileEntityRendererDispatcher.instance.getRenderer(this.entity);
         if (renderer instanceof DisplayMannequinRenderer) {
             ((DisplayMannequinRenderer) renderer).renderStatic(this.entity, partialTicks);
         }

@@ -1,0 +1,22 @@
+{
+  "identifier": "wearables:top_hat",
+  "category": "head_top",
+  "ingredients": [
+    {"item": "minecraft:leather", "count": 4},
+    {"item": "minecraft:string", "count": 2}
+  ],
+  "layers": [
+    {
+      "model": "wearables:top_hat",
+      "texture": "wearables:textures/component/top_hat.png"
+    },
+    {
+      "model": "wearables:top_hat",
+      "texture": "wearables:textures/component/top_hat_line.png"
+    }
+  ],
+  "bounds": [
+    -0.4, -0.5, -0.4,
+    0.4, -1.0, 0.4
+  ]
+}

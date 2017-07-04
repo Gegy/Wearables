@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 import java.util.Map;
 
 @IFMLLoadingPlugin.Name("wearables")
-@IFMLLoadingPlugin.MCVersion("1.11.2")
+@IFMLLoadingPlugin.MCVersion("1.12")
 @IFMLLoadingPlugin.SortingIndex(1002)
 @IFMLLoadingPlugin.TransformerExclusions({ "net.ilexiconn.llibrary.server.asm" })
 public class WearablesPlugin implements IFMLLoadingPlugin {

@@ -1,0 +1,15 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "___",
+    "|o|",
+    "|#|"
+  ],
+  "key": {
+    "_": {"item": "minecraft:carpet", "data": 32767},
+    "|": {"item": "minecraft:quartz_block", "data": 32767},
+    "o": {"item": "minecraft:clay_ball"},
+    "#": {"item": "minecraft:planks", "data": 32767}
+  },
+  "result": {"item": "wearables:wearable_fabricator"}
+}

@@ -1,7 +1,6 @@
 package net.gegy1000.wearables.server;
 
 import net.gegy1000.wearables.Wearables;
-import net.gegy1000.wearables.server.block.BlockRegistry;
 import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
 import net.gegy1000.wearables.server.block.entity.machine.WearableAssemblerEntity;
 import net.gegy1000.wearables.server.block.entity.machine.WearableColouriserEntity;
@@ -10,15 +9,11 @@ import net.gegy1000.wearables.server.container.DisplayMannequinContainer;
 import net.gegy1000.wearables.server.container.WearableAssemblerContainer;
 import net.gegy1000.wearables.server.container.WearableColouriserContainer;
 import net.gegy1000.wearables.server.container.WearableFabricatorContainer;
-import net.gegy1000.wearables.server.item.ItemRegistry;
 import net.gegy1000.wearables.server.network.SetColourMessage;
 import net.gegy1000.wearables.server.network.SetPropertyMessage;
 import net.gegy1000.wearables.server.network.SetSelectedComponentMessage;
 import net.gegy1000.wearables.server.network.SyncConfigMessage;
 import net.gegy1000.wearables.server.network.UpdateMovementMessage;
-import net.gegy1000.wearables.server.recipe.RecipeRegistry;
-import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -39,12 +34,6 @@ public class ServerProxy implements IGuiHandler {
     public void onPreInit() {
         NetworkRegistry.INSTANCE.registerGuiHandler(Wearables.INSTANCE, this);
 
-        ComponentRegistry.register();
-        BlockRegistry.register();
-        ItemRegistry.register();
-
-        RecipeRegistry.register();
-
         Wearables.NETWORK_WRAPPER.registerMessage(SetSelectedComponentMessage.Handler.class, SetSelectedComponentMessage.class, 0, Side.SERVER);
         Wearables.NETWORK_WRAPPER.registerMessage(SetColourMessage.Handler.class, SetColourMessage.class, 1, Side.SERVER);
         Wearables.NETWORK_WRAPPER.registerMessage(SetPropertyMessage.Handler.class, SetPropertyMessage.class, 2, Side.SERVER);
@@ -62,7 +51,6 @@ public class ServerProxy implements IGuiHandler {
     @Override
     public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         BlockPos pos = new BlockPos(x, y, z);
-        IBlockState state = world.getBlockState(pos);
         TileEntity entity = world.getTileEntity(pos);
         if (id == DISPLAY_MANNEQUIN_GUI && entity instanceof DisplayMannequinEntity) {
             return new DisplayMannequinContainer(player.inventory, (DisplayMannequinEntity) entity);

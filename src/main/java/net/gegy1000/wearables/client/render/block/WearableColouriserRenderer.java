@@ -3,7 +3,6 @@ package net.gegy1000.wearables.client.render.block;
 import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.client.model.block.ColouriserModel;
 import net.gegy1000.wearables.client.render.ComponentRenderHandler;
-import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.block.WearableColouriserBlock;
 import net.gegy1000.wearables.server.block.entity.machine.WearableColouriserEntity;
 import net.gegy1000.wearables.server.item.WearableComponentItem;
@@ -27,7 +26,7 @@ public class WearableColouriserRenderer extends TileEntitySpecialRenderer<Wearab
     private static final ResourceLocation TEXTURE = new ResourceLocation(Wearables.MODID, "textures/blocks/wearable_colouriser.png");
 
     @Override
-    public void renderTileEntityAt(WearableColouriserEntity entity, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(WearableColouriserEntity entity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         EnumFacing facing = EnumFacing.SOUTH;
 
         if (entity != null) {
@@ -50,14 +49,13 @@ public class WearableColouriserRenderer extends TileEntitySpecialRenderer<Wearab
             IItemHandler inventory = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             ItemStack stack = inventory.getStackInSlot(0);
             GlStateManager.enableRescaleNormal();
-            if (!stack.isEmpty() && stack.getItem() instanceof WearableComponentItem) {
+            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
                 WearableComponent component = WearableComponentItem.getComponent(stack);
-                ComponentRenderer renderer = WearableUtils.getRenderer(component);
                 GlStateManager.pushMatrix();
                 GlStateManager.translate(-0.05F, 0.8F, 0.05F);
                 GlStateManager.scale(0.45F, 0.45F, 0.45F);
                 GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-                ComponentRenderHandler.fitSlot(renderer.getBounds(), 1.2);
+                ComponentRenderHandler.fitSlot(component.getType().getBounds(), 1.2);
                 ComponentRenderHandler.renderSingleComponent(component);
                 GlStateManager.popMatrix();
             }
