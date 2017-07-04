@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "wearables",
+    "name": "Wearables",
+    "description": "Entry to the ModOff modding competition that adds customizable wearables.",
+    "version": "${version}",
+    "url": "https://github.com/gegy1000/Wearables/",
+    "authorList": [
+      "gegy1000",
+      "TheJurassicAlien"
+    ],
+    "dependencies": [
+      "llibrary@[${llibrary_version},)"
+    ]
+  }
+]
