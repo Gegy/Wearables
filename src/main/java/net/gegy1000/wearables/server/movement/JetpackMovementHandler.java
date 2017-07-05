@@ -20,7 +20,7 @@ public class JetpackMovementHandler extends MovementHandler {
         LocalPlayerState state = LocalPlayerState.getState(player);
         ItemStack fuel = this.getFuel(player);
         if (!player.world.isRemote) {
-            movementState.setHasFuel(!WearableUtils.isStackEmpty(fuel) || player.capabilities.isCreativeMode);
+            movementState.setHasFuel(!fuel.isEmpty() || player.capabilities.isCreativeMode);
         }
         if (movementState.shouldMoveUp()) {
             if (movementState.hasFuel()) {
@@ -80,10 +80,10 @@ public class JetpackMovementHandler extends MovementHandler {
 
     private ItemStack getFuel(EntityPlayer player) {
         for (ItemStack stack : player.inventory.mainInventory) {
-            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof JetpackFuelItem) {
+            if (stack.getItem() instanceof JetpackFuelItem) {
                 return stack;
             }
         }
-        return WearableUtils.emptyStack();
+        return ItemStack.EMPTY;
     }
 }

@@ -1,46 +1,51 @@
 package net.gegy1000.wearables.client.model.component.head;
 
+import com.google.common.collect.ImmutableList;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
+import net.ilexiconn.llibrary.client.util.Matrix;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.Entity;
 
 public class Retro3DGlassesModel extends WearableComponentModel {
-    public ModelRenderer shape140;
-    public ModelRenderer shape140_1;
-    public ModelRenderer shape140_2;
-    public ModelRenderer shape140_3;
-    public ModelRenderer shape140_4;
-    public ModelRenderer shape140_5;
-    public ModelRenderer shape181;
-    public ModelRenderer shape140_6;
-    public ModelRenderer shape161;
-    public ModelRenderer shape177;
-    public ModelRenderer shape140_7;
-    public ModelRenderer shape140_8;
-    public ModelRenderer shape140_9;
-    public ModelRenderer shape166;
-    public ModelRenderer shape166_1;
-    public ModelRenderer shape168;
-    public ModelRenderer shape168_1;
-    public ModelRenderer shape168_2;
-    public ModelRenderer shape140_10;
-    public ModelRenderer shape140_11;
-    public ModelRenderer shape140_12;
-    public ModelRenderer shape140_13;
-    public ModelRenderer shape140_14;
-    public ModelRenderer shape140_15;
-    public ModelRenderer shape161_1;
-    public ModelRenderer shape181_1;
-    public ModelRenderer shape140_16;
-    public ModelRenderer shape177_1;
-    public ModelRenderer shape140_17;
-    public ModelRenderer shape140_18;
-    public ModelRenderer shape140_19;
-    public ModelRenderer shape166_2;
-    public ModelRenderer shape166_3;
-    public ModelRenderer shape168_3;
-    public ModelRenderer shape168_4;
-    public ModelRenderer shape168_5;
+    private ModelRenderer shape140;
+    private ModelRenderer shape140_1;
+    private ModelRenderer shape140_2;
+    private ModelRenderer shape140_3;
+    private ModelRenderer shape140_4;
+    private ModelRenderer shape140_5;
+    private ModelRenderer shape181;
+    private ModelRenderer shape140_6;
+    private ModelRenderer shape161;
+    private ModelRenderer shape177;
+    private ModelRenderer shape140_7;
+    private ModelRenderer shape140_8;
+    private ModelRenderer shape140_9;
+    private ModelRenderer shape166;
+    private ModelRenderer shape166_1;
+    private ModelRenderer shape168;
+    private ModelRenderer shape168_1;
+    private ModelRenderer shape168_2;
+    private ModelRenderer shape140_10;
+    private ModelRenderer shape140_11;
+    private ModelRenderer shape140_12;
+    private ModelRenderer shape140_13;
+    private ModelRenderer shape140_14;
+    private ModelRenderer shape140_15;
+    private ModelRenderer shape161_1;
+    private ModelRenderer shape181_1;
+    private ModelRenderer shape140_16;
+    private ModelRenderer shape177_1;
+    private ModelRenderer shape140_17;
+    private ModelRenderer shape140_18;
+    private ModelRenderer shape140_19;
+    private ModelRenderer shape166_2;
+    private ModelRenderer shape166_3;
+    private ModelRenderer shape168_3;
+    private ModelRenderer shape168_4;
+    private ModelRenderer shape168_5;
 
     public Retro3DGlassesModel() {
         this.textureWidth = 64;
@@ -213,5 +218,10 @@ public class Retro3DGlassesModel extends WearableComponentModel {
     @Override
     public void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
         this.renderParented(this.bipedHead, this.shape140, 0.5F, 0.0F, -0.25F, 0.0F, scale);
+    }
+
+    @Override
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
+        this.buildCuboidParented(this.bipedHead, this.shape140, 0.5F, 0.0F, -0.25F, 0.0F, matrix, builder, format, sprite);
     }
 }

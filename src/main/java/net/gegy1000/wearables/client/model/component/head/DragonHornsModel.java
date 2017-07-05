@@ -1,18 +1,23 @@
 package net.gegy1000.wearables.client.model.component.head;
 
+import com.google.common.collect.ImmutableList;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
+import net.ilexiconn.llibrary.client.util.Matrix;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.Entity;
 
 public class DragonHornsModel extends WearableComponentModel {
-    public ModelRenderer hornLeft;
-    public ModelRenderer hornRight;
-    public ModelRenderer shape99;
-    public ModelRenderer shape99_1;
-    public ModelRenderer shape99_2;
-    public ModelRenderer shape99_3;
-    public ModelRenderer shape99_4;
-    public ModelRenderer shape99_5;
+    private ModelRenderer hornLeft;
+    private ModelRenderer hornRight;
+    private ModelRenderer shape99;
+    private ModelRenderer shape99_1;
+    private ModelRenderer shape99_2;
+    private ModelRenderer shape99_3;
+    private ModelRenderer shape99_4;
+    private ModelRenderer shape99_5;
 
     public DragonHornsModel() {
         this.textureWidth = 16;
@@ -61,5 +66,11 @@ public class DragonHornsModel extends WearableComponentModel {
     public void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
         this.renderParented(this.bipedHead, this.hornLeft, 0.5F, 0.0F, 0.0F, 0.0F, scale);
         this.renderParented(this.bipedHead, this.hornRight, 0.5F, 0.0F, 0.0F, 0.0F, scale);
+    }
+
+    @Override
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
+        this.buildCuboidParented(this.bipedHead, this.hornLeft, 0.5F, 0.0F, 0.0F, 0.0F, matrix, builder, format, sprite);
+        this.buildCuboidParented(this.bipedHead, this.hornRight, 0.5F, 0.0F, 0.0F, 0.0F, matrix, builder, format, sprite);
     }
 }

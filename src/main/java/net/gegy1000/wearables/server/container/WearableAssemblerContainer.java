@@ -7,7 +7,6 @@ import net.gegy1000.wearables.server.container.slot.AssemblerOutputSlot;
 import net.gegy1000.wearables.server.item.ItemRegistry;
 import net.gegy1000.wearables.server.item.WearableComponentItem;
 import net.gegy1000.wearables.server.item.WearableItem;
-import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.Wearable;
 import net.gegy1000.wearables.server.wearable.WearableCategory;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
@@ -85,7 +84,7 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
                 stack.setTagCompound(component.serializeNBT());
             }
             inventory.extractItem(slot, stack.getCount(), false);
-            if (!WearableUtils.isStackEmpty(stack)) {
+            if (!stack.isEmpty()) {
                 player.dropItem(stack, false);
             }
         }
@@ -102,7 +101,7 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
             Wearable wearable = new Wearable();
             for (int i = 0; i < this.components.getSlots(); i++) {
                 ItemStack stack = this.components.getStackInSlot(i);
-                if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
+                if (stack.getItem() instanceof WearableComponentItem) {
                     WearableComponent component = WearableComponentItem.getComponent(stack);
                     WearableCategory category = component.getType().getCategory();
                     if (category.getSlot() == slotType && !usedCategories.contains(category)) {
@@ -121,7 +120,7 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
                 return stack;
             }
         }
-        return WearableUtils.emptyStack();
+        return ItemStack.EMPTY;
     }
 
     public void consumeComponents() {
@@ -187,12 +186,12 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
 
     public boolean hasInput() {
         for (int i = 0; i < this.components.getSlots(); i++) {
-            if (!WearableUtils.isStackEmpty(this.components.getStackInSlot(i))) {
+            if (!this.components.getStackInSlot(i).isEmpty()) {
                 return true;
             }
         }
         for (int i = 0; i < this.armour.getSlots(); i++) {
-            if (!WearableUtils.isStackEmpty(this.armour.getStackInSlot(i))) {
+            if (!this.armour.getStackInSlot(i).isEmpty()) {
                 return true;
             }
         }

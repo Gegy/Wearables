@@ -1,7 +1,12 @@
 package net.gegy1000.wearables.client.model.component.chest;
 
+import com.google.common.collect.ImmutableList;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
+import net.ilexiconn.llibrary.client.util.Matrix;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.Entity;
 
 public class JetpackModel extends WearableComponentModel {
@@ -136,5 +141,10 @@ public class JetpackModel extends WearableComponentModel {
     @Override
     public void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
         this.renderParented(this.bipedBody, this.base, scale);
+    }
+
+    @Override
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
+        this.buildCuboidParented(this.bipedBody, this.base, matrix, builder, format, sprite);
     }
 }

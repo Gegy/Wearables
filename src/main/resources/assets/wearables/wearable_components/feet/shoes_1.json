@@ -8,11 +8,11 @@
   "layers": [
     {
       "model": "wearables:shoes_1",
-      "texture": "wearables:textures/component/shoes_1.png"
+      "texture": "wearables:component/shoes_1"
     },
     {
       "model": "wearables:shoes_1",
-      "texture": "wearables:textures/component/shoes_2.png"
+      "texture": "wearables:component/shoes_2"
     }
   ],
   "bounds": [

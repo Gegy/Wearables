@@ -5,26 +5,26 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 public class AssemblerModel extends ModelBase {
-    public ModelRenderer base;
-    public ModelRenderer body;
-    public ModelRenderer head;
-    public ModelRenderer leftArm;
-    public ModelRenderer rightArm;
-    public ModelRenderer rightLeg;
-    public ModelRenderer leftLeg;
-    public ModelRenderer baseTop;
-    public ModelRenderer shape15;
-    public ModelRenderer field_78116_c;
-    public ModelRenderer shape15_1;
-    public ModelRenderer shape20;
-    public ModelRenderer shape20_1;
-    public ModelRenderer shape20_2;
-    public ModelRenderer shape20_3;
-    public ModelRenderer shape20_4;
-    public ModelRenderer shape20_5;
-    public ModelRenderer shape20_6;
-    public ModelRenderer shape20_7;
-    public ModelRenderer shape20_8;
+    private ModelRenderer base;
+    private ModelRenderer body;
+    private ModelRenderer head;
+    private ModelRenderer leftArm;
+    private ModelRenderer rightArm;
+    private ModelRenderer rightLeg;
+    private ModelRenderer leftLeg;
+    private ModelRenderer baseTop;
+    private ModelRenderer shape15;
+    private ModelRenderer field_78116_c;
+    private ModelRenderer shape15_1;
+    private ModelRenderer shape20;
+    private ModelRenderer shape20_1;
+    private ModelRenderer shape20_2;
+    private ModelRenderer shape20_3;
+    private ModelRenderer shape20_4;
+    private ModelRenderer shape20_5;
+    private ModelRenderer shape20_6;
+    private ModelRenderer shape20_7;
+    private ModelRenderer shape20_8;
 
     public AssemblerModel() {
         this.textureWidth = 64;

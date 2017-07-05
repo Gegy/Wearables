@@ -1,42 +1,47 @@
 package net.gegy1000.wearables.client.model.component.chest;
 
+import com.google.common.collect.ImmutableList;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
 import net.gegy1000.wearables.server.movement.LocalPlayerState;
 import net.gegy1000.wearables.server.util.WearableUtils;
 import net.ilexiconn.llibrary.LLibrary;
 import net.ilexiconn.llibrary.client.util.ClientUtils;
+import net.ilexiconn.llibrary.client.util.Matrix;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class WingsModel extends WearableComponentModel {
-    public ModelRenderer Main;
-    public ModelRenderer rightWing;
-    public ModelRenderer leftWing;
-    public ModelRenderer shape46;
-    public ModelRenderer shape53;
-    public ModelRenderer shape47;
-    public ModelRenderer shape52;
-    public ModelRenderer WING2;
-    public ModelRenderer wingggg;
-    public ModelRenderer shape51;
-    public ModelRenderer WINGSHIT;
-    public ModelRenderer shape48;
-    public ModelRenderer shape51_1;
-    public ModelRenderer shape54;
-    public ModelRenderer shape54_1;
-    public ModelRenderer shape46_1;
-    public ModelRenderer shape53_1;
-    public ModelRenderer shape47_1;
-    public ModelRenderer shape52_1;
-    public ModelRenderer WING2_1;
-    public ModelRenderer wingggg_1;
-    public ModelRenderer shape51_2;
-    public ModelRenderer WINGSHIT_1;
-    public ModelRenderer shape48_1;
-    public ModelRenderer shape51_3;
-    public ModelRenderer shape54_2;
-    public ModelRenderer shape54_3;
+    private ModelRenderer Main;
+    private ModelRenderer rightWing;
+    private ModelRenderer leftWing;
+    private ModelRenderer shape46;
+    private ModelRenderer shape53;
+    private ModelRenderer shape47;
+    private ModelRenderer shape52;
+    private ModelRenderer WING2;
+    private ModelRenderer wingggg;
+    private ModelRenderer shape51;
+    private ModelRenderer WINGSHIT;
+    private ModelRenderer shape48;
+    private ModelRenderer shape51_1;
+    private ModelRenderer shape54;
+    private ModelRenderer shape54_1;
+    private ModelRenderer shape46_1;
+    private ModelRenderer shape53_1;
+    private ModelRenderer shape47_1;
+    private ModelRenderer shape52_1;
+    private ModelRenderer WING2_1;
+    private ModelRenderer wingggg_1;
+    private ModelRenderer shape51_2;
+    private ModelRenderer WINGSHIT_1;
+    private ModelRenderer shape48_1;
+    private ModelRenderer shape51_3;
+    private ModelRenderer shape54_2;
+    private ModelRenderer shape54_3;
 
     private ModelRenderer[] rightWingParts;
     private ModelRenderer[] leftWingParts;
@@ -229,5 +234,34 @@ public class WingsModel extends WearableComponentModel {
             }
         }
         this.renderParented(this.bipedBody, this.Main, scale);
+    }
+
+    @Override
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
+        float flapOffset = this.calculateChainOffset(-2, this.rightWingParts);
+        for (int index = 0; index < this.rightWingParts.length; index++) {
+            ModelRenderer part = this.rightWingParts[index];
+            float rotation = this.calculateChainRotation(0.25F, 0.3F, 0.0F, 0.4F, flapOffset, index);
+            if (index == 0) {
+                part.rotateAngleY = rotation + 0.5F;
+                part.rotateAngleY += 0.8F;
+            } else {
+                part.rotateAngleZ = rotation - 0.2F;
+                part.rotateAngleZ -= 0.8F;
+            }
+        }
+        for (int index = 0; index < this.leftWingParts.length; index++) {
+            ModelRenderer part = this.leftWingParts[index];
+            float rotation = this.calculateChainRotation(0.25F, 0.3F, 0.0F, 0.4F, flapOffset, index);
+            if (index == 0) {
+                part.rotateAngleY = -rotation - 0.5F;
+                part.rotateAngleY -= 0.8F;
+            } else {
+                part.rotateAngleZ = -rotation + 0.2F;
+                part.rotateAngleZ += 0.8F;
+            }
+        }
+
+        this.buildCuboidParented(this.bipedBody, this.Main, matrix, builder, format, sprite);
     }
 }

@@ -62,7 +62,7 @@ public class WearableAssemblerGui extends GuiContainer {
 
         Slot slot = this.container.getSlot(7);
         ItemStack stack = slot.getStack();
-        if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableItem) {
+        if (stack.getItem() instanceof WearableItem) {
             Wearable wearable = WearableItem.getWearable(stack);
 
             float ticks = this.mc.player.ticksExisted + LLibrary.PROXY.getPartialTicks();

@@ -1,41 +1,46 @@
 package net.gegy1000.wearables.client.model.component.head;
 
+import com.google.common.collect.ImmutableList;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
+import net.ilexiconn.llibrary.client.util.Matrix;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.Entity;
 
 public class NightVisionGogglesModel extends WearableComponentModel {
-    public ModelRenderer base;
-    public ModelRenderer shape15;
-    public ModelRenderer shape15_1;
-    public ModelRenderer shape15_2;
-    public ModelRenderer shape15_3;
-    public ModelRenderer shape15_4;
-    public ModelRenderer shape15_5;
-    public ModelRenderer shape15_6;
-    public ModelRenderer shape15_7;
-    public ModelRenderer shape15_8;
-    public ModelRenderer shape15_9;
-    public ModelRenderer shape45;
-    public ModelRenderer shape15_10;
-    public ModelRenderer shape15_11;
-    public ModelRenderer shape15_12;
-    public ModelRenderer shape15_13;
-    public ModelRenderer shape45_1;
-    public ModelRenderer shape15_14;
-    public ModelRenderer shape15_15;
-    public ModelRenderer shape15_16;
-    public ModelRenderer shape15_17;
-    public ModelRenderer shape45_2;
-    public ModelRenderer shape15_18;
-    public ModelRenderer shape15_19;
-    public ModelRenderer shape15_20;
-    public ModelRenderer shape15_21;
-    public ModelRenderer shape15_22;
-    public ModelRenderer shape15_23;
-    public ModelRenderer shape15_24;
-    public ModelRenderer shape15_25;
-    public ModelRenderer shape15_26;
+    private ModelRenderer base;
+    private ModelRenderer shape15;
+    private ModelRenderer shape15_1;
+    private ModelRenderer shape15_2;
+    private ModelRenderer shape15_3;
+    private ModelRenderer shape15_4;
+    private ModelRenderer shape15_5;
+    private ModelRenderer shape15_6;
+    private ModelRenderer shape15_7;
+    private ModelRenderer shape15_8;
+    private ModelRenderer shape15_9;
+    private ModelRenderer shape45;
+    private ModelRenderer shape15_10;
+    private ModelRenderer shape15_11;
+    private ModelRenderer shape15_12;
+    private ModelRenderer shape15_13;
+    private ModelRenderer shape45_1;
+    private ModelRenderer shape15_14;
+    private ModelRenderer shape15_15;
+    private ModelRenderer shape15_16;
+    private ModelRenderer shape15_17;
+    private ModelRenderer shape45_2;
+    private ModelRenderer shape15_18;
+    private ModelRenderer shape15_19;
+    private ModelRenderer shape15_20;
+    private ModelRenderer shape15_21;
+    private ModelRenderer shape15_22;
+    private ModelRenderer shape15_23;
+    private ModelRenderer shape15_24;
+    private ModelRenderer shape15_25;
+    private ModelRenderer shape15_26;
 
     public NightVisionGogglesModel() {
         this.textureWidth = 64;
@@ -171,5 +176,10 @@ public class NightVisionGogglesModel extends WearableComponentModel {
     @Override
     public void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
         this.renderParented(this.bipedHead, this.base, scale);
+    }
+
+    @Override
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
+        this.buildCuboidParented(this.bipedHead, this.base, matrix, builder, format, sprite);
     }
 }

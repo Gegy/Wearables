@@ -8,7 +8,6 @@ import net.gegy1000.wearables.server.block.MannequinHeadStandBlock;
 import net.gegy1000.wearables.server.block.entity.MannequinHeadStandEntity;
 import net.gegy1000.wearables.server.item.WearableItem;
 import net.gegy1000.wearables.server.util.WearableColourUtils;
-import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.Wearable;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
@@ -51,7 +50,7 @@ public class MannequinHeadStandRenderer extends TileEntitySpecialRenderer<Manneq
 
             GlStateManager.pushMatrix();
             ItemStack stack = entity.getStack();
-            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableItem) {
+            if (!stack.isEmpty() && stack.getItem() instanceof WearableItem) {
                 Wearable wearable = WearableItem.getWearable(stack);
                 for (WearableComponent component : wearable.getComponents()) {
                     WearableComponentType componentType = component.getType();
@@ -63,7 +62,7 @@ public class MannequinHeadStandRenderer extends TileEntitySpecialRenderer<Manneq
                             model.setLivingAnimations(null, 0.0F, 0.0F, partialTicks);
                             model.setModelAttributes(MODEL);
                             model.setOffsets(component.getOffsetY(), component.getOffsetZ());
-                            ResourceLocation texture = layer.getTexture();
+                            ResourceLocation texture = layer.getQualifiedTexture();
                             if (texture == null) {
                                 GlStateManager.disableTexture2D();
                             } else {

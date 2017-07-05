@@ -46,7 +46,7 @@ public class WearableRenderLayer implements LayerRenderer<EntityLivingBase> {
 
     private void renderPiece(EntityEquipmentSlot slot, EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks, float age, float yaw, float pitch, float scale) {
         ItemStack stack = entity.getItemStackFromSlot(slot);
-        if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableItem) {
+        if (!stack.isEmpty() && stack.getItem() instanceof WearableItem) {
             WearableItem item = (WearableItem) stack.getItem();
             if (item.armorType == slot) {
                 Wearable wearable = WearableItem.getWearable(stack);
@@ -64,7 +64,7 @@ public class WearableRenderLayer implements LayerRenderer<EntityLivingBase> {
                             model.setModelAttributes(this.renderer.getMainModel());
                             model.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
                             model.setOffsets(component.getOffsetY(), component.getOffsetZ());
-                            ResourceLocation texture = layer.getTexture();
+                            ResourceLocation texture = layer.getQualifiedTexture();
                             if (texture == null) {
                                 GlStateManager.disableTexture2D();
                             } else {

@@ -27,7 +27,7 @@ import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = Wearables.MODID)
 public class ComponentRegistry {
-    public static final ResourceLocation REGISTRY_NAME = new ResourceLocation(Wearables.MODID, "components");
+    private static final ResourceLocation REGISTRY_NAME = new ResourceLocation(Wearables.MODID, "components");
 
     private static final Map<WearableCategory, Set<WearableComponentType>> CATEGORIES = new HashMap<>();
 

@@ -35,7 +35,7 @@ import net.minecraftforge.registries.RegistryBuilder;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = Wearables.MODID)
 public class ComponentModelRegistry {
-    public static final ResourceLocation REGISTRY_NAME = new ResourceLocation(Wearables.MODID, "component_models");
+    private static final ResourceLocation REGISTRY_NAME = new ResourceLocation(Wearables.MODID, "component_models");
 
     private static IForgeRegistry<WearableComponentModel> registry;
 

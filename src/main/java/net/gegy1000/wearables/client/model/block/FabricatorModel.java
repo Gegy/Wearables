@@ -5,27 +5,27 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 public class FabricatorModel extends ModelBase {
-    public ModelRenderer base;
-    public ModelRenderer shape1;
-    public ModelRenderer shape1_1;
-    public ModelRenderer shape1_2;
-    public ModelRenderer shape1_3;
-    public ModelRenderer shape1_4;
-    public ModelRenderer shape9;
-    public ModelRenderer shape1_5;
-    public ModelRenderer shape1_6;
-    public ModelRenderer shape1_7;
-    public ModelRenderer shape1_8;
-    public ModelRenderer shape1_9;
-    public ModelRenderer shape9_1;
-    public ModelRenderer shape12;
-    public ModelRenderer shape9_2;
-    public ModelRenderer shape9_3;
-    public ModelRenderer shape9_4;
-    public ModelRenderer shape16;
-    public ModelRenderer shape16_1;
-    public ModelRenderer shape16_2;
-    public ModelRenderer shape16_3;
+    private ModelRenderer base;
+    private ModelRenderer shape1;
+    private ModelRenderer shape1_1;
+    private ModelRenderer shape1_2;
+    private ModelRenderer shape1_3;
+    private ModelRenderer shape1_4;
+    private ModelRenderer shape9;
+    private ModelRenderer shape1_5;
+    private ModelRenderer shape1_6;
+    private ModelRenderer shape1_7;
+    private ModelRenderer shape1_8;
+    private ModelRenderer shape1_9;
+    private ModelRenderer shape9_1;
+    private ModelRenderer shape12;
+    private ModelRenderer shape9_2;
+    private ModelRenderer shape9_3;
+    private ModelRenderer shape9_4;
+    private ModelRenderer shape16;
+    private ModelRenderer shape16_1;
+    private ModelRenderer shape16_2;
+    private ModelRenderer shape16_3;
 
     public FabricatorModel() {
         this.textureWidth = 128;

@@ -1,10 +1,12 @@
 package net.gegy1000.wearables.client;
 
+import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.client.gui.DisplayMannequinGui;
 import net.gegy1000.wearables.client.gui.WearableAssemblerGui;
 import net.gegy1000.wearables.client.gui.WearableColouriserGui;
 import net.gegy1000.wearables.client.gui.WearableFabricatorGui;
 import net.gegy1000.wearables.client.model.BlankModel;
+import net.gegy1000.wearables.client.model.baked.ComponentItemModel;
 import net.gegy1000.wearables.client.render.layer.WearableRenderLayer;
 import net.gegy1000.wearables.server.ServerProxy;
 import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
@@ -14,6 +16,8 @@ import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEnti
 import net.gegy1000.wearables.server.container.WearableAssemblerContainer;
 import net.gegy1000.wearables.server.container.WearableColouriserContainer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelBox;
+import net.minecraft.client.model.TexturedQuad;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderPlayer;
@@ -23,17 +27,30 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
+import java.lang.reflect.Field;
 import java.util.Map;
 
 public class ClientProxy extends ServerProxy {
-    public static final Minecraft MC = Minecraft.getMinecraft();
     public static final BlankModel BLANK_MODEL = new BlankModel();
+    private static final Minecraft MC = Minecraft.getMinecraft();
+
+    public static Field quadList;
 
     @Override
     public void onPreInit() {
         super.onPreInit();
+
+        ModelLoaderRegistry.registerLoader(ComponentItemModel.Loader.INSTANCE);
+
+        try {
+            quadList = ReflectionHelper.findField(ModelBox.class, "field_78254_i", "quadList");
+        } catch (ReflectionHelper.UnableToFindFieldException e) {
+            Wearables.LOGGER.error("Failed to find quadList field", e);
+        }
     }
 
     @Override
@@ -95,5 +112,16 @@ public class ClientProxy extends ServerProxy {
     @Override
     public boolean isClientPlayer(Entity entity) {
         return entity == MC.player;
+    }
+
+    public static TexturedQuad[] getQuadList(ModelBox box) {
+        if (quadList != null) {
+            try {
+                return (TexturedQuad[]) quadList.get(box);
+            } catch (IllegalAccessException e) {
+                Wearables.LOGGER.error("Failed to access quadList", e);
+            }
+        }
+        return new TexturedQuad[0];
     }
 }

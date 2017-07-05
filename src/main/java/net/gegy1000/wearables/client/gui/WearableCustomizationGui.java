@@ -1,12 +1,11 @@
 package net.gegy1000.wearables.client.gui;
 
 import net.gegy1000.wearables.Wearables;
-import net.gegy1000.wearables.server.util.WearableUtils;
-import net.gegy1000.wearables.server.wearable.component.ComponentProperty;
 import net.gegy1000.wearables.server.container.WearableAssemblerContainer;
 import net.gegy1000.wearables.server.item.WearableComponentItem;
 import net.gegy1000.wearables.server.item.WearableItem;
 import net.gegy1000.wearables.server.network.SetPropertyMessage;
+import net.gegy1000.wearables.server.wearable.component.ComponentProperty;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
@@ -71,7 +70,7 @@ public class WearableCustomizationGui extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
         for (int componentIndex = 0; componentIndex < 6; componentIndex++) {
             ItemStack stack = this.container.getSlot(componentIndex).getStack();
-            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
+            if (stack.getItem() instanceof WearableComponentItem) {
                 if (this.selectedComponent == componentIndex) {
                     this.drawTexturedModalRect(x + 147, y + 26 + componentIndex * 21, 198, 0, 18, 18);
                 }
@@ -86,7 +85,7 @@ public class WearableCustomizationGui extends GuiScreen {
         }
         for (int componentIndex = 0; componentIndex < 6; componentIndex++) {
             ItemStack stack = this.container.getSlot(componentIndex).getStack();
-            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
+            if (stack.getItem() instanceof WearableComponentItem) {
                 if (mouseX >= x + 147 && mouseY >= y + 26 + componentIndex * 21 && mouseX <= x + 165 && mouseY < y + 44 + componentIndex * 21) {
                     if (this.selectedComponent != componentIndex) {
                         GlStateManager.disableLighting();
@@ -129,9 +128,9 @@ public class WearableCustomizationGui extends GuiScreen {
         this.fakePlayer.rotationYawHead = this.fakePlayer.rotationYaw;
         this.fakePlayer.prevRotationYawHead = this.fakePlayer.rotationYaw;
         ItemStack result = this.container.getResult();
-        if (WearableUtils.isStackEmpty(result)) {
+        if (result.isEmpty()) {
             for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
-                this.fakePlayer.setItemStackToSlot(slot, WearableUtils.emptyStack());
+                this.fakePlayer.setItemStackToSlot(slot, ItemStack.EMPTY);
             }
         } else if (result.getItem() instanceof WearableItem) {
             this.fakePlayer.setItemStackToSlot(((WearableItem) result.getItem()).armorType, result);
@@ -167,7 +166,7 @@ public class WearableCustomizationGui extends GuiScreen {
         int y = (this.height - this.ySize) / 2;
         for (int componentIndex = 0; componentIndex < 6; componentIndex++) {
             ItemStack stack = this.container.getSlot(componentIndex).getStack();
-            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
+            if (stack.getItem() instanceof WearableComponentItem) {
                 if (mouseX >= x + 147 && mouseY >= y + 26 + componentIndex * 21 && mouseX <= x + 165 && mouseY < y + 44 + componentIndex * 21) {
                     this.selectedComponent = componentIndex;
                     break;
@@ -211,7 +210,7 @@ public class WearableCustomizationGui extends GuiScreen {
 
         if (this.selectedComponent != -1) {
             ItemStack stack = this.container.getSlot(this.selectedComponent).getStack();
-            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
+            if (stack.getItem() instanceof WearableComponentItem) {
                 WearableComponent component = WearableComponentItem.getComponent(stack);
                 WearableComponentType type = component.getType();
                 WearableComponentType.Property property = type.getProperty(propertyType);
@@ -248,7 +247,7 @@ public class WearableCustomizationGui extends GuiScreen {
     private void clickPropertyWidget(int renderX, int renderY, int mouseX, int mouseY, ComponentProperty propertyType) {
         if (this.selectedComponent != -1) {
             ItemStack stack = this.container.getSlot(this.selectedComponent).getStack();
-            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
+            if (stack.getItem() instanceof WearableComponentItem) {
                 WearableComponent component = WearableComponentItem.getComponent(stack);
                 WearableComponentType type = component.getType();
                 WearableComponentType.Property property = type.getProperty(propertyType);

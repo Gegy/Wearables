@@ -1,20 +1,25 @@
 package net.gegy1000.wearables.client.model.component.chest;
 
+import com.google.common.collect.ImmutableList;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
+import net.ilexiconn.llibrary.client.util.Matrix;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.Entity;
 
 public class TShirt1ThinModel extends WearableComponentModel {
-    public ModelRenderer armRight;
-    public ModelRenderer armLeft;
-    public ModelRenderer chest;
-    public ModelRenderer shape;
-    public ModelRenderer shape_1;
-    public ModelRenderer shape_2;
-    public ModelRenderer shape_3;
-    public ModelRenderer shape_4;
-    public ModelRenderer shape_5;
-    public ModelRenderer shape_6;
+    private ModelRenderer armRight;
+    private ModelRenderer armLeft;
+    private ModelRenderer chest;
+    private ModelRenderer shape;
+    private ModelRenderer shape_1;
+    private ModelRenderer shape_2;
+    private ModelRenderer shape_3;
+    private ModelRenderer shape_4;
+    private ModelRenderer shape_5;
+    private ModelRenderer shape_6;
 
     public TShirt1ThinModel() {
         this.textureWidth = 64;
@@ -66,4 +71,12 @@ public class TShirt1ThinModel extends WearableComponentModel {
         this.renderParented(this.bipedLeftArm, this.armLeft, 0.95F, 0.0F, -0.03F, 0.0F, scale);
         this.renderParented(this.bipedRightArm, this.armRight, 0.95F, 0.0F, -0.03F, 0.0F, scale);
     }
+
+    @Override
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
+        this.buildCuboidParented(this.bipedBody, this.chest, 0.95F, 0.0F, 0.025F, 0.0F, matrix, builder, format, sprite);
+        this.buildCuboidParented(this.bipedLeftArm, this.armLeft, 0.95F, 0.0F, -0.03F, 0.0F, matrix, builder, format, sprite);
+        this.buildCuboidParented(this.bipedRightArm, this.armRight, 0.95F, 0.0F, -0.03F, 0.0F, matrix, builder, format, sprite);
+    }
+
 }

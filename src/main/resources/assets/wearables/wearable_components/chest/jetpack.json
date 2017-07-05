@@ -10,15 +10,15 @@
   "layers": [
     {
       "model": "wearables:jetpack",
-      "texture": "wearables:textures/component/jetpack_1.png"
+      "texture": "wearables:component/jetpack_1"
     },
     {
       "model": "wearables:jetpack",
-      "texture": "wearables:textures/component/jetpack_2.png"
+      "texture": "wearables:component/jetpack_2"
     },
     {
       "model": "wearables:jetpack",
-      "texture": "wearables:textures/component/jetpack_3.png",
+      "texture": "wearables:component/jetpack_3",
       "can_colour": false
     }
   ],

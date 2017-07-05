@@ -1,30 +1,35 @@
 package net.gegy1000.wearables.client.model.component.feet;
 
+import com.google.common.collect.ImmutableList;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
+import net.ilexiconn.llibrary.client.util.Matrix;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.Entity;
 
 public class FlippersModel extends WearableComponentModel {
-    public ModelRenderer baseRight;
-    public ModelRenderer shape16;
-    public ModelRenderer shape16_1;
-    public ModelRenderer shape18;
-    public ModelRenderer shape21;
-    public ModelRenderer shape21_1;
-    public ModelRenderer shape21_2;
-    public ModelRenderer shape21_3;
-    public ModelRenderer shape26;
-    public ModelRenderer shape26_1;
-    public ModelRenderer baseLeft;
-    public ModelRenderer shape16_2;
-    public ModelRenderer shape16_3;
-    public ModelRenderer shape18_1;
-    public ModelRenderer shape21_4;
-    public ModelRenderer shape21_5;
-    public ModelRenderer shape21_6;
-    public ModelRenderer shape21_7;
-    public ModelRenderer shape26_2;
-    public ModelRenderer shape26_3;
+    private ModelRenderer baseRight;
+    private ModelRenderer shape16;
+    private ModelRenderer shape16_1;
+    private ModelRenderer shape18;
+    private ModelRenderer shape21;
+    private ModelRenderer shape21_1;
+    private ModelRenderer shape21_2;
+    private ModelRenderer shape21_3;
+    private ModelRenderer shape26;
+    private ModelRenderer shape26_1;
+    private ModelRenderer baseLeft;
+    private ModelRenderer shape16_2;
+    private ModelRenderer shape16_3;
+    private ModelRenderer shape18_1;
+    private ModelRenderer shape21_4;
+    private ModelRenderer shape21_5;
+    private ModelRenderer shape21_6;
+    private ModelRenderer shape21_7;
+    private ModelRenderer shape26_2;
+    private ModelRenderer shape26_3;
 
     public FlippersModel() {
         this.textureWidth = 32;
@@ -139,5 +144,11 @@ public class FlippersModel extends WearableComponentModel {
     public void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
         this.renderParented(this.bipedRightLeg, this.baseRight, 1.5F, 0.0F, -0.35F, 0.1F, scale);
         this.renderParented(this.bipedLeftLeg, this.baseLeft, 1.5F, 0.0F, -0.35F, 0.1F, scale);
+    }
+
+    @Override
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
+        this.buildCuboidParented(this.bipedRightLeg, this.baseRight, 1.5F, 0.0F, -0.35F, 0.1F, matrix, builder, format, sprite);
+        this.buildCuboidParented(this.bipedLeftLeg, this.baseLeft, 1.5F, 0.0F, -0.35F, 0.1F, matrix, builder, format, sprite);
     }
 }

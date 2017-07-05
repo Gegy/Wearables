@@ -9,11 +9,11 @@
   "layers": [
     {
       "model": "wearables:night_vision_goggles",
-      "texture": "wearables:textures/component/night_vision.png"
+      "texture": "wearables:component/night_vision"
     },
     {
       "model": "wearables:night_vision_goggles",
-      "texture": "wearables:textures/component/night_vision_static.png",
+      "texture": "wearables:component/night_vision_static",
       "can_colour": false
     }
   ],

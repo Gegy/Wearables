@@ -51,7 +51,7 @@ public class MannequinHeadStandBlock extends BlockContainer implements RegisterI
                 ItemStack heldItem = player.getHeldItem(hand);
                 if (player.inventory.getFirstEmptyStack() >= 0) {
                     if (!(heldItem.getItem() instanceof WearableItem) || ((WearableItem) heldItem.getItem()).armorType != EntityEquipmentSlot.HEAD) {
-                        heldItem = WearableUtils.emptyStack();
+                        heldItem = ItemStack.EMPTY;
                     }
                     ItemStack result = entity.swapItem(heldItem);
                     heldItem.shrink(1);

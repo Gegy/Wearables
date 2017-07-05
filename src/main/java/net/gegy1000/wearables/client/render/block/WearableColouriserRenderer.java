@@ -6,7 +6,6 @@ import net.gegy1000.wearables.client.render.ComponentRenderHandler;
 import net.gegy1000.wearables.server.block.WearableColouriserBlock;
 import net.gegy1000.wearables.server.block.entity.machine.WearableColouriserEntity;
 import net.gegy1000.wearables.server.item.WearableComponentItem;
-import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -49,7 +48,7 @@ public class WearableColouriserRenderer extends TileEntitySpecialRenderer<Wearab
             IItemHandler inventory = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             ItemStack stack = inventory.getStackInSlot(0);
             GlStateManager.enableRescaleNormal();
-            if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
+            if (!stack.isEmpty() && stack.getItem() instanceof WearableComponentItem) {
                 WearableComponent component = WearableComponentItem.getComponent(stack);
                 GlStateManager.pushMatrix();
                 GlStateManager.translate(-0.05F, 0.8F, 0.05F);

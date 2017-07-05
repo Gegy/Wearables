@@ -8,11 +8,11 @@
   "layers": [
     {
       "model": "wearables:modoff_cape",
-      "texture": "wearables:textures/component/modoff_cape_background.png"
+      "texture": "wearables:component/modoff_cape_background"
     },
     {
       "model": "wearables:modoff_cape",
-      "texture": "wearables:textures/component/modoff_cape_text.png",
+      "texture": "wearables:component/modoff_cape_text",
       "can_colour": false
     }
   ],

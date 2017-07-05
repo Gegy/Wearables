@@ -1,15 +1,20 @@
 package net.gegy1000.wearables.client.model.component.chest;
 
+import com.google.common.collect.ImmutableList;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
 import net.ilexiconn.llibrary.LLibrary;
+import net.ilexiconn.llibrary.client.util.Matrix;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
 public class ModOffCapeModel extends WearableComponentModel {
-    public ModelRenderer cape;
+    private ModelRenderer cape;
 
     public ModOffCapeModel() {
         this.textureWidth = 64;
@@ -52,7 +57,12 @@ public class ModOffCapeModel extends WearableComponentModel {
             GlStateManager.rotate(-sidewardMovement / 2.0F, 0.0F, 1.0F, 0.0F);
         }
         GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-        this.renderParented(this.bipedBody, this.cape, 1.0F, 0.0F, 0.0F, 0.0F, scale);
+        this.renderParented(this.bipedBody, this.cape, scale);
         GlStateManager.popMatrix();
+    }
+
+    @Override
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
+        this.buildCuboidParented(this.bipedBody, this.cape, matrix, builder, format, sprite);
     }
 }

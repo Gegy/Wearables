@@ -5,9 +5,9 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 public class HeadDisplayStandModel extends ModelBase {
-    public ModelRenderer base1;
-    public ModelRenderer base2;
-    public ModelRenderer neck;
+    private ModelRenderer base1;
+    private ModelRenderer base2;
+    private ModelRenderer neck;
     public ModelRenderer head;
 
     public HeadDisplayStandModel() {

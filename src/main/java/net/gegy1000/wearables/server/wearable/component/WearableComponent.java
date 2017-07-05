@@ -8,6 +8,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.INBTSerializable;
 
+import java.util.Arrays;
+
 public class WearableComponent implements INBTSerializable<NBTTagCompound> {
     private WearableComponentType type;
     private int[] colours;
@@ -127,5 +129,33 @@ public class WearableComponent implements INBTSerializable<NBTTagCompound> {
 
     public WearableComponent copy() {
         return WearableComponent.deserialize(this.serializeNBT().copy());
+    }
+
+    public Data toData() {
+        return new Data(this.type, this.colours);
+    }
+
+    public static final class Data {
+        public final int type;
+        public final int[] colours;
+
+        private Data(WearableComponentType type, int[] colours) {
+            this.type = ComponentRegistry.getRegistry().getValues().indexOf(type);
+            this.colours = colours;
+        }
+
+        @Override
+        public int hashCode() {
+            return this.type << 16 | Arrays.hashCode(this.colours);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof Data) {
+                Data data = (Data) obj;
+                return data.type == this.type && Arrays.equals(data.colours, this.colours);
+            }
+            return false;
+        }
     }
 }

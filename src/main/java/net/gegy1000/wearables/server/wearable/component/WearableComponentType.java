@@ -129,11 +129,13 @@ public interface WearableComponentType extends IForgeRegistryEntry<WearableCompo
     class Layer {
         private final ResourceLocation model;
         private final ResourceLocation texture;
+        private final ResourceLocation qualifiedTexture;
         private final boolean canColour;
 
         private Layer(ResourceLocation model, ResourceLocation texture, boolean canColour) {
             this.model = model;
             this.texture = texture;
+            this.qualifiedTexture = texture != null ? new ResourceLocation(texture.getResourceDomain(), "textures/" + texture.getResourcePath() + ".png") : null;
             this.canColour = canColour;
         }
 
@@ -154,6 +156,11 @@ public interface WearableComponentType extends IForgeRegistryEntry<WearableCompo
         @Nullable
         public ResourceLocation getTexture() {
             return this.texture;
+        }
+
+        @Nullable
+        public ResourceLocation getQualifiedTexture() {
+            return this.qualifiedTexture;
         }
 
         public boolean canColour() {

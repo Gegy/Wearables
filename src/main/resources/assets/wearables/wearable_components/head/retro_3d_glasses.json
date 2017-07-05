@@ -9,11 +9,11 @@
   "layers": [
     {
       "model": "wearables:retro_3d_glasses",
-      "texture": "wearables:textures/component/retro_3d_glasses.png"
+      "texture": "wearables:component/retro_3d_glasses"
     },
     {
       "model": "wearables:retro_3d_glasses",
-      "texture": "wearables:textures/component/retro_3d_glasses_colour.png",
+      "texture": "wearables:component/retro_3d_glasses_colour",
       "can_colour": false
     }
   ],

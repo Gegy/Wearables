@@ -1,69 +1,74 @@
 package net.gegy1000.wearables.client.model.component.head;
 
+import com.google.common.collect.ImmutableList;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
+import net.ilexiconn.llibrary.client.util.Matrix;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.Entity;
 
 public class Glasses1Model extends WearableComponentModel {
-    public ModelRenderer joint;
-    public ModelRenderer s1;
-    public ModelRenderer S2;
-    public ModelRenderer Side1;
-    public ModelRenderer s1_1;
-    public ModelRenderer S3;
-    public ModelRenderer S4;
-    public ModelRenderer S5;
-    public ModelRenderer S6;
-    public ModelRenderer Side2;
-    public ModelRenderer Side4;
-    public ModelRenderer shape81;
-    public ModelRenderer Side3;
-    public ModelRenderer Side6;
-    public ModelRenderer Side7;
-    public ModelRenderer shape33;
-    public ModelRenderer shape33_1;
-    public ModelRenderer shape33_2;
-    public ModelRenderer shape33_3;
-    public ModelRenderer shape33_4;
-    public ModelRenderer shape33_5;
-    public ModelRenderer shape33_6;
-    public ModelRenderer Side5;
-    public ModelRenderer shape81_1;
-    public ModelRenderer shape85;
-    public ModelRenderer shape81_2;
-    public ModelRenderer shape81_3;
-    public ModelRenderer shape81_4;
-    public ModelRenderer shape85_1;
-    public ModelRenderer shape85_2;
-    public ModelRenderer shape85_3;
-    public ModelRenderer S2_1;
-    public ModelRenderer Side1_1;
-    public ModelRenderer S3_1;
-    public ModelRenderer S4_1;
-    public ModelRenderer S5_1;
-    public ModelRenderer S6_1;
-    public ModelRenderer Side2_1;
-    public ModelRenderer Side4_1;
-    public ModelRenderer shape81_5;
-    public ModelRenderer Side3_1;
-    public ModelRenderer Side6_1;
-    public ModelRenderer Side7_1;
-    public ModelRenderer shape33_7;
-    public ModelRenderer shape33_8;
-    public ModelRenderer shape33_9;
-    public ModelRenderer shape33_10;
-    public ModelRenderer shape33_11;
-    public ModelRenderer shape33_12;
-    public ModelRenderer shape33_13;
-    public ModelRenderer Side5_1;
-    public ModelRenderer shape81_6;
-    public ModelRenderer shape85_4;
-    public ModelRenderer shape81_7;
-    public ModelRenderer shape81_8;
-    public ModelRenderer shape81_9;
-    public ModelRenderer shape85_5;
-    public ModelRenderer shape85_6;
-    public ModelRenderer shape85_7;
+    private ModelRenderer joint;
+    private ModelRenderer s1;
+    private ModelRenderer S2;
+    private ModelRenderer Side1;
+    private ModelRenderer s1_1;
+    private ModelRenderer S3;
+    private ModelRenderer S4;
+    private ModelRenderer S5;
+    private ModelRenderer S6;
+    private ModelRenderer Side2;
+    private ModelRenderer Side4;
+    private ModelRenderer shape81;
+    private ModelRenderer Side3;
+    private ModelRenderer Side6;
+    private ModelRenderer Side7;
+    private ModelRenderer shape33;
+    private ModelRenderer shape33_1;
+    private ModelRenderer shape33_2;
+    private ModelRenderer shape33_3;
+    private ModelRenderer shape33_4;
+    private ModelRenderer shape33_5;
+    private ModelRenderer shape33_6;
+    private ModelRenderer Side5;
+    private ModelRenderer shape81_1;
+    private ModelRenderer shape85;
+    private ModelRenderer shape81_2;
+    private ModelRenderer shape81_3;
+    private ModelRenderer shape81_4;
+    private ModelRenderer shape85_1;
+    private ModelRenderer shape85_2;
+    private ModelRenderer shape85_3;
+    private ModelRenderer S2_1;
+    private ModelRenderer Side1_1;
+    private ModelRenderer S3_1;
+    private ModelRenderer S4_1;
+    private ModelRenderer S5_1;
+    private ModelRenderer S6_1;
+    private ModelRenderer Side2_1;
+    private ModelRenderer Side4_1;
+    private ModelRenderer shape81_5;
+    private ModelRenderer Side3_1;
+    private ModelRenderer Side6_1;
+    private ModelRenderer Side7_1;
+    private ModelRenderer shape33_7;
+    private ModelRenderer shape33_8;
+    private ModelRenderer shape33_9;
+    private ModelRenderer shape33_10;
+    private ModelRenderer shape33_11;
+    private ModelRenderer shape33_12;
+    private ModelRenderer shape33_13;
+    private ModelRenderer Side5_1;
+    private ModelRenderer shape81_6;
+    private ModelRenderer shape85_4;
+    private ModelRenderer shape81_7;
+    private ModelRenderer shape81_8;
+    private ModelRenderer shape81_9;
+    private ModelRenderer shape85_5;
+    private ModelRenderer shape85_6;
+    private ModelRenderer shape85_7;
 
     public Glasses1Model() {
         this.textureWidth = 64;
@@ -362,5 +367,10 @@ public class Glasses1Model extends WearableComponentModel {
     @Override
     public void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
         this.renderParented(this.bipedHead, this.joint, 0.5F, 0.0F, 0.0F, 0.0F, scale);
+    }
+
+    @Override
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
+        this.buildCuboidParented(this.bipedHead, this.joint, 0.5F, 0.0F, 0.0F, 0.0F, matrix, builder, format, sprite);
     }
 }

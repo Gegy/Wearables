@@ -7,7 +7,6 @@ import net.gegy1000.wearables.server.container.slot.ColouredComponentSlot;
 import net.gegy1000.wearables.server.item.WearableComponentItem;
 import net.gegy1000.wearables.server.network.SetColourMessage;
 import net.gegy1000.wearables.server.util.WearableColourUtils;
-import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.ilexiconn.llibrary.client.util.ClientUtils;
@@ -277,7 +276,7 @@ public class WearableColouriserGui extends GuiContainer {
                 int sliderX = x + 111;
                 WearableComponent component = null;
                 ItemStack stack = this.getComponentStack();
-                if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
+                if (stack.getItem() instanceof WearableComponentItem) {
                     component = WearableComponentItem.getComponent(stack);
                 }
                 if (component != null) {
@@ -338,7 +337,7 @@ public class WearableColouriserGui extends GuiContainer {
 
     private WearableComponent getComponent() {
         ItemStack stack = this.getComponentStack();
-        if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
+        if (stack.getItem() instanceof WearableComponentItem) {
             return WearableComponentItem.getComponent(stack);
         }
         return null;

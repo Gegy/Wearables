@@ -10,7 +10,7 @@ import net.minecraftforge.registries.RegistryBuilder;
 
 @Mod.EventBusSubscriber(modid = Wearables.MODID)
 public class ComponentEventRegistry {
-    public static final ResourceLocation REGISTRY_NAME = new ResourceLocation(Wearables.MODID, "component_movement");
+    private static final ResourceLocation REGISTRY_NAME = new ResourceLocation(Wearables.MODID, "component_movement");
 
     private static IForgeRegistry<ComponentEventHandler> registry;
 

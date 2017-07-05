@@ -1,8 +1,6 @@
 package net.gegy1000.wearables.server.item;
 
-import net.gegy1000.wearables.server.api.item.RegisterBlockEntity;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
-import net.gegy1000.wearables.server.block.entity.wearable.WearableComponentEntity;
 import net.gegy1000.wearables.server.tab.TabRegistry;
 import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
@@ -13,7 +11,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -21,7 +18,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class WearableComponentItem extends Item implements RegisterItemModel, RegisterBlockEntity {
+public class WearableComponentItem extends Item implements RegisterItemModel {
     public WearableComponentItem() {
         super();
         this.setCreativeTab(TabRegistry.GENERAL);
@@ -32,11 +29,6 @@ public class WearableComponentItem extends Item implements RegisterItemModel, Re
         WearableComponent component = WearableComponentItem.getComponent(stack);
         String identifier = component.getType().getRegistryName().getResourcePath();
         return I18n.translateToLocalFormatted(this.getUnlocalizedNameInefficiently(stack) + ".name", I18n.translateToLocal("component." + identifier + ".name"));
-    }
-
-    @Override
-    public Class<? extends TileEntity> getEntity() {
-        return WearableComponentEntity.class;
     }
 
     @Override

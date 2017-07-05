@@ -1,31 +1,36 @@
 package net.gegy1000.wearables.client.model.component.head;
 
+import com.google.common.collect.ImmutableList;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
+import net.ilexiconn.llibrary.client.util.Matrix;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.Entity;
 
 public class TopHatModel extends WearableComponentModel {
-    public ModelRenderer base;
-    public ModelRenderer shape1;
-    public ModelRenderer shape1_1;
-    public ModelRenderer shape1_2;
-    public ModelRenderer shape1_3;
-    public ModelRenderer shape1_4;
-    public ModelRenderer shape1_5;
-    public ModelRenderer shape1_6;
-    public ModelRenderer shape1_7;
-    public ModelRenderer shape1_8;
-    public ModelRenderer shape1_9;
-    public ModelRenderer shape1_10;
-    public ModelRenderer shape1_11;
-    public ModelRenderer shape1_12;
-    public ModelRenderer shape1_13;
-    public ModelRenderer shape1_14;
-    public ModelRenderer shape1_15;
-    public ModelRenderer shape1_16;
-    public ModelRenderer shape1_17;
-    public ModelRenderer shape1_18;
-    public ModelRenderer shape1_19;
+    private ModelRenderer base;
+    private ModelRenderer shape1;
+    private ModelRenderer shape1_1;
+    private ModelRenderer shape1_2;
+    private ModelRenderer shape1_3;
+    private ModelRenderer shape1_4;
+    private ModelRenderer shape1_5;
+    private ModelRenderer shape1_6;
+    private ModelRenderer shape1_7;
+    private ModelRenderer shape1_8;
+    private ModelRenderer shape1_9;
+    private ModelRenderer shape1_10;
+    private ModelRenderer shape1_11;
+    private ModelRenderer shape1_12;
+    private ModelRenderer shape1_13;
+    private ModelRenderer shape1_14;
+    private ModelRenderer shape1_15;
+    private ModelRenderer shape1_16;
+    private ModelRenderer shape1_17;
+    private ModelRenderer shape1_18;
+    private ModelRenderer shape1_19;
 
     public TopHatModel() {
         this.textureWidth = 64;
@@ -122,5 +127,10 @@ public class TopHatModel extends WearableComponentModel {
     @Override
     public void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
         this.renderParented(this.bipedHead, this.base, 1.0F, 0.0F, -0.0625F, 0.0F, scale);
+    }
+
+    @Override
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
+        this.buildCuboidParented(this.bipedHead, this.base, 1.0F, 0.0F, -0.0625F, 0.0F, matrix, builder, format, sprite);
     }
 }

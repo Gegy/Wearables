@@ -1,19 +1,24 @@
 package net.gegy1000.wearables.client.model.component.chest;
 
+import com.google.common.collect.ImmutableList;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
+import net.ilexiconn.llibrary.client.util.Matrix;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.Entity;
 
 public class TieModel extends WearableComponentModel {
-    public ModelRenderer shape15;
-    public ModelRenderer shape18;
-    public ModelRenderer shape15_1;
-    public ModelRenderer shape18_1;
-    public ModelRenderer shape26;
-    public ModelRenderer shape18_2;
-    public ModelRenderer shape18_3;
-    public ModelRenderer shape18_4;
-    public ModelRenderer shape18_5;
+    private ModelRenderer shape15;
+    private ModelRenderer shape18;
+    private ModelRenderer shape15_1;
+    private ModelRenderer shape18_1;
+    private ModelRenderer shape26;
+    private ModelRenderer shape18_2;
+    private ModelRenderer shape18_3;
+    private ModelRenderer shape18_4;
+    private ModelRenderer shape18_5;
 
     public TieModel() {
         this.textureWidth = 64;
@@ -65,5 +70,10 @@ public class TieModel extends WearableComponentModel {
     @Override
     public void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
         this.renderParented(this.bipedBody, this.shape15, 1.0F, 0.0F, 0.0F, 0.0F, scale);
+    }
+
+    @Override
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
+        this.buildCuboidParented(this.bipedBody, this.shape15, matrix, builder, format, sprite);
     }
 }

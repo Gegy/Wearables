@@ -33,7 +33,6 @@ public class WearableFabricatorGui extends GuiContainer {
     private static final int SCROLL_LENGTH = 70;
 
     private final WearableFabricatorEntity entity;
-    private final InventoryPlayer playerInventory;
 
     private final int maxScroll;
 
@@ -44,7 +43,6 @@ public class WearableFabricatorGui extends GuiContainer {
     public WearableFabricatorGui(InventoryPlayer playerInventory, WearableFabricatorEntity entity) {
         super(new WearableFabricatorContainer(playerInventory, entity));
         this.entity = entity;
-        this.playerInventory = playerInventory;
         this.maxScroll = Math.max(MathHelper.ceil(ComponentRegistry.getRegistry().getValues().size() / 2.0F) - 4, 0);
     }
 

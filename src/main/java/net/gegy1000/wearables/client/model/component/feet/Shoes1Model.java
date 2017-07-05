@@ -1,30 +1,35 @@
 package net.gegy1000.wearables.client.model.component.feet;
 
+import com.google.common.collect.ImmutableList;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
+import net.ilexiconn.llibrary.client.util.Matrix;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.Entity;
 
 public class Shoes1Model extends WearableComponentModel {
-    public ModelRenderer rightBase;
-    public ModelRenderer shape;
-    public ModelRenderer shape_1;
-    public ModelRenderer shape_2;
-    public ModelRenderer shape_3;
-    public ModelRenderer shape_4;
-    public ModelRenderer shape_5;
-    public ModelRenderer shape_6;
-    public ModelRenderer shape_7;
-    public ModelRenderer shape_8;
-    public ModelRenderer leftBase;
-    public ModelRenderer shape_9;
-    public ModelRenderer shape_10;
-    public ModelRenderer shape_11;
-    public ModelRenderer shape_12;
-    public ModelRenderer shape_13;
-    public ModelRenderer shape_14;
-    public ModelRenderer shape_15;
-    public ModelRenderer shape_16;
-    public ModelRenderer shape_17;
+    private ModelRenderer rightBase;
+    private ModelRenderer shape;
+    private ModelRenderer shape_1;
+    private ModelRenderer shape_2;
+    private ModelRenderer shape_3;
+    private ModelRenderer shape_4;
+    private ModelRenderer shape_5;
+    private ModelRenderer shape_6;
+    private ModelRenderer shape_7;
+    private ModelRenderer shape_8;
+    private ModelRenderer leftBase;
+    private ModelRenderer shape_9;
+    private ModelRenderer shape_10;
+    private ModelRenderer shape_11;
+    private ModelRenderer shape_12;
+    private ModelRenderer shape_13;
+    private ModelRenderer shape_14;
+    private ModelRenderer shape_15;
+    private ModelRenderer shape_16;
+    private ModelRenderer shape_17;
 
     public Shoes1Model() {
         this.textureWidth = 64;
@@ -113,5 +118,11 @@ public class Shoes1Model extends WearableComponentModel {
     public void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
         this.renderParented(this.bipedRightLeg, this.rightBase, 1.1F, 0.0F, -0.05F, 0.0F, scale);
         this.renderParented(this.bipedLeftLeg, this.leftBase, 1.1F, 0.0F, -0.05F, 0.0F, scale);
+    }
+
+    @Override
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
+        this.buildCuboidParented(this.bipedRightLeg, this.rightBase, 1.1F, 0.0F, -0.05F, 0.0F, matrix, builder, format, sprite);
+        this.buildCuboidParented(this.bipedLeftLeg, this.leftBase, 1.1F, 0.0F, -0.05F, 0.0F, matrix, builder, format, sprite);
     }
 }

@@ -10,11 +10,11 @@
   "layers": [
     {
       "model": "wearables:wings",
-      "texture": "wearables:textures/component/wings.png"
+      "texture": "wearables:component/wings"
     },
     {
       "model": "wearables:wings",
-      "texture": "wearables:textures/component/wings_overlay.png"
+      "texture": "wearables:component/wings_overlay"
     }
   ],
   "properties": [

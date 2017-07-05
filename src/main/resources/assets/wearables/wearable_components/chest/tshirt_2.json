@@ -9,10 +9,10 @@
   "layers": [
     {
       "model": "wearables:tshirt_2",
-      "texture": "wearables:textures/component/shirt.png",
+      "texture": "wearables:component/shirt",
       "thin": {
         "model": "wearables:tshirt_2_thin",
-        "texture": "wearables:textures/component/shirt.png"
+        "texture": "wearables:component/shirt"
       }
     }
   ],

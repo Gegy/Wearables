@@ -6,7 +6,6 @@ import net.gegy1000.wearables.client.render.block.MannequinHeadStandRenderer;
 import net.gegy1000.wearables.client.render.block.WearableAssemblerRenderer;
 import net.gegy1000.wearables.client.render.block.WearableColouriserRenderer;
 import net.gegy1000.wearables.client.render.block.WearableFabricatorRenderer;
-import net.gegy1000.wearables.client.render.item.WearableComponentRenderer;
 import net.gegy1000.wearables.client.render.item.WearableItemRenderer;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
 import net.gegy1000.wearables.server.block.BlockRegistry;
@@ -21,7 +20,6 @@ import net.gegy1000.wearables.server.block.entity.machine.WearableAssemblerEntit
 import net.gegy1000.wearables.server.block.entity.machine.WearableColouriserEntity;
 import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEntity;
 import net.gegy1000.wearables.server.block.entity.wearable.WearableChestItemEntity;
-import net.gegy1000.wearables.server.block.entity.wearable.WearableComponentEntity;
 import net.gegy1000.wearables.server.block.entity.wearable.WearableFeetItemEntity;
 import net.gegy1000.wearables.server.block.entity.wearable.WearableHeadItemEntity;
 import net.gegy1000.wearables.server.block.entity.wearable.WearableLegsItemEntity;
@@ -62,9 +60,6 @@ public class RenderRegistry {
         ModelLoader.setCustomStateMapper(BlockRegistry.WEARABLE_COLOURISER, new StateMap.Builder().ignore(WearableColouriserBlock.FACING).build());
 
         ClientRegistry.bindTileEntitySpecialRenderer(DisplayMannequinEntity.class, new DisplayMannequinRenderer());
-
-        ClientRegistry.bindTileEntitySpecialRenderer(WearableComponentEntity.class, new WearableComponentRenderer());
-        ForgeHooksClient.registerTESRItemStack(ItemRegistry.WEARABLE_COMPONENT, 0, WearableComponentEntity.class);
 
         ClientRegistry.bindTileEntitySpecialRenderer(WearableHeadItemEntity.class, new WearableItemRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(WearableChestItemEntity.class, new WearableItemRenderer());

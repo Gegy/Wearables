@@ -2,7 +2,6 @@ package net.gegy1000.wearables.server.container.slot;
 
 import net.gegy1000.wearables.server.container.WearableAssemblerContainer;
 import net.gegy1000.wearables.server.item.WearableComponentItem;
-import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
@@ -18,7 +17,7 @@ public class AssemblerInputSlot extends SlotItemHandler {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        if (!WearableUtils.isStackEmpty(stack) && stack.getItem() instanceof WearableComponentItem) {
+        if (stack.getItem() instanceof WearableComponentItem) {
             WearableComponent component = WearableComponentItem.getComponent(stack);
             return this.container.canAddComponent(component);
         }

@@ -9,11 +9,11 @@
   "layers": [
     {
       "model": "wearables:flippers",
-      "texture": "wearables:textures/component/flippers_1.png"
+      "texture": "wearables:component/flippers_1"
     },
     {
       "model": "wearables:flippers",
-      "texture": "wearables:textures/component/flippers_2.png"
+      "texture": "wearables:component/flippers_2"
     }
   ],
   "bounds": [

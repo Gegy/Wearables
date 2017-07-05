@@ -5,11 +5,11 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 public class DisplayMannequinModel extends ModelBase {
-    public ModelRenderer base;
-    public ModelRenderer baseTopFront;
-    public ModelRenderer baseTopBack;
-    public ModelRenderer baseTopRight;
-    public ModelRenderer baseTopLeft;
+    private ModelRenderer base;
+    private ModelRenderer baseTopFront;
+    private ModelRenderer baseTopBack;
+    private ModelRenderer baseTopRight;
+    private ModelRenderer baseTopLeft;
     public ModelRenderer body;
     public ModelRenderer head;
     public ModelRenderer leftArm;

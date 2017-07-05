@@ -8,11 +8,11 @@
   "layers": [
     {
       "model": "wearables:bow_tie",
-      "texture": "wearables:textures/component/bowtie_1.png"
+      "texture": "wearables:component/bowtie_1"
     },
     {
       "model": "wearables:bow_tie",
-      "texture": "wearables:textures/component/bowtie_2.png"
+      "texture": "wearables:component/bowtie_2"
     }
   ],
   "properties": [

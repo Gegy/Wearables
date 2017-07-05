@@ -8,11 +8,11 @@
   "layers": [
     {
       "model": "wearables:top_hat",
-      "texture": "wearables:textures/component/top_hat.png"
+      "texture": "wearables:component/top_hat"
     },
     {
       "model": "wearables:top_hat",
-      "texture": "wearables:textures/component/top_hat_line.png"
+      "texture": "wearables:component/top_hat_line"
     }
   ],
   "bounds": [
