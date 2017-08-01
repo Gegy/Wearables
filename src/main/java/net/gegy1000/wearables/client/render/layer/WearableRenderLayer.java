@@ -10,6 +10,7 @@ import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.ilexiconn.llibrary.client.event.PlayerModelEvent;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
@@ -55,7 +56,7 @@ public class WearableRenderLayer implements LayerRenderer<EntityLivingBase> {
                     boolean smallArms = WearableUtils.hasSlimArms(entity);
                     WearableComponentType.Layer[] layers = componentType.getLayers(smallArms);
                     if (entity instanceof EntityPlayer && this.renderer.getMainModel() instanceof ModelPlayer) {
-                        MinecraftForge.EVENT_BUS.post(new PlayerModelEvent.SetRotationAngles((ModelPlayer) this.renderer.getMainModel(), (EntityPlayer) entity, limbSwing, limbSwingAmount, age, yaw, pitch, scale));
+                        MinecraftForge.EVENT_BUS.post(new PlayerModelEvent.SetRotationAngles((ModelBiped) this.renderer.getMainModel(), (EntityPlayer) entity, limbSwing, limbSwingAmount, age, yaw, pitch, scale));
                     }
                     for (int layerIndex = 0; layerIndex < layers.length; layerIndex++) {
                         WearableComponentType.Layer layer = layers[layerIndex];

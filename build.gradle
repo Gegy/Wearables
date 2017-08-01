@@ -40,8 +40,6 @@ dependencies {
     //compile "net.ilexiconn:llibrary:$llibrary_version-1.12:dev"
     deobfCompile "mezz.jei:jei_1.12:4.7.1.69:api"
     runtime "mezz.jei:jei_1.12:4.7.1.69"
-    compile 'org.jetbrains:annotations:15.0'
-    compile 'org.jetbrains:annotations:15.0'
 }
 
 processResources {

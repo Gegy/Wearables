@@ -147,8 +147,8 @@ public class FlippersModel extends WearableComponentModel {
     }
 
     @Override
-    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
-        this.buildCuboidParented(this.bipedRightLeg, this.baseRight, 1.5F, 0.0F, -0.35F, 0.1F, matrix, builder, format, sprite);
-        this.buildCuboidParented(this.bipedLeftLeg, this.baseLeft, 1.5F, 0.0F, -0.35F, 0.1F, matrix, builder, format, sprite);
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite, int layer) {
+        this.buildCuboidParented(this.bipedRightLeg, this.baseRight, 1.5F, 0.0F, -0.35F, 0.1F, matrix, builder, format, sprite, layer);
+        this.buildCuboidParented(this.bipedLeftLeg, this.baseLeft, 1.5F, 0.0F, -0.35F, 0.1F, matrix, builder, format, sprite, layer);
     }
 }

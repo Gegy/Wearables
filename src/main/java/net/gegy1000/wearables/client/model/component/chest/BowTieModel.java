@@ -20,7 +20,7 @@ public class BowTieModel extends WearableComponentModel {
 
     public BowTieModel() {
         this.textureWidth = 16;
-        this.textureHeight = 8;
+        this.textureHeight = 16;
         this.BowTie1 = new ModelRenderer(this, 0, 0);
         this.BowTie1.setRotationPoint(0.0F, 1.1F, -2.3F);
         this.BowTie1.addBox(-1.0F, -1.0F, -1.0F, 2, 2, 1, 0.0F);
@@ -61,7 +61,7 @@ public class BowTieModel extends WearableComponentModel {
     }
 
     @Override
-    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
-        this.buildCuboidParented(this.bipedBody, this.BowTie1, 0.8F, 0.0F, 0.0F, 0.0F, matrix, builder, format, sprite);
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite, int layer) {
+        this.buildCuboidParented(this.bipedBody, this.BowTie1, 0.8F, 0.0F, 0.0F, 0.0F, matrix, builder, format, sprite, layer);
     }
 }

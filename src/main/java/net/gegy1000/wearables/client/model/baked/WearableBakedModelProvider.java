@@ -5,7 +5,8 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import net.gegy1000.wearables.server.item.WearableComponentItem;
+import net.gegy1000.wearables.server.item.WearableItem;
+import net.gegy1000.wearables.server.wearable.Wearable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -25,14 +26,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class ComponentBakedModelProvider implements IBakedModel {
+public class WearableBakedModelProvider implements IBakedModel {
     private final ItemOverrideList overrides = new Overrides();
 
     private final ImmutableMap<ResourceLocation, ImmutableList<BakedQuad>> quads;
     private final TextureAtlasSprite particle;
     private final ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms;
 
-    public ComponentBakedModelProvider(ImmutableMap<ResourceLocation, ImmutableList<BakedQuad>> quads, TextureAtlasSprite particle, ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms) {
+    public WearableBakedModelProvider(ImmutableMap<ResourceLocation, ImmutableList<BakedQuad>> quads, TextureAtlasSprite particle, ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms) {
         this.quads = quads;
         this.particle = particle;
         this.transforms = transforms;
@@ -69,16 +70,22 @@ public class ComponentBakedModelProvider implements IBakedModel {
     }
 
     private final class Overrides extends ItemOverrideList {
-        private LoadingCache<ResourceLocation, IBakedModel> cache = CacheBuilder.newBuilder()
+        private LoadingCache<Wearable.Data, IBakedModel> cache = CacheBuilder.newBuilder()
                 .expireAfterAccess(10, TimeUnit.MINUTES)
                 .maximumSize(256)
-                .build(new CacheLoader<ResourceLocation, IBakedModel>() {
+                .build(new CacheLoader<Wearable.Data, IBakedModel>() {
                     @Override
-                    public IBakedModel load(@Nonnull ResourceLocation key) {
-                        ImmutableList<BakedQuad> componentQuads = ComponentBakedModelProvider.this.quads.get(key);
-                        TextureAtlasSprite particle = ComponentBakedModelProvider.this.particle;
-                        ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms = ComponentBakedModelProvider.this.transforms;
-                        return new WearableBakedModel(componentQuads, particle, transforms);
+                    public IBakedModel load(@Nonnull Wearable.Data data) {
+                        ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
+                        for (ResourceLocation component : data.types) {
+                            ImmutableList<BakedQuad> componentQuads = WearableBakedModelProvider.this.quads.get(component);
+                            if (componentQuads != null) {
+                                builder.addAll(componentQuads);
+                            }
+                        }
+                        TextureAtlasSprite particle = WearableBakedModelProvider.this.particle;
+                        ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms = WearableBakedModelProvider.this.transforms;
+                        return new WearableBakedModel(builder.build(), particle, transforms);
                     }
                 });
 
@@ -89,10 +96,7 @@ public class ComponentBakedModelProvider implements IBakedModel {
         @Override
         public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
             if (stack.hasTagCompound()) {
-                ResourceLocation identifier = WearableComponentItem.getComponent(stack).getType().getRegistryName();
-                if (identifier != null) {
-                    return this.cache.getUnchecked(identifier);
-                }
+                return this.cache.getUnchecked(WearableItem.getWearable(stack).toData());
             }
             return originalModel;
         }

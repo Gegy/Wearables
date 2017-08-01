@@ -17,12 +17,12 @@ import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
 import java.util.List;
 
-public class ComponentBakedModel implements IBakedModel {
+public class WearableBakedModel implements IBakedModel {
     private final ImmutableList<BakedQuad> quads;
     private final TextureAtlasSprite particle;
     private final ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms;
 
-    public ComponentBakedModel(ImmutableList<BakedQuad> quads, TextureAtlasSprite particle, ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms) {
+    public WearableBakedModel(ImmutableList<BakedQuad> quads, TextureAtlasSprite particle, ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms) {
         this.quads = quads;
         this.particle = particle;
         this.transforms = transforms;

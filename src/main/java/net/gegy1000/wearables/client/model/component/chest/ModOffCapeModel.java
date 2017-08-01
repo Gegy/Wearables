@@ -17,10 +17,10 @@ public class ModOffCapeModel extends WearableComponentModel {
     private ModelRenderer cape;
 
     public ModOffCapeModel() {
-        this.textureWidth = 64;
+        this.textureWidth = 32;
         this.textureHeight = 32;
         this.cape = new ModelRenderer(this, 0, 0);
-        this.cape.setTextureSize(64, 32);
+        this.cape.setTextureSize(32, 32);
         this.cape.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1, 0.0F);
     }
 
@@ -62,7 +62,7 @@ public class ModOffCapeModel extends WearableComponentModel {
     }
 
     @Override
-    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
-        this.buildCuboidParented(this.bipedBody, this.cape, matrix, builder, format, sprite);
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite, int layer) {
+        this.buildCuboidParented(this.bipedBody, this.cape, matrix, builder, format, sprite, layer);
     }
 }

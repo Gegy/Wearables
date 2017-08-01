@@ -51,7 +51,7 @@ public class WearableFabricatorContainer extends SyncedContainer {
             if (value < 0 || value >= components.size()) {
                 this.entity.setSelectedComponent(null);
             } else {
-                this.entity.setSelectedComponent(components.get(value));
+                this.entity.setSelectedComponent(ComponentRegistry.getRegistry().getValue(value));
             }
         }
     }
@@ -59,8 +59,7 @@ public class WearableFabricatorContainer extends SyncedContainer {
     @Override
     public int getField(int id) {
         if (id == 0) {
-            List<WearableComponentType> components = ComponentRegistry.getRegistry().getValues();
-            return components.indexOf(this.entity.getSelectedComponent());
+            return ComponentRegistry.getRegistry().getID(this.entity.getSelectedComponent());
         }
         return 0;
     }

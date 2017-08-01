@@ -182,18 +182,18 @@ public class WearableColouriserGui extends GuiContainer {
         int blueX = (int) (channel3 / 255.0F * 43);
 
         if (this.hsv) {
-            this.drawHorizontalHSVChannelGradientRect(111, 30, 163, 40, colour, 0);
-            this.drawHorizontalHSVChannelGradientRect(111, 49, 163, 59, colour, 1);
-            this.drawHorizontalHSVChannelGradientRect(111, 68, 163, 78, colour, 2);
+            this.drawHorizontalHSVChannelGradientRect(111, 19, 163, 29, colour, 0);
+            this.drawHorizontalHSVChannelGradientRect(111, 38, 163, 48, colour, 1);
+            this.drawHorizontalHSVChannelGradientRect(111, 57, 163, 67, colour, 2);
         } else {
-            this.drawHorizontalChannelMaskGradientRect(111, 30, 163, 40, colour, 0xFF0000);
-            this.drawHorizontalChannelMaskGradientRect(111, 49, 163, 59, colour, 0x00FF00);
-            this.drawHorizontalChannelMaskGradientRect(111, 68, 163, 78, colour, 0x0000FF);
+            this.drawHorizontalChannelMaskGradientRect(111, 19, 163, 29, colour, 0xFF0000);
+            this.drawHorizontalChannelMaskGradientRect(111, 38, 163, 48, colour, 0x00FF00);
+            this.drawHorizontalChannelMaskGradientRect(111, 57, 163, 67, colour, 0x0000FF);
         }
 
-        this.drawTexturedModalRect(111 + redX, 30, this.draggingSliders[0] ? 185 : 176, 24, 9, 10);
-        this.drawTexturedModalRect(111 + greenX, 49, this.draggingSliders[1] ? 185 : 176, 24, 9, 10);
-        this.drawTexturedModalRect(111 + blueX, 68, this.draggingSliders[2] ? 185 : 176, 24, 9, 10);
+        this.drawTexturedModalRect(111 + redX, 19, this.draggingSliders[0] ? 185 : 176, 24, 9, 10);
+        this.drawTexturedModalRect(111 + greenX, 38, this.draggingSliders[1] ? 185 : 176, 24, 9, 10);
+        this.drawTexturedModalRect(111 + blueX, 57, this.draggingSliders[2] ? 185 : 176, 24, 9, 10);
     }
 
     @Override
@@ -222,7 +222,7 @@ public class WearableColouriserGui extends GuiContainer {
         WearableComponent component = this.getComponent();
         if (component != null) {
             WearableComponentType.Layer[] layers = component.getType().getLayers(false);
-            for (int i = 0; i <  layers.length; i++) {
+            for (int i = 0; i < layers.length; i++) {
                 if (layers[i].canColour()) {
                     if (mouseX >= x + 7 && mouseY >= y + 7 + i * 12 && mouseX <= x + 43 && mouseY <= y + 19 + i * 12) {
                         this.selectedLayer = i;
@@ -258,7 +258,7 @@ public class WearableColouriserGui extends GuiContainer {
                     offsetX = blueX;
                 }
                 int sliderX = x + 111 + offsetX;
-                int sliderY = y + 30 + i * 20;
+                int sliderY = y + 19 + i * 20;
                 if (mouseX >= sliderX && mouseY >= sliderY && mouseX <= sliderX + 9 && mouseY <= sliderY + 10) {
                     this.draggingSliders[i] = true;
                     this.sliderOffsetX = mouseX - sliderX;

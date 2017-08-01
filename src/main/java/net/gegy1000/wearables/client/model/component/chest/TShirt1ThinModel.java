@@ -22,7 +22,7 @@ public class TShirt1ThinModel extends WearableComponentModel {
     private ModelRenderer shape_6;
 
     public TShirt1ThinModel() {
-        this.textureWidth = 64;
+        this.textureWidth = 32;
         this.textureHeight = 32;
         this.shape_6 = new ModelRenderer(this, 0, 0);
         this.shape_6.setRotationPoint(2.0F, 0.0F, 0.0F);
@@ -73,10 +73,10 @@ public class TShirt1ThinModel extends WearableComponentModel {
     }
 
     @Override
-    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
-        this.buildCuboidParented(this.bipedBody, this.chest, 0.95F, 0.0F, 0.025F, 0.0F, matrix, builder, format, sprite);
-        this.buildCuboidParented(this.bipedLeftArm, this.armLeft, 0.95F, 0.0F, -0.03F, 0.0F, matrix, builder, format, sprite);
-        this.buildCuboidParented(this.bipedRightArm, this.armRight, 0.95F, 0.0F, -0.03F, 0.0F, matrix, builder, format, sprite);
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite, int layer) {
+        this.buildCuboidParented(this.bipedBody, this.chest, 0.95F, 0.0F, 0.025F, 0.0F, matrix, builder, format, sprite, layer);
+        this.buildCuboidParented(this.bipedLeftArm, this.armLeft, 0.95F, 0.0F, -0.03F, 0.0F, matrix, builder, format, sprite, layer);
+        this.buildCuboidParented(this.bipedRightArm, this.armRight, 0.95F, 0.0F, -0.03F, 0.0F, matrix, builder, format, sprite, layer);
     }
 
 }

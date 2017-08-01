@@ -3,11 +3,11 @@ package net.gegy1000.wearables.server.item;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.gegy1000.wearables.client.ClientProxy;
-import net.gegy1000.wearables.server.api.item.RegisterBlockEntity;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
 import net.gegy1000.wearables.server.block.DisplayMannequinBlock;
 import net.gegy1000.wearables.server.tab.TabRegistry;
 import net.gegy1000.wearables.server.util.WearableColourUtils;
+import net.gegy1000.wearables.server.util.WearableTagCompound;
 import net.gegy1000.wearables.server.wearable.Wearable;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
@@ -25,8 +25,6 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
@@ -45,26 +43,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class WearableItem extends ItemArmor implements RegisterItemModel, RegisterBlockEntity, ISpecialArmor {
+public class WearableItem extends ItemArmor implements RegisterItemModel, ISpecialArmor {
     private static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("wearable", "leather", -1, new int[4], 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F);
 
-    private Class<? extends TileEntity> entity;
-
-    public WearableItem(Class<? extends TileEntity> entity, EntityEquipmentSlot slot) {
+    public WearableItem(EntityEquipmentSlot slot) {
         super(MATERIAL, 0, slot);
-        this.entity = entity;
         this.setCreativeTab(TabRegistry.TEMPLATES);
-    }
-
-    @Override
-    public Class<? extends TileEntity> getEntity() {
-        return this.entity;
     }
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
         if (this.isInCreativeTab(tab)) {
-            for (WearableComponentType componentType : ComponentRegistry.getRegistry().getValues()) {
+            for (WearableComponentType componentType : ComponentRegistry.getRegistry()) {
                 if (componentType.getCategory().getSlot() == this.armorType) {
                     for (int colourIndex = 0; colourIndex < 16; colourIndex++) {
                         int colour = WearableColourUtils.fromRGBFloatArray(EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colourIndex)));
@@ -206,11 +196,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     }
 
     public static Wearable getWearable(ItemStack stack) {
-        NBTTagCompound compound = stack.getTagCompound();
-        if (compound == null) {
-            compound = new NBTTagCompound();
-        }
-        return Wearable.deserialize(compound);
+        return WearableTagCompound.get(stack);
     }
 
     private static ItemStack getAppliedArmour(ItemStack stack) {

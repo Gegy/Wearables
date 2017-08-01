@@ -69,7 +69,7 @@ public class WearableFabricatorGui extends GuiContainer {
         RenderHelper.enableGUIStandardItemLighting();
         int componentX = 0;
         int componentY = MathHelper.floor(-this.scroll);
-        for (WearableComponentType componentType : ComponentRegistry.getRegistry().getValues()) {
+        for (WearableComponentType componentType : ComponentRegistry.getRegistry()) {
             int renderX = x + componentX * 18 + 22;
             int renderY = y + componentY * 18 + 8;
             if (componentY >= 0 && componentY < 4) {
@@ -156,7 +156,7 @@ public class WearableFabricatorGui extends GuiContainer {
 
         int componentX = 0;
         int componentY = MathHelper.floor(-this.scroll);
-        for (WearableComponentType componentType : ComponentRegistry.getRegistry().getValues()) {
+        for (WearableComponentType componentType : ComponentRegistry.getRegistry()) {
             int renderX = componentX * 18 + 22;
             int renderY = componentY * 18 + 8;
             if (componentY >= 0 && componentY < 4) {
@@ -196,7 +196,7 @@ public class WearableFabricatorGui extends GuiContainer {
         }
         int componentX = 0;
         int componentY = MathHelper.floor(-this.scroll);
-        for (WearableComponentType componentType : ComponentRegistry.getRegistry().getValues()) {
+        for (WearableComponentType componentType : ComponentRegistry.getRegistry()) {
             if (componentY >= 0 && componentY < 4) {
                 int renderX = x + componentX * 18 + 22;
                 int renderY = y + componentY * 18 + 8;

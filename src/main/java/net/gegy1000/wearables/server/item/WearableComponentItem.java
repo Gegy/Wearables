@@ -2,6 +2,7 @@ package net.gegy1000.wearables.server.item;
 
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
 import net.gegy1000.wearables.server.tab.TabRegistry;
+import net.gegy1000.wearables.server.util.ComponentTagCompound;
 import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
@@ -10,7 +11,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -34,7 +34,7 @@ public class WearableComponentItem extends Item implements RegisterItemModel {
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
         if (this.isInCreativeTab(tab)) {
-            for (WearableComponentType componentType : ComponentRegistry.getRegistry().getValues()) {
+            for (WearableComponentType componentType : ComponentRegistry.getRegistry()) {
                 WearableComponent component = new WearableComponent(componentType);
                 ItemStack stack = new ItemStack(this);
                 stack.setTagCompound(component.serializeNBT());
@@ -62,10 +62,6 @@ public class WearableComponentItem extends Item implements RegisterItemModel {
     }
 
     public static WearableComponent getComponent(ItemStack stack) {
-        NBTTagCompound compound = stack.getTagCompound();
-        if (compound == null) {
-            compound = new NBTTagCompound();
-        }
-        return WearableComponent.deserialize(compound);
+        return ComponentTagCompound.get(stack);
     }
 }

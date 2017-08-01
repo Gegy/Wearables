@@ -73,7 +73,7 @@ public class TieModel extends WearableComponentModel {
     }
 
     @Override
-    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
-        this.buildCuboidParented(this.bipedBody, this.shape15, matrix, builder, format, sprite);
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite, int layer) {
+        this.buildCuboidParented(this.bipedBody, this.shape15, matrix, builder, format, sprite, layer);
     }
 }

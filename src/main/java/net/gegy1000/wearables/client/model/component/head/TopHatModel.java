@@ -33,7 +33,7 @@ public class TopHatModel extends WearableComponentModel {
     private ModelRenderer shape1_19;
 
     public TopHatModel() {
-        this.textureWidth = 64;
+        this.textureWidth = 32;
         this.textureHeight = 32;
         this.base = new ModelRenderer(this, 0, 0);
         this.base.setRotationPoint(-4.5F, -8.0F, -4.5F);
@@ -130,7 +130,7 @@ public class TopHatModel extends WearableComponentModel {
     }
 
     @Override
-    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
-        this.buildCuboidParented(this.bipedHead, this.base, 1.0F, 0.0F, -0.0625F, 0.0F, matrix, builder, format, sprite);
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite, int layer) {
+        this.buildCuboidParented(this.bipedHead, this.base, 1.0F, 0.0F, -0.0625F, 0.0F, matrix, builder, format, sprite, layer);
     }
 }

@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "particle": "blocks/white_wool"
+    "particle": "blocks/wool_colored_white"
   },
   "display": {
     "gui": {

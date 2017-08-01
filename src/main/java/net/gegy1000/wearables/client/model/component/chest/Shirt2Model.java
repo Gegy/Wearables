@@ -20,7 +20,7 @@ public class Shirt2Model extends WearableComponentModel {
     private ModelRenderer armLeft;
 
     public Shirt2Model() {
-        this.textureWidth = 64;
+        this.textureWidth = 32;
         this.textureHeight = 32;
         this.shape_1 = new ModelRenderer(this, 0, 0);
         this.shape_1.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -61,9 +61,9 @@ public class Shirt2Model extends WearableComponentModel {
     }
 
     @Override
-    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
-        this.buildCuboidParented(this.bipedBody, this.chest, matrix, builder, format, sprite);
-        this.buildCuboidParented(this.bipedLeftArm, this.armLeft, 1.0F, 0.0F, -0.01F, 0.0F, matrix, builder, format, sprite);
-        this.buildCuboidParented(this.bipedRightArm, this.armRight, 1.0F, 0.0F, -0.01F, 0.0F, matrix, builder, format, sprite);
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite, int layer) {
+        this.buildCuboidParented(this.bipedBody, this.chest, matrix, builder, format, sprite, layer);
+        this.buildCuboidParented(this.bipedLeftArm, this.armLeft, 1.0F, 0.0F, -0.01F, 0.0F, matrix, builder, format, sprite, layer);
+        this.buildCuboidParented(this.bipedRightArm, this.armRight, 1.0F, 0.0F, -0.01F, 0.0F, matrix, builder, format, sprite, layer);
     }
 }

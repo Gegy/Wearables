@@ -237,7 +237,7 @@ public class WingsModel extends WearableComponentModel {
     }
 
     @Override
-    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite, int layer) {
         float flapOffset = this.calculateChainOffset(-2, this.rightWingParts);
         for (int index = 0; index < this.rightWingParts.length; index++) {
             ModelRenderer part = this.rightWingParts[index];
@@ -262,6 +262,6 @@ public class WingsModel extends WearableComponentModel {
             }
         }
 
-        this.buildCuboidParented(this.bipedBody, this.Main, matrix, builder, format, sprite);
+        this.buildCuboidParented(this.bipedBody, this.Main, matrix, builder, format, sprite, layer);
     }
 }

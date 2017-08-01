@@ -6,7 +6,6 @@ import net.gegy1000.wearables.client.render.block.MannequinHeadStandRenderer;
 import net.gegy1000.wearables.client.render.block.WearableAssemblerRenderer;
 import net.gegy1000.wearables.client.render.block.WearableColouriserRenderer;
 import net.gegy1000.wearables.client.render.block.WearableFabricatorRenderer;
-import net.gegy1000.wearables.client.render.item.WearableItemRenderer;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
 import net.gegy1000.wearables.server.block.BlockRegistry;
 import net.gegy1000.wearables.server.block.DisplayMannequinBlock;
@@ -19,10 +18,6 @@ import net.gegy1000.wearables.server.block.entity.MannequinHeadStandEntity;
 import net.gegy1000.wearables.server.block.entity.machine.WearableAssemblerEntity;
 import net.gegy1000.wearables.server.block.entity.machine.WearableColouriserEntity;
 import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEntity;
-import net.gegy1000.wearables.server.block.entity.wearable.WearableChestItemEntity;
-import net.gegy1000.wearables.server.block.entity.wearable.WearableFeetItemEntity;
-import net.gegy1000.wearables.server.block.entity.wearable.WearableHeadItemEntity;
-import net.gegy1000.wearables.server.block.entity.wearable.WearableLegsItemEntity;
 import net.gegy1000.wearables.server.item.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -61,19 +56,11 @@ public class RenderRegistry {
 
         ClientRegistry.bindTileEntitySpecialRenderer(DisplayMannequinEntity.class, new DisplayMannequinRenderer());
 
-        ClientRegistry.bindTileEntitySpecialRenderer(WearableHeadItemEntity.class, new WearableItemRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(WearableChestItemEntity.class, new WearableItemRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(WearableLegsItemEntity.class, new WearableItemRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(WearableFeetItemEntity.class, new WearableItemRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(MannequinHeadStandEntity.class, new MannequinHeadStandRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(WearableFabricatorEntity.class, new WearableFabricatorRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(WearableColouriserEntity.class, new WearableColouriserRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(WearableAssemblerEntity.class, new WearableAssemblerRenderer());
 
-        ForgeHooksClient.registerTESRItemStack(ItemRegistry.WEARABLE_HEAD, 0, WearableHeadItemEntity.class);
-        ForgeHooksClient.registerTESRItemStack(ItemRegistry.WEARABLE_CHEST, 0, WearableChestItemEntity.class);
-        ForgeHooksClient.registerTESRItemStack(ItemRegistry.WEARABLE_LEGS, 0, WearableLegsItemEntity.class);
-        ForgeHooksClient.registerTESRItemStack(ItemRegistry.WEARABLE_FEET, 0, WearableFeetItemEntity.class);
         ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(BlockRegistry.WEARABLE_FABRICATOR), 0, WearableFabricatorEntity.class);
         ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(BlockRegistry.WEARABLE_COLOURISER), 0, WearableColouriserEntity.class);
         ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(BlockRegistry.WEARABLE_ASSEMBLER), 0, WearableAssemblerEntity.class);

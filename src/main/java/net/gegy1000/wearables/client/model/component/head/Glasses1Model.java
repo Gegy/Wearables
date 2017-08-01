@@ -370,7 +370,7 @@ public class Glasses1Model extends WearableComponentModel {
     }
 
     @Override
-    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
-        this.buildCuboidParented(this.bipedHead, this.joint, 0.5F, 0.0F, 0.0F, 0.0F, matrix, builder, format, sprite);
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite, int layer) {
+        this.buildCuboidParented(this.bipedHead, this.joint, 0.5F, 0.0F, 0.0F, 0.0F, matrix, builder, format, sprite, layer);
     }
 }

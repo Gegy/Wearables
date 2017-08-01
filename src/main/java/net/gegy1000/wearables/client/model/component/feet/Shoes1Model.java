@@ -32,7 +32,7 @@ public class Shoes1Model extends WearableComponentModel {
     private ModelRenderer shape_17;
 
     public Shoes1Model() {
-        this.textureWidth = 64;
+        this.textureWidth = 32;
         this.textureHeight = 32;
         this.shape_12 = new ModelRenderer(this, 0, 16);
         this.shape_12.setRotationPoint(0.2999999999999998F, -0.8000000000000007F, -0.10000000000000003F);
@@ -121,8 +121,8 @@ public class Shoes1Model extends WearableComponentModel {
     }
 
     @Override
-    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
-        this.buildCuboidParented(this.bipedRightLeg, this.rightBase, 1.1F, 0.0F, -0.05F, 0.0F, matrix, builder, format, sprite);
-        this.buildCuboidParented(this.bipedLeftLeg, this.leftBase, 1.1F, 0.0F, -0.05F, 0.0F, matrix, builder, format, sprite);
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite, int layer) {
+        this.buildCuboidParented(this.bipedRightLeg, this.rightBase, 1.1F, 0.0F, -0.05F, 0.0F, matrix, builder, format, sprite, layer);
+        this.buildCuboidParented(this.bipedLeftLeg, this.leftBase, 1.1F, 0.0F, -0.05F, 0.0F, matrix, builder, format, sprite, layer);
     }
 }

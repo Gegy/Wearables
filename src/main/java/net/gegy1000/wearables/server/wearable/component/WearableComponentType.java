@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import mcp.MethodsReturnNonnullByDefault;
+import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.server.movement.MovementHandler;
 import net.gegy1000.wearables.server.movement.MovementHandlerRegistry;
 import net.gegy1000.wearables.server.wearable.WearableCategory;
@@ -135,13 +136,13 @@ public interface WearableComponentType extends IForgeRegistryEntry<WearableCompo
         private Layer(ResourceLocation model, ResourceLocation texture, boolean canColour) {
             this.model = model;
             this.texture = texture;
-            this.qualifiedTexture = texture != null ? new ResourceLocation(texture.getResourceDomain(), "textures/" + texture.getResourcePath() + ".png") : null;
+            this.qualifiedTexture = new ResourceLocation(texture.getResourceDomain(), "textures/" + texture.getResourcePath() + ".png");
             this.canColour = canColour;
         }
 
         public static Layer deserialize(JsonObject root) {
             ResourceLocation model = new ResourceLocation(JsonUtils.getString(root, "model"));
-            ResourceLocation texture = null;
+            ResourceLocation texture = new ResourceLocation(Wearables.MODID, "component/blank");
             if (root.has("texture")) {
                 texture = new ResourceLocation(JsonUtils.getString(root, "texture"));
             }

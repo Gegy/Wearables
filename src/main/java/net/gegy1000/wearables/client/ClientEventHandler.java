@@ -10,6 +10,7 @@ import net.gegy1000.wearables.server.wearable.component.ComponentTypes;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.ilexiconn.llibrary.client.event.PlayerModelEvent;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -86,7 +87,7 @@ public class ClientEventHandler {
 
         if (!WearableUtils.onGround(player)) {
             LocalPlayerState state = LocalPlayerState.getState(player);
-            ModelPlayer model = event.getModel();
+            ModelBiped model = event.getModel();
             List<WearableComponentType> components = WearableUtils.getActiveComponents(player);
             if (components.contains(ComponentTypes.JETPACK) || components.contains(ComponentTypes.WINGS)) {
                 if (!player.isInWater() && state.isAirborne()) {
@@ -94,10 +95,13 @@ public class ClientEventHandler {
                     model.bipedLeftArm.rotateAngleX = 0.0F;
                     model.bipedRightLeg.rotateAngleX = 0.0F;
                     model.bipedLeftLeg.rotateAngleX = 0.0F;
-                    model.bipedRightArmwear.rotateAngleX = 0.0F;
-                    model.bipedLeftArmwear.rotateAngleX = 0.0F;
-                    model.bipedRightLegwear.rotateAngleX = 0.0F;
-                    model.bipedLeftLegwear.rotateAngleX = 0.0F;
+                    if (model instanceof ModelPlayer) {
+                        ModelPlayer playerModel = (ModelPlayer) model;
+                        playerModel.bipedRightArmwear.rotateAngleX = 0.0F;
+                        playerModel.bipedLeftArmwear.rotateAngleX = 0.0F;
+                        playerModel.bipedRightLegwear.rotateAngleX = 0.0F;
+                        playerModel.bipedLeftLegwear.rotateAngleX = 0.0F;
+                    }
                     if (state.isFlyToggle() && components.contains(ComponentTypes.WINGS)) {
                         model.bipedHead.rotateAngleX = -1.55F;
                         model.bipedHeadwear.rotateAngleX = -1.55F;

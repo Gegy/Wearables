@@ -73,8 +73,8 @@ public class Pants1Model extends WearableComponentModel {
     }
 
     @Override
-    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
-        this.buildCuboidParented(this.bipedRightLeg, this.baseRight, matrix, builder, format, sprite);
-        this.buildCuboidParented(this.bipedLeftLeg, this.baseLeft, matrix, builder, format, sprite);
+    public void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite, int layer) {
+        this.buildCuboidParented(this.bipedRightLeg, this.baseRight, matrix, builder, format, sprite, layer);
+        this.buildCuboidParented(this.bipedLeftLeg, this.baseLeft, matrix, builder, format, sprite, layer);
     }
 }

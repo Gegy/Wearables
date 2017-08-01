@@ -83,21 +83,21 @@ public abstract class WearableComponentModel extends ModelBiped implements IForg
         this.offsetZ = offsetZ / 2.0F;
     }
 
-    public abstract void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite);
+    public abstract void buildQuads(Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite, int layer);
 
-    protected void buildCuboidParented(ModelRenderer parent, ModelRenderer cuboid, Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
+    protected void buildCuboidParented(ModelRenderer parent, ModelRenderer cuboid, Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite, int layer) {
         matrix.push();
         this.postRender(parent, matrix);
-        this.buildCuboid(cuboid, matrix, builder, format, sprite);
+        this.buildCuboid(cuboid, matrix, builder, format, sprite, layer);
         matrix.pop();
     }
 
-    protected void buildCuboidParented(ModelRenderer parent, ModelRenderer cuboid, float renderScale, float offsetX, float offsetY, float offsetZ, Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
+    protected void buildCuboidParented(ModelRenderer parent, ModelRenderer cuboid, float renderScale, float offsetX, float offsetY, float offsetZ, Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite, int layer) {
         matrix.push();
         this.postRender(parent, matrix);
-        matrix.translate(offsetX, offsetY, offsetZ);
+        matrix.translate(offsetX / 0.0625F, offsetY / 0.0625F, offsetZ / 0.0625F);
         matrix.scale(renderScale, renderScale, renderScale);
-        this.buildCuboid(cuboid, matrix, builder, format, sprite);
+        this.buildCuboid(cuboid, matrix, builder, format, sprite, layer);
         matrix.pop();
     }
 
@@ -120,7 +120,7 @@ public abstract class WearableComponentModel extends ModelBiped implements IForg
         }
     }
 
-    protected void buildCuboid(ModelRenderer cuboid, Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite) {
+    protected void buildCuboid(ModelRenderer cuboid, Matrix matrix, ImmutableList.Builder<BakedQuad> builder, VertexFormat format, TextureAtlasSprite sprite, int layer) {
         matrix.push();
         matrix.translate(cuboid.rotationPointX, cuboid.rotationPointY, cuboid.rotationPointZ);
 
@@ -135,27 +135,27 @@ public abstract class WearableComponentModel extends ModelBiped implements IForg
         }
 
         for (ModelBox box : cuboid.cubeList) {
-            this.buildBox(box, builder, matrix, format, sprite);
+            this.buildBox(box, builder, matrix, format, sprite, layer);
         }
 
         if (cuboid.childModels != null) {
             for (ModelRenderer child : cuboid.childModels) {
-                this.buildCuboid(child, matrix, builder, format, sprite);
+                this.buildCuboid(child, matrix, builder, format, sprite, layer);
             }
         }
 
         matrix.pop();
     }
 
-    private void buildBox(ModelBox box, ImmutableList.Builder<BakedQuad> builder, Matrix matrix, VertexFormat format, TextureAtlasSprite sprite) {
+    private void buildBox(ModelBox box, ImmutableList.Builder<BakedQuad> builder, Matrix matrix, VertexFormat format, TextureAtlasSprite sprite, int layer) {
         TexturedQuad[] quads = ClientProxy.getQuadList(box);
 
         for (TexturedQuad quad : quads) {
-            this.buildQuad(builder, matrix, format, quad, sprite);
+            this.buildQuad(builder, matrix, format, quad, sprite, layer);
         }
     }
 
-    private void buildQuad(ImmutableList.Builder<BakedQuad> builder, Matrix matrix, VertexFormat format, TexturedQuad quad, TextureAtlasSprite sprite) {
+    private void buildQuad(ImmutableList.Builder<BakedQuad> builder, Matrix matrix, VertexFormat format, TexturedQuad quad, TextureAtlasSprite sprite, int layer) {
         Vec3d[] transformedVertices = new Vec3d[quad.nVertices];
 
         for (int i = 0; i < transformedVertices.length; i++) {
@@ -173,6 +173,7 @@ public abstract class WearableComponentModel extends ModelBiped implements IForg
         EnumFacing quadFacing = EnumFacing.getFacingFromVector((float) normal.x, (float) normal.y, (float) normal.z);
         quadBuilder.setQuadOrientation(quadFacing);
         quadBuilder.setTexture(sprite);
+        quadBuilder.setQuadTint(layer);
 
         for (int i = 0; i < quad.nVertices; i++) {
             PositionTextureVertex vertex = quad.vertexPositions[i];

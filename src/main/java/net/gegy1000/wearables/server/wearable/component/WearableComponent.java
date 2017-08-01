@@ -1,14 +1,13 @@
 package net.gegy1000.wearables.server.wearable.component;
 
 import net.gegy1000.wearables.Wearables;
+import net.gegy1000.wearables.server.util.ComponentTagCompound;
 import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.INBTSerializable;
-
-import java.util.Arrays;
 
 public class WearableComponent implements INBTSerializable<NBTTagCompound> {
     private WearableComponentType type;
@@ -80,7 +79,7 @@ public class WearableComponent implements INBTSerializable<NBTTagCompound> {
 
     @Override
     public NBTTagCompound serializeNBT() {
-        NBTTagCompound compound = new NBTTagCompound();
+        NBTTagCompound compound = new ComponentTagCompound();
         compound.setString("identifier", this.type.getRegistryName().toString());
         compound.setIntArray("colour_layers", this.colours);
         compound.setFloat("offset_y", this.offsetY);
@@ -129,33 +128,5 @@ public class WearableComponent implements INBTSerializable<NBTTagCompound> {
 
     public WearableComponent copy() {
         return WearableComponent.deserialize(this.serializeNBT().copy());
-    }
-
-    public Data toData() {
-        return new Data(this.type, this.colours);
-    }
-
-    public static final class Data {
-        public final int type;
-        public final int[] colours;
-
-        private Data(WearableComponentType type, int[] colours) {
-            this.type = ComponentRegistry.getRegistry().getValues().indexOf(type);
-            this.colours = colours;
-        }
-
-        @Override
-        public int hashCode() {
-            return this.type << 16 | Arrays.hashCode(this.colours);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj instanceof Data) {
-                Data data = (Data) obj;
-                return data.type == this.type && Arrays.equals(data.colours, this.colours);
-            }
-            return false;
-        }
     }
 }

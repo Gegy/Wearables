@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
@@ -29,12 +30,12 @@ import java.io.Reader;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class ComponentItemModel implements IModel {
+public class WearableItemModel implements IModel {
     private final ImmutableList<ResourceLocation> textures;
 
     private final ItemCameraTransforms transforms;
 
-    public ComponentItemModel(ImmutableList<ResourceLocation> textures, ItemCameraTransforms transforms) {
+    public WearableItemModel(ImmutableList<ResourceLocation> textures, ItemCameraTransforms transforms) {
         this.textures = textures;
         this.transforms = transforms;
     }
@@ -50,14 +51,15 @@ public class ComponentItemModel implements IModel {
             ResourceLocation identifier = componentType.getRegistryName();
             if (identifier != null) {
                 ImmutableList.Builder<BakedQuad> componentBuilder = ImmutableList.builder();
-                ComponentRenderHandler.buildComponentQuads(componentType, matrix, componentBuilder, format, textures, 0);
+                int id = ComponentRegistry.getRegistry().getID(identifier);
+                ComponentRenderHandler.buildComponentQuads(componentType, matrix, componentBuilder, format, textures, (id & 0xFFFF) << 16);
                 builder.put(identifier, componentBuilder.build());
             }
         }
 
         ResourceLocation particle = this.textures.isEmpty() ? new ResourceLocation("missingno") : this.textures.get(0);
 
-        return new ComponentBakedModelProvider(builder.build(), textures.apply(particle), PerspectiveMapWrapper.getTransforms(this.transforms));
+        return new WearableBakedModelProvider(builder.build(), textures.apply(particle), PerspectiveMapWrapper.getTransforms(this.transforms));
     }
 
     @Override
@@ -70,7 +72,16 @@ public class ComponentItemModel implements IModel {
 
         @Override
         public boolean accepts(ResourceLocation modelLocation) {
-            return modelLocation.getResourceDomain().equals(Wearables.MODID) && modelLocation.getResourcePath().equals("models/item/wearable_component");
+            if (modelLocation.getResourceDomain().equals(Wearables.MODID)) {
+                for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+                    if (slot.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
+                        if (modelLocation.getResourcePath().equals("models/item/wearable_" + slot.getName())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
         }
 
         @Override
@@ -93,7 +104,7 @@ public class ComponentItemModel implements IModel {
                     }
                 }
             }
-            return new ComponentItemModel(builder.build(), modelBlock.getAllTransforms());
+            return new WearableItemModel(builder.build(), modelBlock.getAllTransforms());
         }
 
         @Override

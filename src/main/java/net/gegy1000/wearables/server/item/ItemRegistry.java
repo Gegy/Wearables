@@ -2,10 +2,6 @@ package net.gegy1000.wearables.server.item;
 
 import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.server.api.item.RegisterBlockEntity;
-import net.gegy1000.wearables.server.block.entity.wearable.WearableChestItemEntity;
-import net.gegy1000.wearables.server.block.entity.wearable.WearableFeetItemEntity;
-import net.gegy1000.wearables.server.block.entity.wearable.WearableHeadItemEntity;
-import net.gegy1000.wearables.server.block.entity.wearable.WearableLegsItemEntity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -43,10 +39,10 @@ public class ItemRegistry {
         ItemRegistry.register(registry, new DisplayMannequinItem(), new ResourceLocation(Wearables.MODID, "display_mannequin_item"));
         ItemRegistry.register(registry, new JetpackFuelItem(), new ResourceLocation(Wearables.MODID, "jetpack_fuel"));
 
-        ItemRegistry.register(registry, new WearableItem(WearableHeadItemEntity.class, EntityEquipmentSlot.HEAD), new ResourceLocation(Wearables.MODID, "wearable_head"));
-        ItemRegistry.register(registry, new WearableItem(WearableChestItemEntity.class, EntityEquipmentSlot.CHEST), new ResourceLocation(Wearables.MODID, "wearable_chest"));
-        ItemRegistry.register(registry, new WearableItem(WearableLegsItemEntity.class, EntityEquipmentSlot.LEGS), new ResourceLocation(Wearables.MODID, "wearable_legs"));
-        ItemRegistry.register(registry, new WearableItem(WearableFeetItemEntity.class, EntityEquipmentSlot.FEET), new ResourceLocation(Wearables.MODID, "wearable_feet"));
+        ItemRegistry.register(registry, new WearableItem(EntityEquipmentSlot.HEAD), new ResourceLocation(Wearables.MODID, "wearable_head"));
+        ItemRegistry.register(registry, new WearableItem(EntityEquipmentSlot.CHEST), new ResourceLocation(Wearables.MODID, "wearable_chest"));
+        ItemRegistry.register(registry, new WearableItem(EntityEquipmentSlot.LEGS), new ResourceLocation(Wearables.MODID, "wearable_legs"));
+        ItemRegistry.register(registry, new WearableItem(EntityEquipmentSlot.FEET), new ResourceLocation(Wearables.MODID, "wearable_feet"));
 
         ItemRegistry.register(registry, new WearableComponentItem(), new ResourceLocation(Wearables.MODID, "wearable_component"));
     }

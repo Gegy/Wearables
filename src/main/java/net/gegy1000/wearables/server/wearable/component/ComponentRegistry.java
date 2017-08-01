@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import org.apache.commons.io.FilenameUtils;
 
@@ -33,11 +33,11 @@ public class ComponentRegistry {
 
     public static final WearableComponentType BLANK = new BlankComponent();
 
-    private static IForgeRegistry<WearableComponentType> registry;
+    private static ForgeRegistry<WearableComponentType> registry;
 
     @SubscribeEvent
     public static void onNewRegistry(RegistryEvent.NewRegistry event) {
-        registry = new RegistryBuilder<WearableComponentType>()
+        registry = (ForgeRegistry<WearableComponentType>) new RegistryBuilder<WearableComponentType>()
                 .setType(WearableComponentType.class)
                 .setName(REGISTRY_NAME)
                 .setDefaultKey(BLANK.getRegistryName())
@@ -79,7 +79,7 @@ public class ComponentRegistry {
         return CATEGORIES.get(category);
     }
 
-    public static IForgeRegistry<WearableComponentType> getRegistry() {
+    public static ForgeRegistry<WearableComponentType> getRegistry() {
         return registry;
     }
 }

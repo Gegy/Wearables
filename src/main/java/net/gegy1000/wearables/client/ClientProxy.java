@@ -7,6 +7,7 @@ import net.gegy1000.wearables.client.gui.WearableColouriserGui;
 import net.gegy1000.wearables.client.gui.WearableFabricatorGui;
 import net.gegy1000.wearables.client.model.BlankModel;
 import net.gegy1000.wearables.client.model.baked.ComponentItemModel;
+import net.gegy1000.wearables.client.model.baked.WearableItemModel;
 import net.gegy1000.wearables.client.render.layer.WearableRenderLayer;
 import net.gegy1000.wearables.server.ServerProxy;
 import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
@@ -15,9 +16,17 @@ import net.gegy1000.wearables.server.block.entity.machine.WearableColouriserEnti
 import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEntity;
 import net.gegy1000.wearables.server.container.WearableAssemblerContainer;
 import net.gegy1000.wearables.server.container.WearableColouriserContainer;
+import net.gegy1000.wearables.server.item.ItemRegistry;
+import net.gegy1000.wearables.server.item.WearableComponentItem;
+import net.gegy1000.wearables.server.item.WearableItem;
+import net.gegy1000.wearables.server.wearable.Wearable;
+import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
+import net.gegy1000.wearables.server.wearable.component.WearableComponent;
+import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.TexturedQuad;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderPlayer;
@@ -45,6 +54,7 @@ public class ClientProxy extends ServerProxy {
         super.onPreInit();
 
         ModelLoaderRegistry.registerLoader(ComponentItemModel.Loader.INSTANCE);
+        ModelLoaderRegistry.registerLoader(WearableItemModel.Loader.INSTANCE);
 
         try {
             quadList = ReflectionHelper.findField(ModelBox.class, "field_78254_i", "quadList");
@@ -73,6 +83,33 @@ public class ClientProxy extends ServerProxy {
                 renderLiving.addLayer(new WearableRenderLayer(renderLiving));
             }
         }
+
+        MC.getItemColors().registerItemColorHandler((stack, tintIndex) -> {
+            WearableComponent component = WearableComponentItem.getComponent(stack);
+            if (component != null) {
+                return component.getColour(tintIndex);
+            }
+            return 0xFFFFFF;
+        }, ItemRegistry.WEARABLE_COMPONENT);
+
+        IItemColor wearableColourHandler = (stack, tintIndex) -> {
+            Wearable wearable = WearableItem.getWearable(stack);
+            if (wearable != null) {
+                int id = tintIndex >> 16 & 0xFFFF;
+                WearableComponentType type = ComponentRegistry.getRegistry().getValue(id);
+                for (WearableComponent component : wearable.getComponents()) {
+                    if (component.getType() == type) {
+                        return component.getColour(tintIndex & 0xFFFF);
+                    }
+                }
+            }
+            return 0xFFFFFF;
+        };
+
+        MC.getItemColors().registerItemColorHandler(wearableColourHandler, ItemRegistry.WEARABLE_HEAD);
+        MC.getItemColors().registerItemColorHandler(wearableColourHandler, ItemRegistry.WEARABLE_CHEST);
+        MC.getItemColors().registerItemColorHandler(wearableColourHandler, ItemRegistry.WEARABLE_LEGS);
+        MC.getItemColors().registerItemColorHandler(wearableColourHandler, ItemRegistry.WEARABLE_FEET);
     }
 
     @Override
