@@ -6,10 +6,10 @@
     "|#|"
   ],
   "key": {
-    "_": {"item": "minecraft:carpet", "data": 32767},
-    "|": {"item": "minecraft:quartz_block", "data": 32767},
+    "_": {"item": "minecraft:carpet", "data": 0},
+    "|": {"type": "forge:ore_dict", "ore": "blockQuartz"},
     "o": {"item": "minecraft:clay_ball"},
-    "#": {"item": "minecraft:planks", "data": 32767}
+    "#": {"type": "forge:ore_dict", "ore": "plankWood"}
   },
   "result": {"item": "wearables:wearable_fabricator"}
 }

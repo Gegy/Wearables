@@ -6,12 +6,12 @@
     "|-|"
   ],
   "key": {
-    "r": {"item": "minecraft:dye", "data": 1},
-    "g": {"item": "minecraft:dye", "data": 2},
-    "b": {"item": "minecraft:dye", "data": 4},
-    "|": {"item": "minecraft:quartz_block", "data": -1},
+    "r": {"type": "forge:ore_dict", "ore": "dyeRed"},
+    "g": {"type": "forge:ore_dict", "ore": "dyeGreen"},
+    "b": {"type": "forge:ore_dict", "ore": "dyeBlue"},
+    "|": {"type": "forge:ore_dict", "ore": "blockQuartz"},
     "u": {"item": "minecraft:glass_bottle"},
-    "-": {"item": "minecraft:iron_ingot"}
+    "-": {"type": "forge:ore_dict", "ore": "ingotIron"}
   },
   "result": {"item": "wearables:wearable_colouriser"}
 }

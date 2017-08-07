@@ -8,12 +8,15 @@ import net.gegy1000.wearables.server.network.UpdateMovementMessage;
 import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.component.ComponentTypes;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
+import net.ilexiconn.llibrary.client.event.ApplyRenderRotationsEvent;
 import net.ilexiconn.llibrary.client.event.PlayerModelEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -32,6 +35,8 @@ public class ClientEventHandler {
     public static int ticks = 0;
 
     private static MovementState movementState;
+
+    private static boolean removeNightVision;
 
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
@@ -112,6 +117,34 @@ public class ClientEventHandler {
                     model.bipedHead.rotateAngleX = -1.55F;
                     model.bipedHeadwear.rotateAngleX = -1.55F;
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRenderTick(TickEvent.RenderTickEvent event) {
+        if (MC.player != null) {
+            if (event.phase == TickEvent.Phase.START) {
+                if (WearableUtils.hasComponent(MC.player, ComponentTypes.NIGHT_VISION_GOGGLES)) {
+                    if (!MC.player.isPotionActive(MobEffects.NIGHT_VISION)) {
+                        MC.player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 1000));
+                        removeNightVision = true;
+                    }
+                }
+            } else if (removeNightVision) {
+                MC.player.removeActivePotionEffect(MobEffects.NIGHT_VISION);
+                removeNightVision = false;
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onApplyRotation(ApplyRenderRotationsEvent.Post event) {
+        if (event.getEntity() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.getEntity();
+            List<MovementHandler> movementHandlers = WearableUtils.getMovementHandlers(player);
+            for (MovementHandler movementHandler : movementHandlers) {
+                movementHandler.applyRotations(player, event.getPartialTicks());
             }
         }
     }

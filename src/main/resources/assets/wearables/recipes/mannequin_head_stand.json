@@ -5,8 +5,8 @@
     "wqw"
   ],
   "key": {
-    "q": {"item": "minecraft:quartz_block", "data": 32767},
-    "w": {"item": "minecraft:wooden_slab", "data": 32767}
+    "q": {"type": "forge:ore_dict", "ore": "plankWood"},
+    "w": {"type": "forge:ore_dict", "ore": "slabWood"}
   },
   "result": {"item": "wearables:mannequin_head_stand"}
 }

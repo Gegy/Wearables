@@ -6,9 +6,9 @@
     "___"
   ],
   "key": {
-    "_": {"item": "minecraft:stone_slab", "data": 32767},
-    "|": {"item": "minecraft:stick"},
-    "#": {"item": "minecraft:planks", "data": 32767}
+    "_": {"item": "minecraft:stone_slab", "data": 3},
+    "|": {"type": "forge:ore_dict", "ore": "stickWood"},
+    "#": {"type": "forge:ore_dict", "ore": "plankWood"}
   },
   "result": {"item": "wearables:wearable_assembler"}
 }

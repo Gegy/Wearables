@@ -6,10 +6,10 @@
     "wgw"
   ],
   "key": {
-    "q": {"item": "minecraft:quartz_block", "data": 32767},
+    "q": {"type": "forge:ore_dict", "ore": "blockQuartz"},
     "s": {"item": "minecraft:stone_slab", "data": 7},
-    "g": {"item": "minecraft:glowstone"},
-    "w": {"item": "minecraft:wooden_slab", "data": 32767}
+    "g": {"type": "forge:ore_dict", "ore": "glowstone"},
+    "w": {"type": "forge:ore_dict", "ore": "slabWood"}
   },
   "result": {"item": "wearables:display_mannequin"}
 }
