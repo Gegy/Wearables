@@ -29,8 +29,9 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
-@Mod.EventBusSubscriber(modid = Wearables.MODID)
+@Mod.EventBusSubscriber(value = Side.CLIENT, modid = Wearables.MODID)
 public class RenderRegistry {
     @SubscribeEvent
     public static void onRegisterModels(ModelRegistryEvent event) {
