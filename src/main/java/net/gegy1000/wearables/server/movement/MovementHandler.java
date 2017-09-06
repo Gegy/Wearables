@@ -7,6 +7,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
@@ -39,6 +41,7 @@ public abstract class MovementHandler implements IForgeRegistryEntry<MovementHan
 
     public abstract void updateMovement(EntityPlayer player, MovementState movementState);
 
+    @SideOnly(Side.CLIENT)
     public abstract void applyRotations(EntityPlayer player, float partialTicks);
 
     public boolean isEnabled(EntityPlayer player) {

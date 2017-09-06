@@ -18,7 +18,7 @@ public class WearableComponent implements INBTSerializable<NBTTagCompound> {
     public WearableComponent(WearableComponentType type) {
         this.type = type;
         this.colours = new int[type.getLayers(false).length];
-        int colour = WearableColourUtils.fromRGBFloatArray(EntitySheep.getDyeRgb(EnumDyeColor.WHITE));
+        int colour = WearableColourUtils.fromRGBFloatArray(WearableColourUtils.getDyeRgb(EnumDyeColor.WHITE));
         for (int layer = 0; layer < this.colours.length; layer++) {
             this.colours[layer] = colour;
         }

@@ -39,10 +39,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Field;
 import java.util.Map;
 
+@SideOnly(Side.CLIENT)
 public class ClientProxy extends ServerProxy {
     public static final BlankModel BLANK_MODEL = new BlankModel();
     private static final Minecraft MC = Minecraft.getMinecraft();

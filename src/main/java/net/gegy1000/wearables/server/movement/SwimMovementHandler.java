@@ -4,6 +4,8 @@ import net.ilexiconn.llibrary.client.util.ClientUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SwimMovementHandler extends MovementHandler {
     @Override
@@ -32,6 +34,7 @@ public class SwimMovementHandler extends MovementHandler {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void applyRotations(EntityPlayer player, float partialTicks) {
         float animationTimer = LocalPlayerState.getState(player).getRenderSwimTimer(partialTicks);
         float roll = ClientUtils.interpolateRotation(player.prevRenderYawOffset - player.prevRotationYaw, player.renderYawOffset - player.rotationYaw, partialTicks);

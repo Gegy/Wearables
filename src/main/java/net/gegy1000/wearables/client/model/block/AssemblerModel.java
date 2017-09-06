@@ -3,7 +3,10 @@ package net.gegy1000.wearables.client.model.block;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class AssemblerModel extends ModelBase {
     private ModelRenderer base;
     private ModelRenderer body;

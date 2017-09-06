@@ -30,8 +30,10 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = Wearables.MODID)
+@SideOnly(Side.CLIENT)
 public class RenderRegistry {
     @SubscribeEvent
     public static void onRegisterModels(ModelRegistryEvent event) {

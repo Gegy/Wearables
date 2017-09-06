@@ -1,6 +1,8 @@
 package net.gegy1000.wearables.server.container;
 
 import net.minecraft.inventory.IContainerListener;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class SyncedContainer extends AutoTransferContainer {
     private final int[] fields;
@@ -24,6 +26,7 @@ public abstract class SyncedContainer extends AutoTransferContainer {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void updateProgressBar(int id, int value) {
         super.updateProgressBar(id, value);
         this.setField(id, value);

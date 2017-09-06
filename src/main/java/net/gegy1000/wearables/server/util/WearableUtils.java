@@ -17,6 +17,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class WearableUtils {
     private static final float TO_RADIANS = 0.017453292F;
     private static final EntityEquipmentSlot[] ARMOUR_SLOTS = new EntityEquipmentSlot[] { EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET };
 
+    @SideOnly(Side.CLIENT)
     public static boolean hasSlimArms(Entity entity) {
         if (entity instanceof AbstractClientPlayer) {
             String skinType = ((AbstractClientPlayer) entity).getSkinType();

@@ -7,6 +7,8 @@ import net.gegy1000.wearables.server.item.ItemRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TabRegistry {
     public static final CreativeTabs GENERAL = new CreativeTabs(Wearables.MODID + ".general") {
@@ -25,6 +27,7 @@ public class TabRegistry {
         }
 
         @Override
+        @SideOnly(Side.CLIENT)
         public ItemStack getIconItemStack() {
             if (this.subtypes == null) {
                 this.subtypes = NonNullList.create();

@@ -17,7 +17,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -57,7 +56,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, ISpeci
             for (WearableComponentType componentType : ComponentRegistry.getRegistry()) {
                 if (componentType.getCategory().getSlot() == this.armorType) {
                     for (int colourIndex = 0; colourIndex < 16; colourIndex++) {
-                        int colour = WearableColourUtils.fromRGBFloatArray(EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colourIndex)));
+                        int colour = WearableColourUtils.fromRGBFloatArray(WearableColourUtils.getDyeRgb(EnumDyeColor.byMetadata(colourIndex)));
                         Wearable wearable = new Wearable();
                         WearableComponent component = new WearableComponent(componentType);
                         wearable.addComponent(component);

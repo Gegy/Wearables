@@ -1,13 +1,15 @@
 package net.gegy1000.wearables.server.util;
 
-import net.minecraft.entity.passive.EntitySheep;
+import com.google.common.collect.Maps;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.text.TextFormatting;
 
 import java.awt.Color;
+import java.util.Map;
 
 public class WearableColourUtils {
     public static final int[] TEXT_COLOURS = new int[16];
+    public static final Map<EnumDyeColor, float[]> DYE_TO_RGB = Maps.newEnumMap(EnumDyeColor.class);
 
     static {
         for (int i = 0; i < 16; ++i) {
@@ -20,6 +22,23 @@ public class WearableColourUtils {
             }
             TEXT_COLOURS[i] = WearableColourUtils.fromRGB(red, green, blue);
         }
+
+        DYE_TO_RGB.put(EnumDyeColor.WHITE, new float[] { 1.0F, 1.0F, 1.0F });
+        DYE_TO_RGB.put(EnumDyeColor.ORANGE, new float[] { 0.85F, 0.5F, 0.2F });
+        DYE_TO_RGB.put(EnumDyeColor.MAGENTA, new float[] { 0.7F, 0.3F, 0.85F });
+        DYE_TO_RGB.put(EnumDyeColor.LIGHT_BLUE, new float[] { 0.4F, 0.6F, 0.85F });
+        DYE_TO_RGB.put(EnumDyeColor.YELLOW, new float[] { 0.9F, 0.9F, 0.2F });
+        DYE_TO_RGB.put(EnumDyeColor.LIME, new float[] { 0.5F, 0.8F, 0.1F });
+        DYE_TO_RGB.put(EnumDyeColor.PINK, new float[] { 0.95F, 0.5F, 0.65F });
+        DYE_TO_RGB.put(EnumDyeColor.GRAY, new float[] { 0.3F, 0.3F, 0.3F });
+        DYE_TO_RGB.put(EnumDyeColor.SILVER, new float[] { 0.6F, 0.6F, 0.6F });
+        DYE_TO_RGB.put(EnumDyeColor.CYAN, new float[] { 0.3F, 0.5F, 0.6F });
+        DYE_TO_RGB.put(EnumDyeColor.PURPLE, new float[] { 0.5F, 0.25F, 0.7F });
+        DYE_TO_RGB.put(EnumDyeColor.BLUE, new float[] { 0.2F, 0.3F, 0.7F });
+        DYE_TO_RGB.put(EnumDyeColor.BROWN, new float[] { 0.4F, 0.3F, 0.2F });
+        DYE_TO_RGB.put(EnumDyeColor.GREEN, new float[] { 0.4F, 0.5F, 0.2F });
+        DYE_TO_RGB.put(EnumDyeColor.RED, new float[] { 0.6F, 0.2F, 0.2F });
+        DYE_TO_RGB.put(EnumDyeColor.BLACK, new float[] { 0.1F, 0.1F, 0.1F });
     }
 
     public static int fromRGBFloatArray(float[] rgb) {
@@ -56,7 +75,7 @@ public class WearableColourUtils {
     }
 
     public static int getDyeColour(EnumDyeColor color) {
-        return WearableColourUtils.fromRGBFloatArray(EntitySheep.getDyeRgb(color));
+        return WearableColourUtils.fromRGBFloatArray(WearableColourUtils.getDyeRgb(color));
     }
 
     public static TextFormatting getClosest(int colour) {
@@ -94,5 +113,9 @@ public class WearableColourUtils {
         float blendedGreen = first[1] * invertedRatio + second[1] * ratio;
         float blendedBlue = first[2] * invertedRatio + second[2] * ratio;
         return new float[] { blendedRed, blendedGreen, blendedBlue };
+    }
+
+    public static float[] getDyeRgb(EnumDyeColor dyeColor) {
+        return DYE_TO_RGB.get(dyeColor);
     }
 }

@@ -23,12 +23,15 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Optional;
 import java.util.function.Function;
 
+@SideOnly(Side.CLIENT)
 public class ComponentItemModel implements IModel {
     private final ImmutableList<ResourceLocation> textures;
 

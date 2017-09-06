@@ -7,6 +7,8 @@ import net.ilexiconn.llibrary.client.util.ClientUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WingsMovementHandler extends MovementHandler {
     @Override
@@ -49,6 +51,7 @@ public class WingsMovementHandler extends MovementHandler {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void applyRotations(EntityPlayer player, float partialTicks) {
         LocalPlayerState state = LocalPlayerState.getState(player);
         float animationTimer = state.getRenderFlyTimer(partialTicks) * state.getRenderFlyToggleTimer(partialTicks);
