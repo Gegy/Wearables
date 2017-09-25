@@ -11,5 +11,5 @@
     "g": {"type": "forge:ore_dict", "ore": "glowstone"},
     "w": {"type": "forge:ore_dict", "ore": "slabWood"}
   },
-  "result": {"item": "wearables:display_mannequin"}
+  "result": {"item": "wearables:display_mannequin_item"}
 }

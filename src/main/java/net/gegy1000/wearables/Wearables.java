@@ -13,7 +13,7 @@ import org.apache.logging.log4j.Logger;
 @Mod(modid = Wearables.MODID, name = "Wearables", version = Wearables.VERSION, dependencies = "required-after:llibrary@[" + Wearables.LLIBRARY_VERSION + ",)")
 public class Wearables {
     public static final String MODID = "wearables";
-    public static final String VERSION = "1.1.1";
+    public static final String VERSION = "1.1.3";
     public static final String LLIBRARY_VERSION = "1.7.7";
 
     @Mod.Instance(Wearables.MODID)

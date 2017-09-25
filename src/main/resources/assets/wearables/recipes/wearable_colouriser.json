@@ -9,7 +9,7 @@
     "r": {"type": "forge:ore_dict", "ore": "dyeRed"},
     "g": {"type": "forge:ore_dict", "ore": "dyeGreen"},
     "b": {"type": "forge:ore_dict", "ore": "dyeBlue"},
-    "|": {"type": "forge:ore_dict", "ore": "blockQuartz"},
+    "|": {"type": "forge:ore_dict", "ore": "gemQuartz"},
     "u": {"item": "minecraft:glass_bottle"},
     "-": {"type": "forge:ore_dict", "ore": "ingotIron"}
   },

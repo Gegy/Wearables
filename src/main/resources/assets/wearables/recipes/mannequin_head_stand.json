@@ -5,7 +5,7 @@
     "wqw"
   ],
   "key": {
-    "q": {"type": "forge:ore_dict", "ore": "plankWood"},
+    "q": {"type": "forge:ore_dict", "ore": "blockQuartz"},
     "w": {"type": "forge:ore_dict", "ore": "slabWood"}
   },
   "result": {"item": "wearables:mannequin_head_stand"}
