@@ -139,10 +139,6 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, ISpeci
 
     @Override
     public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-        Item item = WearableItem.getAppliedArmour(armor).getItem();
-        if (item instanceof ItemArmor) {
-            return ((ItemArmor) item).damageReduceAmount;
-        }
         return 0;
     }
 
