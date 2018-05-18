@@ -19,6 +19,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -132,6 +133,16 @@ public class ClientEventHandler {
                     }
                 }
             } else if (removeNightVision) {
+                MC.player.removeActivePotionEffect(MobEffects.NIGHT_VISION);
+                removeNightVision = false;
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onGuiRender(GuiScreenEvent.DrawScreenEvent event) {
+        if (MC.player != null) {
+            if (removeNightVision) {
                 MC.player.removeActivePotionEffect(MobEffects.NIGHT_VISION);
                 removeNightVision = false;
             }
