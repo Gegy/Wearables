@@ -127,7 +127,7 @@ public class ClientEventHandler {
             if (event.phase == TickEvent.Phase.START) {
                 if (WearableUtils.hasComponent(MC.player, ComponentTypes.NIGHT_VISION_GOGGLES)) {
                     if (!MC.player.isPotionActive(MobEffects.NIGHT_VISION)) {
-                        MC.player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 1000));
+                        MC.player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 1000, 0, false, false));
                         removeNightVision = true;
                     }
                 }
